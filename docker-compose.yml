@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  api:
+    build: ./services/api
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+      - MONGO_DB=sentinelwatch
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - TASKS_QUEUE=tasks_queue
+    depends_on:
+      - redis
+      - mongo
+
+  collector:
+    build: ./services/collector
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - TASKS_QUEUE=tasks_queue
+      - EVENTS_QUEUE=events_queue
+    depends_on:
+      - redis
+
+  analysis:
+    build: ./services/analysis
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+      - MONGO_DB=sentinelwatch
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - EVENTS_QUEUE=events_queue
+      - ALERTS_QUEUE=alerts_queue
+    depends_on:
+      - redis
+      - mongo
+
+  notifier:
+    build: ./services/notifier
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - ALERTS_QUEUE=alerts_queue
+    depends_on:
+      - redis
+
+volumes:
+  mongo_data:
