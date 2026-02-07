@@ -14,3 +14,19 @@ export async function fetchEvents({ impact, type }) {
   }
   return response.json();
 }
+
+export async function createSource({ url, eventType }) {
+  const response = await fetch("/sources", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ url, event_type: eventType }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create source");
+  }
+
+  return response.json();
+}

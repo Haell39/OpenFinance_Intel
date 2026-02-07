@@ -29,8 +29,8 @@ docker compose up --build
 Register a source (PowerShell - Windows):
 
 ```powershell
-# Exemplo com feed RSS real de notícias financeiras
-Invoke-RestMethod -Method Post -Uri "http://localhost:8000/sources" -ContentType "application/json" -Body '{"url":"https://www.infomoney.com.br/feed/","event_type":"financial"}'
+# Exemplo com feed RSS real de notícias financeiras (recomendado)
+Invoke-RestMethod -Method Post -Uri "http://localhost:8000/sources" -ContentType "application/json" -Body '{"url":"http://g1.globo.com/dynamo/economia/rss2.xml","event_type":"financial"}'
 
 # Ou use um exemplo genérico
 Invoke-RestMethod -Method Post -Uri "http://localhost:8000/sources" -ContentType "application/json" -Body '{"url":"https://example.com/feed.xml","event_type":"financial"}'
@@ -39,10 +39,10 @@ Invoke-RestMethod -Method Post -Uri "http://localhost:8000/sources" -ContentType
 Register a source (macOS/Linux):
 
 ```bash
-# Exemplo com feed RSS real de notícias financeiras
+# Exemplo com feed RSS real de notícias financeiras (recomendado)
 curl -X POST "http://localhost:8000/sources" \
   -H "Content-Type: application/json" \
-  -d '{"url":"https://www.infomoney.com.br/feed/","event_type":"financial"}'
+  -d '{"url":"http://g1.globo.com/dynamo/economia/rss2.xml","event_type":"financial"}'
 
 # Ou use um exemplo genérico
 curl -X POST "http://localhost:8000/sources" \
@@ -52,9 +52,9 @@ curl -X POST "http://localhost:8000/sources" \
 
 **Fontes RSS recomendadas:**
 
-- InfoMoney: `https://www.infomoney.com.br/feed/`
+- G1 Economia (mais estável): `http://g1.globo.com/dynamo/economia/rss2.xml`
+- InfoMoney: `https://www.infomoney.com.br/feed/` (pode bloquear requests de containers)
 - Valor Econômico (se disponível público)
-- G1 Economia: `http://g1.globo.com/dynamo/economia/rss2.xml`
 
 You should see logs in the collector, analysis, and notifier containers showing the event flowing through the pipeline.
 

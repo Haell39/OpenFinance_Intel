@@ -63,7 +63,7 @@ Esperado: `{"status":"ok"}`
 ```powershell
 Invoke-RestMethod -Method Post -Uri "http://localhost:8000/sources" `
   -ContentType "application/json" `
-  -Body '{"url":"https://www.infomoney.com.br/feed/","event_type":"financial"}'
+  -Body '{"url":"http://g1.globo.com/dynamo/economia/rss2.xml","event_type":"financial"}'
 ```
 
 Esperado:

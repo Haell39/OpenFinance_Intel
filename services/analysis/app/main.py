@@ -67,26 +67,24 @@ def infer_region(event: dict) -> str:
     return "BR"
 
 
-def clean_text(text: str) -> str:
-    """Remove HTML tags and normalize whitespace"""
+def clean_text(text: str, max_length: int | None = None) -> str:
+    """Remove HTML tags, normalize whitespace, and optionally truncate."""
     if not text:
         return ""
     clean = bleach.clean(text, tags=[], strip=True)
     clean = " ".join(clean.split())
+    if max_length and len(clean) > max_length:
+        return f"{clean[: max_length - 3].rstrip()}..."
     return clean
 
 
 def enrich_event(raw_event: dict) -> dict:
     """
     Enriquece um evento bruto com analise, seguindo o schema padrao do SentinelWatch.
-    
+
     Entrada: raw_event (do Collector e Scraper)
     Saida: enriched_event (persistivel e consumivel pela API)
-    ""Remove HTML tags from RSS content
-    title = clean_text(title)
-    body = clean_text(body)
-    
-    # "
+    """
     # Extracao segura de campos do evento bruto
     event_id = raw_event.get("event_id", "")
     event_type = raw_event.get("event_type", "financial")
@@ -94,6 +92,10 @@ def enrich_event(raw_event: dict) -> dict:
     body = raw_event.get("body", "")
     created_at = raw_event.get("created_at", datetime.utcnow().isoformat() + "Z")
     source = raw_event.get("source", {})
+
+    # Remove HTML tags from RSS content
+    title = clean_text(title, max_length=140)
+    body = clean_text(body, max_length=400)
     
     # Classificacao e enriquecimento
     impact = classify_impact(raw_event)
@@ -152,9 +154,11 @@ def run() -> None:
             
             # Persistência única em MongoDB
             mongo_db.events.insert_one(enriched_event)
-            
-            # Publicação para notificação
-            redis_client.lpush(settings["alerts_queue"], json.dumps(enriched_event))
+
+            # Publicação para notificação (remove _id inserido pelo Mongo)
+            alert_payload = dict(enriched_event)
+            alert_payload.pop("_id", None)
+            redis_client.lpush(settings["alerts_queue"], json.dumps(alert_payload))
             
             print(
                 f"[analysis] ✓ evento {enriched_event['id'][:8]}... "

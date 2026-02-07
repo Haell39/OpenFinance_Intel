@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { fetchEvents } from "./api/events.js";
+import { createSource, fetchEvents } from "./api/events.js";
 
 const IMPACT_OPTIONS = ["all", "high", "medium", "low"];
-const TYPE_OPTIONS = ["all", "financial", "geopolitical"];
+const TYPE_OPTIONS = ["all", "financial", "geopolitical", "odds"];
+const SOURCE_TYPE_OPTIONS = ["financial", "geopolitical", "odds"];
 
 function formatTimestamp(value) {
   if (!value) {
@@ -33,28 +34,47 @@ export default function App() {
   const [events, setEvents] = useState([]);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
+  const [sourceUrl, setSourceUrl] = useState(
+    "http://g1.globo.com/dynamo/economia/rss2.xml",
+  );
+  const [sourceType, setSourceType] = useState("financial");
+  const [sourceStatus, setSourceStatus] = useState("idle");
+  const [sourceError, setSourceError] = useState("");
 
-  useEffect(() => {
-    let isMounted = true;
+  const loadEvents = () => {
     setStatus("loading");
     setError("");
 
-    fetchEvents({ impact, type })
+    return fetchEvents({ impact, type })
       .then((data) => {
-        if (!isMounted) return;
         setEvents(data);
         setStatus("ready");
       })
       .catch((err) => {
-        if (!isMounted) return;
         setError(err.message || "Failed to load events");
         setStatus("error");
       });
+  };
 
-    return () => {
-      isMounted = false;
-    };
+  useEffect(() => {
+    loadEvents();
   }, [impact, type]);
+
+  const handleCreateSource = (event) => {
+    event.preventDefault();
+    setSourceStatus("loading");
+    setSourceError("");
+
+    createSource({ url: sourceUrl.trim(), eventType: sourceType })
+      .then(() => {
+        setSourceStatus("success");
+        return loadEvents();
+      })
+      .catch((err) => {
+        setSourceError(err.message || "Failed to create source");
+        setSourceStatus("error");
+      });
+  };
 
   return (
     <div className="page">
@@ -89,6 +109,47 @@ export default function App() {
 
       {status === "loading" && <p className="state">Loading events...</p>}
       {status === "error" && <p className="state error">{error}</p>}
+
+      <section className="source-card">
+        <div>
+          <h2>Cadastrar fonte</h2>
+          <p>Adicione um feed RSS para gerar eventos automaticamente.</p>
+        </div>
+        <form className="source-form" onSubmit={handleCreateSource}>
+          <label>
+            URL do feed
+            <input
+              className="text-input"
+              type="url"
+              value={sourceUrl}
+              onChange={(e) => setSourceUrl(e.target.value)}
+              placeholder="http://g1.globo.com/dynamo/economia/rss2.xml"
+              required
+            />
+          </label>
+          <label>
+            Tipo
+            <select
+              value={sourceType}
+              onChange={(e) => setSourceType(e.target.value)}
+            >
+              {SOURCE_TYPE_OPTIONS.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button className="primary-button" type="submit">
+            Cadastrar
+          </button>
+          <span className="source-status">
+            {sourceStatus === "loading" && "Enviando..."}
+            {sourceStatus === "success" && "Fonte cadastrada ✅"}
+            {sourceStatus === "error" && sourceError}
+          </span>
+        </form>
+      </section>
 
       <div className="content-grid">
         <div className="events-list">
@@ -139,7 +200,7 @@ export default function App() {
                 {status === "ready" && events.length === 0 && (
                   <tr>
                     <td colSpan={6} className="state">
-                      Nenhum evento ainda. Cadastre uma fonte na API para gerar
+                      Nenhum evento ainda. Cadastre uma fonte acima para gerar
                       eventos.
                     </td>
                   </tr>

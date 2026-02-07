@@ -54,6 +54,65 @@ select {
   background: #fff;
 }
 
+.text-input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5f5;
+  background: #fff;
+}
+
+.source-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+}
+
+.source-card h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.source-card p {
+  margin: 0 0 16px;
+  color: #64748b;
+}
+
+.source-form {
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr auto;
+  gap: 16px;
+  align-items: end;
+}
+
+.primary-button {
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary-button:hover {
+  background: #1d4ed8;
+}
+
+.source-status {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  color: #475569;
+}
+
+@media (max-width: 900px) {
+  .source-form {
+    grid-template-columns: 1fr;
+  }
+}
+
 .table-wrapper {
   overflow-x: auto;
   background: #fff;

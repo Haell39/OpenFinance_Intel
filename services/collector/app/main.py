@@ -15,13 +15,26 @@ def get_settings() -> dict:
         "redis_port": int(os.getenv("REDIS_PORT", "6379")),
         "tasks_queue": os.getenv("TASKS_QUEUE", "tasks_queue"),
         "events_queue": os.getenv("EVENTS_QUEUE", "events_queue"),
+        "rss_timeout": int(os.getenv("RSS_TIMEOUT", "20")),
+        "rss_user_agent": os.getenv(
+            "RSS_USER_AGENT",
+            "SentinelWatch/1.0 (+https://github.com/your-org/sentinelwatch)",
+        ),
+        "rss_fallback_url": os.getenv(
+            "RSS_FALLBACK_URL",
+            "http://g1.globo.com/dynamo/economia/rss2.xml",
+        ),
     }
 
 
-def collect_from_rss(url: str) -> list[dict]:
+def collect_from_rss(url: str, settings: dict) -> list[dict]:
     """Coleta entradas de um feed RSS"""
     try:
-        response = requests.get(url, timeout=10)
+        response = requests.get(
+            url,
+            timeout=settings["rss_timeout"],
+            headers={"User-Agent": settings["rss_user_agent"]},
+        )
         response.raise_for_status()
         feed = feedparser.parse(response.content)
         
@@ -39,19 +52,31 @@ def collect_from_rss(url: str) -> list[dict]:
         return []
 
 
-def collect_from_source(task: dict) -> list[dict]:
+def collect_from_source(task: dict, settings: dict) -> list[dict]:
     """Determina tipo de coleta e retorna eventos brutos"""
     url = task.get("url")
     
     # Por simplicidade, trata tudo como RSS por enquanto
     # Pode expandir para scraping HTML no futuro
     if url.endswith(".xml") or "rss" in url.lower() or "feed" in url.lower():
-        return collect_from_rss(url)
+        entries = collect_from_rss(url, settings)
+        if entries:
+            return entries
+        fallback = settings.get("rss_fallback_url")
+        if fallback and fallback != url:
+            print(f"[collector] Usando fallback RSS: {fallback}")
+            return collect_from_rss(fallback, settings)
+        return []
     
     # Fallback: tenta RSS mesmo se URL não indicar
-    entries = collect_from_rss(url)
+    entries = collect_from_rss(url, settings)
     if entries:
         return entries
+
+    fallback = settings.get("rss_fallback_url")
+    if fallback and fallback != url:
+        print(f"[collector] Usando fallback RSS: {fallback}")
+        return collect_from_rss(fallback, settings)
     
     # Se falhar, retorna evento simulado para não travar o pipeline
     print(f"[collector] Usando fallback simulado para {url}")
@@ -63,9 +88,9 @@ def collect_from_source(task: dict) -> list[dict]:
     }]
 
 
-def build_raw_events(task: dict) -> list[dict]:
+def build_raw_events(task: dict, settings: dict) -> list[dict]:
     """Cria eventos brutos a partir das entradas coletadas"""
-    collected_data = collect_from_source(task)
+    collected_data = collect_from_source(task, settings)
     
     raw_events = []
     for data in collected_data:
@@ -103,7 +128,7 @@ def run() -> None:
         task = json.loads(payload)
         
         # Coleta eventos reais da fonte
-        raw_events = build_raw_events(task)
+        raw_events = build_raw_events(task, settings)
         
         # Publica cada evento na fila
         for raw_event in raw_events:
