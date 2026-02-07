@@ -178,6 +178,10 @@ BRAZILIAN_STATES_MAP = {
     # Alagoas
     "alagoas": "AL",
     "al": "AL",
+    # Acre
+    "acre": "AC",
+    "ac": "AC",
+    "rio branco": "AC",
     # Sergipe
     "sergipe": "SE",
     "se": "SE",
@@ -188,18 +192,135 @@ BRAZILIAN_STATES_MAP = {
     # Rio Grande do Norte
     "rio grande do norte": "RN",
     "rn": "RN",
+    # Piauí
+    "piauí": "PI",
+    "piaui": "PI",
+    "pi": "PI",
+    "teresina": "PI",
 }
+
+
+BRAZILIAN_CITIES_MAP = {
+    # Capitais (todas)
+    "rio branco": "AC",
+    "maceió": "AL",
+    "maceio": "AL",
+    "macapá": "AP",
+    "macapa": "AP",
+    "manaus": "AM",
+    "salvador": "BA",
+    "fortaleza": "CE",
+    "brasília": "DF",
+    "brasilia": "DF",
+    "vitória": "ES",
+    "vitoria": "ES",
+    "goiânia": "GO",
+    "goiania": "GO",
+    "são luís": "MA",
+    "sao luis": "MA",
+    "cuiabá": "MT",
+    "cuiaba": "MT",
+    "campo grande": "MS",
+    "belém": "PA",
+    "belem": "PA",
+    "joão pessoa": "PB",
+    "joao pessoa": "PB",
+    "recife": "PE",
+    "teresina": "PI",
+    "rio de janeiro": "RJ",
+    "natal": "RN",
+    "porto alegre": "RS",
+    "porto velho": "RO",
+    "boa vista": "RR",
+    "florianópolis": "SC",
+    "florianopolis": "SC",
+    "são paulo": "SP",
+    "sao paulo": "SP",
+    "aracaju": "SE",
+    "palmas": "TO",
+    # Polos tecnologicos/financeiros
+    "campinas": "SP",
+    "são josé dos campos": "SP",
+    "sao jose dos campos": "SP",
+    "são carlos": "SP",
+    "sao carlos": "SP",
+    "ribeirão preto": "SP",
+    "ribeirao preto": "SP",
+    "santos": "SP",
+    "guarulhos": "SP",
+    "osasco": "SP",
+    "sorocaba": "SP",
+    "jundiaí": "SP",
+    "jundiai": "SP",
+    "porto digital": "PE",
+    "joinville": "SC",
+    "blumenau": "SC",
+    "itajai": "SC",
+    "itajaí": "SC",
+    "belo horizonte": "MG",
+    "contagem": "MG",
+    "betim": "MG",
+    "uberaba": "MG",
+    "uberlândia": "MG",
+    "uberlandia": "MG",
+    "juiz de fora": "MG",
+    "curitiba": "PR",
+    "londrina": "PR",
+    "maringá": "PR",
+    "maringa": "PR",
+    "cascavel": "PR",
+    "foz do iguaçu": "PR",
+    "foz do iguacu": "PR",
+    "caxias do sul": "RS",
+    "pelotas": "RS",
+    "canoas": "RS",
+    "niterói": "RJ",
+    "niteroi": "RJ",
+    "duque de caxias": "RJ",
+    "nova iguaçu": "RJ",
+    "nova iguacu": "RJ",
+    "campos dos goytacazes": "RJ",
+    "feira de santana": "BA",
+    "vitória da conquista": "BA",
+    "vitoria da conquista": "BA",
+    "jaboatão": "PE",
+    "jaboatao": "PE",
+    "olinda": "PE",
+    "juazeiro do norte": "CE",
+    "sobral": "CE",
+    "santarém": "PA",
+    "santarem": "PA",
+    "marabá": "PA",
+    "maraba": "PA",
+    "anápolis": "GO",
+    "anapolis": "GO",
+    "aparecida de goiânia": "GO",
+    "aparecida de goiania": "GO",
+    "taguatinga": "DF",
+}
+
+
+def match_location_token(text: str, token: str) -> bool:
+    if len(token) <= 3:
+        return re.search(rf"\b{re.escape(token)}\b", text) is not None
+    return token in text
 
 
 def infer_region(event: dict) -> str:
     """Infere a sigla do estado (UF) do Brasil baseada no conteúdo do evento"""
     text = f"{event.get('title', '')} {event.get('body', '')}".lower()
     
+    # Busca por matches de cidades no mapa (mais específicas primeiro)
+    sorted_cities = sorted(BRAZILIAN_CITIES_MAP.keys(), key=len, reverse=True)
+    for city_name in sorted_cities:
+        if match_location_token(text, city_name):
+            return BRAZILIAN_CITIES_MAP[city_name]
+
     # Busca por matches de estados no mapa (mais específicos primeiro)
     # Ordena por tamanho decrescente para capturar "rio grande do sul" antes de "rio"
     sorted_keys = sorted(BRAZILIAN_STATES_MAP.keys(), key=len, reverse=True)
     for state_name in sorted_keys:
-        if state_name in text:
+        if match_location_token(text, state_name):
             return BRAZILIAN_STATES_MAP[state_name]
     
     # Default: Brasil (todos os eventos sem localização específica ficam em BR)
@@ -350,6 +471,7 @@ def enrich_event(raw_event: dict) -> dict:
     body = raw_event.get("body", "")
     created_at = normalize_timestamp(raw_event.get("created_at"))
     source = raw_event.get("source", {})
+    link = raw_event.get("link", "")
 
     # Remove HTML tags from RSS content
     title = clean_text(title, max_length=140)
@@ -378,6 +500,7 @@ def enrich_event(raw_event: dict) -> dict:
             "region": region,
         },
         "source": source if isinstance(source, dict) else {},
+        "link": link,
         "timestamp": created_at,
         "analyzed_at": datetime.utcnow().isoformat() + "Z",
     }

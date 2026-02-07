@@ -1,8 +1,10 @@
 import json
 import os
 import time
+import re
 from datetime import datetime
 from uuid import uuid4
+from urllib.parse import urljoin
 
 import feedparser
 import requests
@@ -27,15 +29,54 @@ def get_settings() -> dict:
     }
 
 
+RSS_CONTENT_TYPES = (
+    "application/rss+xml",
+    "application/atom+xml",
+    "application/xml",
+    "text/xml",
+)
+
+
+def looks_like_feed(response: requests.Response) -> bool:
+    content_type = response.headers.get("Content-Type", "").lower()
+    return any(feed_type in content_type for feed_type in RSS_CONTENT_TYPES)
+
+
+def discover_feed_url(html_text: str, base_url: str) -> str | None:
+    if not html_text:
+        return None
+    for match in re.finditer(r"<link[^>]+>", html_text, re.IGNORECASE):
+        tag = match.group(0)
+        if "alternate" not in tag.lower():
+            continue
+        if "rss" not in tag.lower() and "atom" not in tag.lower():
+            continue
+        href_match = re.search(r"href=[\"']([^\"']+)[\"']", tag, re.IGNORECASE)
+        if not href_match:
+            continue
+        return urljoin(base_url, href_match.group(1))
+    return None
+
+
 def collect_from_rss(url: str, settings: dict) -> list[dict]:
     """Coleta entradas de um feed RSS"""
     try:
         response = requests.get(
             url,
             timeout=settings["rss_timeout"],
-            headers={"User-Agent": settings["rss_user_agent"]},
+            headers={
+                "User-Agent": settings["rss_user_agent"],
+                "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, text/html;q=0.9, */*;q=0.8",
+            },
+            allow_redirects=True,
         )
         response.raise_for_status()
+
+        if not looks_like_feed(response):
+            feed_url = discover_feed_url(response.text, response.url)
+            if feed_url and feed_url != url:
+                return collect_from_rss(feed_url, settings)
+
         feed = feedparser.parse(response.content)
         
         entries = []
@@ -55,20 +96,8 @@ def collect_from_rss(url: str, settings: dict) -> list[dict]:
 def collect_from_source(task: dict, settings: dict) -> list[dict]:
     """Determina tipo de coleta e retorna eventos brutos"""
     url = task.get("url")
-    
-    # Por simplicidade, trata tudo como RSS por enquanto
-    # Pode expandir para scraping HTML no futuro
-    if url.endswith(".xml") or "rss" in url.lower() or "feed" in url.lower():
-        entries = collect_from_rss(url, settings)
-        if entries:
-            return entries
-        fallback = settings.get("rss_fallback_url")
-        if fallback and fallback != url:
-            print(f"[collector] Usando fallback RSS: {fallback}")
-            return collect_from_rss(fallback, settings)
-        return []
-    
-    # Fallback: tenta RSS mesmo se URL não indicar
+
+    # Trata tudo como RSS, com descoberta automatica quando a URL for HTML
     entries = collect_from_rss(url, settings)
     if entries:
         return entries

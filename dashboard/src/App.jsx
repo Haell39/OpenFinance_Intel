@@ -39,6 +39,34 @@ function urgencyScore(event) {
   return score;
 }
 
+function impactScore(event) {
+  if (event.impact === "high") return 3;
+  if (event.impact === "medium") return 2;
+  if (event.impact === "low") return 1;
+  return 0;
+}
+
+function getEventLink(event) {
+  if (event?.link) return event.link;
+  if (event?.source?.url) return event.source.url;
+  return "";
+}
+
+function getLocationFlag(event) {
+  const locations = event?.entities?.locations || [];
+  if (locations.length) {
+    return "";
+  }
+  const region = event?.location?.region;
+  if (region && region !== "BR") {
+    return `UF ${region}`;
+  }
+  if (region === "BR") {
+    return "Nacional";
+  }
+  return "Localidade nao especificada";
+}
+
 export default function App() {
   const [impact, setImpact] = useState("all");
   const [type, setType] = useState("all");
@@ -72,7 +100,17 @@ export default function App() {
       .then((data) => {
         // Apply sorting
         if (sortBy === "urgency") {
-          data.sort((a, b) => urgencyScore(b) - urgencyScore(a));
+          data.sort(
+            (a, b) =>
+              urgencyScore(b) - urgencyScore(a) ||
+              new Date(b.timestamp) - new Date(a.timestamp),
+          );
+        } else if (sortBy === "impact") {
+          data.sort(
+            (a, b) =>
+              impactScore(b) - impactScore(a) ||
+              new Date(b.timestamp) - new Date(a.timestamp),
+          );
         } else if (sortBy === "timestamp") {
           data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         }
@@ -199,6 +237,26 @@ export default function App() {
                 ✕
               </button>
             </div>
+            <div className="sort-tabs">
+              <button
+                className={`sort-tab ${sortBy === "timestamp" ? "active" : ""}`}
+                onClick={() => setSortBy("timestamp")}
+              >
+                Mais recentes
+              </button>
+              <button
+                className={`sort-tab ${sortBy === "urgency" ? "active" : ""}`}
+                onClick={() => setSortBy("urgency")}
+              >
+                Mais urgentes
+              </button>
+              <button
+                className={`sort-tab ${sortBy === "impact" ? "active" : ""}`}
+                onClick={() => setSortBy("impact")}
+              >
+                Mais impactantes
+              </button>
+            </div>
             <div className="events-scroll">
               {events.map((event) => (
                 <div
@@ -238,10 +296,25 @@ export default function App() {
                         ))}
                       </div>
                     ) : null}
+                    {getLocationFlag(event) ? (
+                      <div className="location-flag">
+                        📍 {getLocationFlag(event)}
+                      </div>
+                    ) : null}
                     <div className="event-meta">
                       <span className="event-timestamp">
                         🕐 {formatTimestamp(event.timestamp)}
                       </span>
+                      {getEventLink(event) ? (
+                        <a
+                          className="source-link"
+                          href={getEventLink(event)}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Fonte
+                        </a>
+                      ) : null}
                     </div>
                   </div>
                 </div>
