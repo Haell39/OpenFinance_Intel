@@ -1,4 +1,4 @@
-export async function fetchEvents({ impact, type }) {
+export async function fetchEvents({ impact, type, region }) {
   const params = new URLSearchParams();
   if (impact && impact !== "all") {
     params.set("impact", impact);
@@ -6,11 +6,22 @@ export async function fetchEvents({ impact, type }) {
   if (type && type !== "all") {
     params.set("type", type);
   }
+  if (region && region !== "all") {
+    params.set("region", region);
+  }
 
   const url = params.toString() ? `/events?${params}` : "/events";
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error("Failed to load events");
+  }
+  return response.json();
+}
+
+export async function fetchGeoSummary() {
+  const response = await fetch("/events/geo-summary");
+  if (!response.ok) {
+    throw new Error("Failed to load geo summary");
   }
   return response.json();
 }

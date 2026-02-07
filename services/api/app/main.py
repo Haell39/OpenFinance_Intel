@@ -65,14 +65,43 @@ def create_source(payload: SourceCreate) -> dict:
 def list_events(
     impact: str | None = None,
     event_type: str | None = Query(default=None, alias="type"),
+    region: str | None = None,
 ) -> list[dict]:
     filters: dict = {}
     if impact:
         filters["impact"] = impact
     if event_type:
         filters["type"] = event_type
+    if region and region != "BR":
+        filters["location.region"] = region
 
     events = list(
         mongo_db.events.find(filters, {"_id": 0}).sort("timestamp", -1).limit(100)
     )
     return events
+
+
+@app.get("/events/geo-summary")
+def geo_summary() -> dict:
+    """Agrupa eventos por UF e retorna contagem por região"""
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$location.region",
+                "count": {"$sum": 1},
+            }
+        },
+        {
+            "$sort": {"_id": 1}
+        },
+    ]
+    
+    results = list(mongo_db.events.aggregate(pipeline))
+    
+    # Converte resultado em dicionário { "UF": count }
+    geo_data = {}
+    for doc in results:
+        uf = doc["_id"] if doc["_id"] else "BR"
+        geo_data[uf] = doc["count"]
+    
+    return geo_data

@@ -84,29 +84,125 @@ def classify_urgency(event: dict, keywords: list[str], score: int) -> str:
     return "normal"
 
 
+BRAZILIAN_STATES_MAP = {
+    # São Paulo
+    "são paulo": "SP",
+    "sao paulo": "SP",
+    "sp": "SP",
+    "bolsa": "SP",  # B3 Bolsa em SP
+    # Rio de Janeiro
+    "rio de janeiro": "RJ",
+    "rio janeiro": "RJ",
+    "rj": "RJ",
+    "petrobras": "RJ",  # Headquarters
+    # Minas Gerais
+    "minas gerais": "MG",
+    "minas": "MG",
+    "mg": "MG",
+    "belo horizonte": "MG",
+    # Distrito Federal
+    "brasília": "DF",
+    "brasilia": "DF",
+    "distrito federal": "DF",
+    "df": "DF",
+    # Bahia
+    "bahia": "BA",
+    "ba": "BA",
+    "salvador": "BA",
+    # Pernambuco
+    "pernambuco": "PE",
+    "pe": "PE",
+    "recife": "PE",
+    # Rio Grande do Sul
+    "rio grande do sul": "RS",
+    "rs": "RS",
+    "porto alegre": "RS",
+    # Santa Catarina
+    "santa catarina": "SC",
+    "sc": "SC",
+    "florianópolis": "SC",
+    "florianopolis": "SC",
+    # Paraná
+    "paraná": "PR",
+    "parana": "PR",
+    "pr": "PR",
+    "curitiba": "PR",
+    # Ceará
+    "ceará": "CE",
+    "ceara": "CE",
+    "ce": "CE",
+    "fortaleza": "CE",
+    # Pará
+    "pará": "PA",
+    "para": "PA",
+    "pa": "PA",
+    "belém": "PA",
+    "belem": "PA",
+    # Maranhão
+    "maranhão": "MA",
+    "maranhao": "MA",
+    "ma": "MA",
+    # Goiás
+    "goiás": "GO",
+    "goias": "GO",
+    "go": "GO",
+    "goiânia": "GO",
+    "goiania": "GO",
+    # Espírito Santo
+    "espírito santo": "ES",
+    "espirito santo": "ES",
+    "es": "ES",
+    # Mato Grosso
+    "mato grosso": "MT",
+    "mt": "MT",
+    # Mato Grosso do Sul
+    "mato grosso do sul": "MS",
+    "ms": "MS",
+    # Tocantins
+    "tocantins": "TO",
+    "to": "TO",
+    # Rondônia
+    "rondônia": "RO",
+    "rondonia": "RO",
+    "ro": "RO",
+    # Roraima
+    "roraima": "RR",
+    "rr": "RR",
+    # Amapá
+    "amapá": "AP",
+    "amapa": "AP",
+    "ap": "AP",
+    # Amazonas
+    "amazonas": "AM",
+    "am": "AM",
+    # Alagoas
+    "alagoas": "AL",
+    "al": "AL",
+    # Sergipe
+    "sergipe": "SE",
+    "se": "SE",
+    # Paraíba
+    "paraíba": "PB",
+    "paraiba": "PB",
+    "pb": "PB",
+    # Rio Grande do Norte
+    "rio grande do norte": "RN",
+    "rn": "RN",
+}
+
+
 def infer_region(event: dict) -> str:
-    """Infere a região do Brasil baseada no conteúdo do evento"""
-    # Por enquanto, usa "BR" para todos. Pode ser expandido com lógica NLP no futuro
+    """Infere a sigla do estado (UF) do Brasil baseada no conteúdo do evento"""
     text = f"{event.get('title', '')} {event.get('body', '')}".lower()
     
-    # Mapeamento simples de palavras-chave para regiões (pode ser expandido)
-    region_keywords = {
-        "sp": ["são paulo", "sp", "bolsa"],
-        "rj": ["rio de janeiro", "rj"],
-        "mg": ["minas gerais", "mg"],
-        "df": ["brasília", "distrito federal", "df"],
-        "ba": ["bahia", "salvador"],
-        "pe": ["pernambuco", "recife"],
-        "rs": ["rio grande do sul", "porto alegre"],
-        "sc": ["santa catarina"],
-        "pr": ["paraná"],
-        "ce": ["ceará"],
-    }
+    # Busca por matches de estados no mapa (mais específicos primeiro)
+    # Ordena por tamanho decrescente para capturar "rio grande do sul" antes de "rio"
+    sorted_keys = sorted(BRAZILIAN_STATES_MAP.keys(), key=len, reverse=True)
+    for state_name in sorted_keys:
+        if state_name in text:
+            return BRAZILIAN_STATES_MAP[state_name]
     
-    for region, keywords in region_keywords.items():
-        if any(kw in text for kw in keywords):
-            return region.upper()
-    
+    # Default: Brasil (todos os eventos sem localização específica ficam em BR)
     return "BR"
 
 
