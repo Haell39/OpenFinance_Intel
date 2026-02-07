@@ -159,7 +159,7 @@ export default function App() {
         <div className="header-left">
           <div className="logo-container">
             <span className="logo-icon">👁️</span>
-            <span className="brand-name">SentinelWatch</span>
+            <span className="brand-name">OpenFinance Intel</span>
           </div>
           <div className="status-bar">
             {MARKET_SIGNALS.map((signal) => (
