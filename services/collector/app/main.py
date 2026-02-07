@@ -3,7 +3,8 @@ import os
 import time
 import re
 from datetime import datetime
-from uuid import uuid4
+import hashlib
+from datetime import datetime
 from urllib.parse import urljoin
 
 import feedparser
@@ -123,8 +124,12 @@ def build_raw_events(task: dict, settings: dict) -> list[dict]:
     
     raw_events = []
     for data in collected_data:
+        # Create deterministic ID based on link (or title + date if no link)
+        unique_string = data.get("link") or f"{data.get('title')}{data.get('published')}"
+        event_id = hashlib.md5(unique_string.encode("utf-8")).hexdigest()
+
         raw_events.append({
-            "event_id": str(uuid4()),
+            "event_id": event_id,
             "source": {
                 "id": task.get("source_id"),
                 "url": task.get("url"),

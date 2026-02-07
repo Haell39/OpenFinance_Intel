@@ -575,8 +575,12 @@ def run() -> None:
             # Enriquecimento único e centralizado
             enriched_event = enrich_event(raw_event)
             
-            # Persistência única em MongoDB
-            mongo_db.events.insert_one(enriched_event)
+            # Persistência única em MongoDB (Upsert para evitar duplicatas)
+            mongo_db.events.update_one(
+                {"id": enriched_event["id"]},
+                {"$set": enriched_event},
+                upsert=True
+            )
 
             # Publicação para notificação (remove _id inserido pelo Mongo)
             alert_payload = dict(enriched_event)
