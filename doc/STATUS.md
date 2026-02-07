@@ -25,15 +25,22 @@ UI (React) -> GET /events + GET /events/geo-summary
 
 - Collector (RSS)
   - Coleta feeds RSS reais
+  - **Auto-discovery de RSS**: detecta feeds automaticamente em páginas HTML
+  - Segue redirecionamentos e valida content-type
   - Publica eventos brutos na fila events_queue
   - Usa fallback de RSS configuravel
 
 - Analysis
   - Limpa HTML e normaliza descricao
   - Extrai keywords simples
+  - **NER contextual para localização** (método prioritário):
+    - Detecta padrões: "governo de", "prefeitura de", "assembleia legislativa de", etc.
+    - Mapeia cidades → UF (27 capitais + 60+ polos tecnológicos/financeiros)
+    - Evita falsos positivos com preposições comuns (ex: "para" ≠ Pará)
   - **Normaliza localizacao em siglas UF** (SP, RJ, MG, etc.)
   - Calcula score e define impacto/urgencia
   - Extrai entidades basicas (pessoas, orgs, locais)
+  - **Preserva link original da notícia**
   - Persiste eventos enriquecidos no MongoDB
   - Publica alertas no Redis
 
@@ -41,12 +48,21 @@ UI (React) -> GET /events + GET /events/geo-summary
   - Consome alertas e imprime logs
 
 - UI (React + Vite + Leaflet)
-  - Lista eventos com filtros
-  - Mapa interativo mostrando eventos por estado
+  - **Layout fullscreen** com mapa ocupando toda tela
+  - **Mapa interativo** com badges de eventos por estado
+  - **Sidebar slide-in** ao clicar em estado
+  - **Cards de eventos** com:
+    - Barra lateral colorida por impacto (alto=vermelho, médio=laranja, baixo=verde)
+    - Botão "Fonte" com link original da notícia
+    - Selo de localização (Nacional/UF/Localidade não especificada)
+  - **Tabs de ordenação**: Mais recentes, Mais urgentes, Mais impactantes
   - Filtra por impacto, tipo e regiao geografica
-  - Ordena por data ou urgencia/impacto
   - Exibe descricao, keywords, entidades e metadados
-  - Permite cadastrar novas fontes RSS
+  - **Modal de cadastro de fontes** com 10 fontes brasileiras pré-configuradas:
+    - InfoMoney, Valor Econômico, G1 Economia, Banco Central
+    - Tesouro Nacional, Agência Brasil, Estadão, Folha
+    - IBGE, B3
+  - Opção de cadastrar feed RSS customizado
 
 ## Dados e schema
 
@@ -84,23 +100,35 @@ Ver [doc/GEOSPATIAL.md](GEOSPATIAL.md) para detalhes completos.
 - Sortar por data ou urgencia/impacto
 - API endpoint `/events/geo-summary` retorna { "UF": count }
 
-## Estado atual (V2)
+## Estado atual (V3 - NER + UI Completa)
 
-- Pipeline end-to-end funcionando (RSS -> Collector -> Analysis -> Geo -> MongoDB -> API -> UI)
-- Coleta real via RSS (G1 Economia)
+- Pipeline end-to-end funcionando (RSS -> Collector -> Analysis -> NER -> MongoDB -> API -> UI)
+- **RSS auto-discovery** para fontes que não expõem feed diretamente
+- **NER contextual** para detecção precisa de localização (evita falsos positivos)
+- Mapeamento completo de 27 capitais + 60+ cidades brasileiras
 - Sanitizacao de HTML e normalizacao de texto
 - Impacto/urgencia por score ponderado
-- Location extraction e normalizacao em UF
-- Visualizacao geoespacial interativa completa!
-- UI responsiva com tabela e mapa
+- **Link original preservado** em todos eventos
+- Location extraction e normalizacao em UF com 3 métodos hierárquicos
+- **Visualizacao geoespacial fullscreen** com sidebar interativa
+- **10 fontes brasileiras** pré-configuradas no modal
+- **Ordenação múltipla**: recente, urgente, impactante
+- UI responsiva com cards profissionais
 
 ## Proximos passos sugeridos
 
-- Adicionar mais fontes RSS (Twitter, outros)
-- Implementar heatmap com gradiente de cores
-- Popups/info boxes ao clicar em badges
+- ✅ ~~NER contextual para localização~~ (IMPLEMENTADO)
+- ✅ ~~Auto-discovery RSS~~ (IMPLEMENTADO)
+- ✅ ~~UI fullscreen com sidebar~~ (IMPLEMENTADO)
+- ✅ ~~Fontes brasileiras pré-configuradas~~ (IMPLEMENTADO)
+- ✅ ~~Ordenação múltipla~~ (IMPLEMENTADO)
+- Adicionar mais fontes RSS (Twitter, Internacional)
+- Implementar heatmap com gradiente de cores no mapa
+- Popups/info boxes ao clicar em badges dos estados
 - Timeline interativa para filtro temporal
 - Export de dados (CSV/GeoJSON)
-- Persistencia e listagem de fontes cadastradas na UI
-- Integrar NER model (spaCy) para entidades melhores
+- Persistencia e listagem de fontes cadastradas na UI (ver histórico)
+- Integrar spaCy NER model para entidades mais robustas
 - Suporte a queries/alertas persistentes
+- Search bar funcional no header
+- Testes automatizados (pytest + Jest)

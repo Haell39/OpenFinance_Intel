@@ -43,17 +43,21 @@ O sistema utiliza uma **arquitetura distribuída e event-driven**, onde microser
   - Sites e feeds de notícias financeiras
   - Portais econômicos e políticos
   - Páginas públicas de odds esportivas
+- **Auto-discovery de RSS**: detecta feeds em páginas HTML via `<link rel="alternate">`
+- Segue redirecionamentos e acepta múltiplos content-types
 - Normaliza os dados brutos
 - Publica eventos iniciais na fila (`events_queue`)
 
-#### 3. Analysis Service (NLP + Regras)
+#### 3. Analysis Service (NLP + Regras + NER)
 
 - Consome eventos brutos
-- Aplica NLP e regras simples para:
+- Aplica NLP e regras contextuais para:
   - Classificar impacto (alto / médio / baixo)
   - Definir urgência
   - Extrair palavras-chave
-  - Associar localização geográfica (Brasil)
+  - **NER contextual para localização** (detecta "governo de", "prefeitura de", "assembleia legislativa de", etc.)
+  - Mapear cidades → estados (todas capitais + 60+ cidades)
+  - Associar localização geográfica ao Brasil em UF normalizada (SP, RJ, MG, etc.)
 - Para odds:
   - Compara valores entre fontes
   - Detecta variações relevantes
@@ -70,10 +74,19 @@ O sistema utiliza uma **arquitetura distribuída e event-driven**, onde microser
 
 #### 5. Map & Dashboard (Frontend)
 
-- Mapa interativo do Brasil exibindo eventos financeiros e geopolíticos
-- Indicadores visuais de impacto e urgência
-- Lista e tabela para eventos de odds
-- Histórico e filtros por tipo de evento
+- **Mapa interativo fullscreen** do Brasil exibindo eventos por estado
+- **Badges de eventos por UF** clicáveis para filtrar regionalmente
+- **Sidebar dinâmica** que aparece ao selecionar estado
+- **Cards de eventos** com:
+  - Barra lateral colorida por impacto (vermelho/laranja/verde)
+  - Link para fonte original
+  - Selo de localização (Nacional/UF/Localidade não especificada)
+  - Ordenação por: Mais recentes, Mais urgentes, Mais impactantes
+- **Modal para cadastro de fontes** com 10 fontes brasileiras pré-configuradas:
+  - InfoMoney, Valor Econômico, G1 Economia, Banco Central do Brasil
+  - Tesouro Nacional, Agência Brasil, Estadão Economia, Folha Mercado
+  - IBGE, B3
+- Histórico e filtros por tipo de evento e impacto
 
 ---
 

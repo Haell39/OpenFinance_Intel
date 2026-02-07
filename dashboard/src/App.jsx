@@ -2,69 +2,72 @@ import { useEffect, useState } from "react";
 import { createSource, fetchEvents, fetchGeoSummary } from "./api/events.js";
 import { MapVisualization } from "./components/MapVisualization.jsx";
 
+// Mock Data for "Analysis" / KPI Bar
+const MARKET_SIGNALS = [
+  {
+    id: 1,
+    title: "PIB Revisado para Baixo: IBGE",
+    type: "financial",
+    trend: "down",
+  },
+  {
+    id: 2,
+    title: "Selic Pode Subir: Banco Central",
+    type: "financial",
+    trend: "up",
+  },
+  {
+    id: 3,
+    title: "Nova Crise no Congresso: Valor",
+    type: "geopolitical",
+    trend: "neutral",
+  },
+  { id: 4, title: "Dólar Comercial: R$ 5,72", type: "financial", trend: "up" },
+  { id: 5, title: "Petróleo Brent: $ 82.50", type: "financial", trend: "down" },
+];
+
 const IMPACT_OPTIONS = ["all", "high", "medium", "low"];
 const TYPE_OPTIONS = ["all", "financial", "geopolitical", "odds"];
 const SOURCE_TYPE_OPTIONS = ["financial", "geopolitical", "odds"];
-const SORT_OPTIONS = ["timestamp", "urgency"];
 
 function formatTimestamp(value) {
-  if (!value) {
-    return "-";
-  }
+  if (!value) return "-";
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return value;
-  }
-  return date.toLocaleString();
+  if (Number.isNaN(date.getTime())) return value;
+
+  // Format: "dd/mm HH:MM"
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+
+  return `${day}/${month} ${hours}:${minutes}`;
+}
+
+function timeAgo(value) {
+  if (!value) return "";
+  const date = new Date(value);
+  const now = new Date();
+  const diffMs = now - date;
+  const diffMins = Math.floor(diffMs / 60000);
+
+  if (diffMins < 60) return `${diffMins}m atrás`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h atrás`;
+  return formatTimestamp(value);
 }
 
 function impactClass(impact) {
-  if (impact === "high") return "impact impact-high";
-  if (impact === "medium") return "impact impact-medium";
-  if (impact === "low") return "impact impact-low";
-  return "impact";
-}
-
-function urgencyClass(urgency) {
-  if (urgency === "urgent") return "urgency urgency-high";
-  return "urgency urgency-normal";
-}
-
-function urgencyScore(event) {
-  // Scoring for sorting: urgent events get higher score
-  let score = 0;
-  if (event.urgency === "urgent") score += 1000;
-  if (event.impact === "high") score += 100;
-  if (event.impact === "medium") score += 50;
-  return score;
-}
-
-function impactScore(event) {
-  if (event.impact === "high") return 3;
-  if (event.impact === "medium") return 2;
-  if (event.impact === "low") return 1;
-  return 0;
+  if (impact === "high") return "impact-high";
+  if (impact === "medium") return "impact-medium";
+  if (impact === "low") return "impact-low";
+  return "";
 }
 
 function getEventLink(event) {
   if (event?.link) return event.link;
   if (event?.source?.url) return event.source.url;
-  return "";
-}
-
-function getLocationFlag(event) {
-  const locations = event?.entities?.locations || [];
-  if (locations.length) {
-    return "";
-  }
-  const region = event?.location?.region;
-  if (region && region !== "BR") {
-    return `UF ${region}`;
-  }
-  if (region === "BR") {
-    return "Nacional";
-  }
-  return "Localidade nao especificada";
+  return null;
 }
 
 export default function App() {
@@ -76,6 +79,8 @@ export default function App() {
   const [geoData, setGeoData] = useState({});
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
+
+  // Source Modal State
   const [sourceUrl, setSourceUrl] = useState("");
   const [sourceType, setSourceType] = useState("financial");
   const [sourceStatus, setSourceStatus] = useState("idle");
@@ -84,37 +89,39 @@ export default function App() {
 
   const loadGeoData = () => {
     fetchGeoSummary()
-      .then((data) => {
-        setGeoData(data);
-      })
-      .catch((err) => {
-        console.error("Failed to load geo data:", err);
-      });
+      .then(setGeoData)
+      .catch((err) => console.error("Failed to load geo data:", err));
   };
 
   const loadEvents = () => {
     setStatus("loading");
-    setError("");
-
     return fetchEvents({ impact, type, region: selectedRegion })
       .then((data) => {
-        // Apply sorting
-        if (sortBy === "urgency") {
-          data.sort(
-            (a, b) =>
-              urgencyScore(b) - urgencyScore(a) ||
-              new Date(b.timestamp) - new Date(a.timestamp),
-          );
-        } else if (sortBy === "impact") {
-          data.sort(
-            (a, b) =>
-              impactScore(b) - impactScore(a) ||
-              new Date(b.timestamp) - new Date(a.timestamp),
-          );
-        } else if (sortBy === "timestamp") {
-          data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-        }
-        setEvents(data);
+        // Sorting logic
+        const sorted = [...data].sort((a, b) => {
+          if (sortBy === "urgency") {
+            const scoreA =
+              (a.urgency === "urgent" ? 1000 : 0) +
+              (a.impact === "high" ? 100 : 0);
+            const scoreB =
+              (b.urgency === "urgent" ? 1000 : 0) +
+              (b.impact === "high" ? 100 : 0);
+            return (
+              scoreB - scoreA || new Date(b.timestamp) - new Date(a.timestamp)
+            );
+          }
+          if (sortBy === "impact") {
+            const score = (ev) =>
+              ev.impact === "high" ? 3 : ev.impact === "medium" ? 2 : 1;
+            return (
+              score(b) - score(a) ||
+              new Date(b.timestamp) - new Date(a.timestamp)
+            );
+          }
+          return new Date(b.timestamp) - new Date(a.timestamp);
+        });
+
+        setEvents(sorted);
         setStatus("ready");
       })
       .catch((err) => {
@@ -123,12 +130,9 @@ export default function App() {
       });
   };
 
-  // Load initial geo data on mount
   useEffect(() => {
     loadGeoData();
   }, []);
-
-  // Load events when filters/sort change
   useEffect(() => {
     loadEvents();
   }, [impact, type, selectedRegion, sortBy]);
@@ -136,200 +140,227 @@ export default function App() {
   const handleCreateSource = (event) => {
     event.preventDefault();
     setSourceStatus("loading");
-    setSourceError("");
-
     createSource({ url: sourceUrl.trim(), eventType: sourceType })
       .then(() => {
         setSourceStatus("success");
-        // Reload both events and geo data
         loadGeoData();
         return loadEvents();
       })
       .catch((err) => {
-        setSourceError(err.message || "Failed to create source");
+        setSourceError(err.message);
         setSourceStatus("error");
       });
   };
 
-  const handleRegionClick = (region) => {
-    setSelectedRegion(region === selectedRegion ? "all" : region);
-  };
-
   return (
     <div className="page">
+      {/* Header */}
       <header className="header">
         <div className="header-left">
-          <div className="logo">🔍</div>
-          <h1>SentinelWatch</h1>
+          <div className="logo-container">
+            <span className="logo-icon">👁️</span>
+            <span className="brand-name">SentinelWatch</span>
+          </div>
+          <div className="status-bar">
+            {MARKET_SIGNALS.map((signal) => (
+              <div key={signal.id} className="status-card">
+                {signal.trend === "down"
+                  ? "📉"
+                  : signal.trend === "up"
+                    ? "📈"
+                    : "⚖️"}
+                {signal.title}
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="header-center">
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Buscar eventos..."
-          />
-        </div>
+
         <div className="header-right">
-          <select
-            value={impact}
-            onChange={(e) => setImpact(e.target.value)}
-            className="filter-select"
-          >
-            {IMPACT_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                Impact: {option}
-              </option>
-            ))}
-          </select>
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            className="filter-select"
-          >
-            {TYPE_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                Type: {option}
-              </option>
-            ))}
-          </select>
-          <button className="filter-btn">⚙️ Filters</button>
           <button
-            className="filter-btn add-source-btn"
+            className="btn primary"
             onClick={() => setShowSourceModal(true)}
           >
-            ➕ Fonte
+            + Novo Evento
+          </button>
+          <button
+            className="btn-icon"
+            title="Atualizar"
+            onClick={() => {
+              loadEvents();
+              loadGeoData();
+            }}
+          >
+            🔄
           </button>
         </div>
       </header>
 
-      {status === "loading" && <p className="state">Carregando eventos...</p>}
-      {status === "error" && <p className="state error">{error}</p>}
-
-      <div
-        className={`main-container ${selectedRegion !== "all" ? "sidebar-open" : ""}`}
-      >
-        <div className="map-section-fullscreen">
-          <div className="map-overlay-controls">
-            <h2>🗺️ Brasil - Eventos por Estado</h2>
-            <p className="map-hint">Clique em um estado para ver eventos</p>
-          </div>
-          <MapVisualization
-            geoData={geoData}
-            selectedRegion={selectedRegion}
-            onRegionClick={handleRegionClick}
-          />
-        </div>
-
-        {selectedRegion !== "all" && (
-          <div className="events-sidebar">
-            <div className="sidebar-header">
-              <div>
-                <h2>Eventos em {selectedRegion}</h2>
-                <span className="events-count-badge">
-                  {events.length} evento{events.length !== 1 ? "s" : ""}
-                </span>
-              </div>
-              <button
-                className="close-sidebar-btn"
-                onClick={() => setSelectedRegion("all")}
-                title="Fechar sidebar"
+      {/* Main Layout */}
+      <div className="main-container">
+        {/* Left Panel: Event Stream */}
+        <div className="event-stream">
+          <div className="stream-header">
+            <div className="stream-controls">
+              <select
+                className="glass-input"
+                value={impact}
+                onChange={(e) => setImpact(e.target.value)}
               >
-                ✕
-              </button>
+                <option value="all">Impacto: Todos</option>
+                <option value="high">Alto</option>
+                <option value="medium">Médio</option>
+                <option value="low">Baixo</option>
+              </select>
+              <select
+                className="glass-input"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+              >
+                <option value="all">Tipo: Todos</option>
+                <option value="financial">Financeiro</option>
+                <option value="geopolitical">Geopolítico</option>
+                <option value="odds">Odds</option>
+              </select>
             </div>
-            <div className="sort-tabs">
+            <div className="stream-controls">
               <button
-                className={`sort-tab ${sortBy === "timestamp" ? "active" : ""}`}
+                className={`btn ${sortBy === "timestamp" ? "primary" : ""}`}
                 onClick={() => setSortBy("timestamp")}
               >
-                Mais recentes
+                Recentes
               </button>
               <button
-                className={`sort-tab ${sortBy === "urgency" ? "active" : ""}`}
+                className={`btn ${sortBy === "urgency" ? "primary" : ""}`}
                 onClick={() => setSortBy("urgency")}
               >
-                Mais urgentes
-              </button>
-              <button
-                className={`sort-tab ${sortBy === "impact" ? "active" : ""}`}
-                onClick={() => setSortBy("impact")}
-              >
-                Mais impactantes
+                Urgentes
               </button>
             </div>
-            <div className="events-scroll">
-              {events.map((event) => (
-                <div
-                  className={`event-card ${impactClass(event.impact)}`}
-                  key={event.id || event.title}
-                >
-                  <div className="event-card-header">
-                    <span className={impactClass(event.impact)}>
-                      {event.impact || "-"}
-                    </span>
-                    <span className={urgencyClass(event.urgency)}>
-                      {event.urgency || "-"}
-                    </span>
-                    <span className="type-badge">{event.type || "-"}</span>
-                  </div>
-                  <div className="event-card-body">
-                    <h3 className="event-title">{event.title || "-"}</h3>
-                    <p className="event-description">
-                      {event.description || ""}
-                    </p>
-                    {event.keywords?.length ? (
-                      <div className="keywords">
-                        {event.keywords.map((keyword) => (
-                          <span className="keyword" key={keyword}>
-                            {keyword}
-                          </span>
-                        ))}
-                      </div>
-                    ) : null}
-                    {event.entities?.locations?.length ? (
-                      <div className="entities">
-                        <span className="entity-label">📍 </span>
-                        {event.entities.locations.map((loc) => (
-                          <span className="entity" key={loc}>
-                            {loc}
-                          </span>
-                        ))}
-                      </div>
-                    ) : null}
-                    {getLocationFlag(event) ? (
-                      <div className="location-flag">
-                        📍 {getLocationFlag(event)}
-                      </div>
-                    ) : null}
-                    <div className="event-meta">
-                      <span className="event-timestamp">
-                        🕐 {formatTimestamp(event.timestamp)}
+          </div>
+
+          <div className="stream-scroll">
+            {status === "loading" && (
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: 20,
+                  color: "var(--text-secondary)",
+                }}
+              >
+                Carregando...
+              </div>
+            )}
+            {status === "error" && (
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: 20,
+                  color: "var(--status-urgent)",
+                }}
+              >
+                {error}
+              </div>
+            )}
+
+            {status === "ready" && events.length === 0 && (
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: 40,
+                  color: "var(--text-tertiary)",
+                }}
+              >
+                📭 Nenhum evento encontrado
+              </div>
+            )}
+
+            {events.map((event) => (
+              <div
+                key={event.id || Math.random()}
+                className={`event-card ${impactClass(event.impact)}`}
+              >
+                <div className="card-header">
+                  <div className="badges">
+                    {event.urgency === "urgent" && (
+                      <span className="badge urgent">URGENTE</span>
+                    )}
+                    {event.impact && (
+                      <span className={`badge impact-${event.impact}`}>
+                        {event.impact}
                       </span>
-                      {getEventLink(event) ? (
-                        <a
-                          className="source-link"
-                          href={getEventLink(event)}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          Fonte
-                        </a>
-                      ) : null}
-                    </div>
+                    )}
+                    <span className="badge normal">{event.type}</span>
                   </div>
+                  <span className="time-ago">{timeAgo(event.timestamp)}</span>
                 </div>
-              ))}
-              {status === "ready" && events.length === 0 && (
-                <div className="empty-state">
-                  <p>📭</p>
-                  <p>Nenhum evento em {selectedRegion}</p>
+
+                <h3 className="card-title">{event.title}</h3>
+                {event.description && (
+                  <p className="card-desc">{event.description}</p>
+                )}
+
+                <div className="card-footer">
+                  <div className="badges">
+                    {event.location?.region !== "BR" && (
+                      <span className="badge normal">
+                        📍 {event.location?.region}
+                      </span>
+                    )}
+                    {event.location?.region === "BR" && (
+                      <span className="badge normal">🇧🇷 Nacional</span>
+                    )}
+                  </div>
+
+                  {getEventLink(event) && (
+                    <a
+                      href={getEventLink(event)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn"
+                      style={{ fontSize: "11px", padding: "4px 8px" }}
+                    >
+                      Ler Fonte ↗
+                    </a>
+                  )}
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Panel: Map */}
+        <div className="map-view">
+          <div className="map-overlay">
+            <div className="overlay-card">
+              <h3>Filtro Geográfico</h3>
+              <p style={{ fontSize: "13px", margin: 0 }}>
+                {selectedRegion === "all"
+                  ? "Exibindo Todo o Brasil"
+                  : `Filtrando por: ${selectedRegion}`}
+              </p>
+              {selectedRegion !== "all" && (
+                <button
+                  className="btn primary"
+                  style={{ marginTop: 8, width: "100%" }}
+                  onClick={() => setSelectedRegion("all")}
+                >
+                  Limpar Filtro
+                </button>
               )}
             </div>
           </div>
-        )}
+
+          <MapVisualization
+            geoData={geoData}
+            selectedRegion={selectedRegion}
+            onRegionClick={(uf) =>
+              setSelectedRegion(uf === selectedRegion ? "all" : uf)
+            }
+          />
+        </div>
       </div>
 
+      {/* Add Source Modal */}
       {showSourceModal && (
         <div
           className="modal-overlay"
@@ -337,7 +368,7 @@ export default function App() {
         >
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>Cadastrar Fonte de Dados</h2>
+              <h2 style={{ margin: 0 }}>Adicionar Fonte</h2>
               <button
                 className="modal-close"
                 onClick={() => setShowSourceModal(false)}
@@ -346,172 +377,110 @@ export default function App() {
               </button>
             </div>
 
-            <div className="modal-body">
-              <div className="sources-grid">
+            <p
+              style={{
+                marginBottom: 16,
+                fontSize: 13,
+                color: "var(--text-secondary)",
+              }}
+            >
+              Selecione uma fonte sugerida ou adicione um RSS customizado.
+            </p>
+
+            <div className="sources-grid">
+              {[
+                {
+                  name: "InfoMoney",
+                  url: "https://www.infomoney.com.br/feed/",
+                  desc: "Mercados",
+                },
+                {
+                  name: "Valor Econômico",
+                  url: "https://valor.globo.com/rss",
+                  desc: "Macroeconomia",
+                },
+                {
+                  name: "G1 Economia",
+                  url: "https://g1.globo.com/rss/g1/economia/",
+                  desc: "Geral",
+                },
+                {
+                  name: "Banco Central",
+                  url: "https://www.bcb.gov.br/rss/ultimasnoticias",
+                  desc: "Oficial",
+                },
+              ].map((src, i) => (
                 <div
+                  key={i}
                   className="source-item"
                   onClick={() => {
-                    setSourceUrl("https://www.infomoney.com.br/feed/");
+                    setSourceUrl(src.url);
                     setSourceType("financial");
                   }}
                 >
-                  <div className="source-number">1️⃣</div>
-                  <div className="source-name">InfoMoney</div>
-                  <div className="source-desc">Mercados no Brasil</div>
+                  <div className="source-name">{src.name}</div>
+                  <div className="source-desc">{src.desc}</div>
                 </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl("https://valor.globo.com/rss");
-                    setSourceType("financial");
-                  }}
-                >
-                  <div className="source-number">2️⃣</div>
-                  <div className="source-name">Valor Economico</div>
-                  <div className="source-desc">Macro e bastidores</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl("https://g1.globo.com/rss/g1/economia/");
-                    setSourceType("financial");
-                  }}
-                >
-                  <div className="source-number">3️⃣</div>
-                  <div className="source-name">G1 Economia</div>
-                  <div className="source-desc">Politica e economia</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl("https://www.bcb.gov.br/rss/ultimasnoticias");
-                    setSourceType("financial");
-                  }}
-                >
-                  <div className="source-number">4️⃣</div>
-                  <div className="source-name">Banco Central</div>
-                  <div className="source-desc">Juros e comunicados</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl("https://www.tesouro.gov.br/rss");
-                    setSourceType("financial");
-                  }}
-                >
-                  <div className="source-number">5️⃣</div>
-                  <div className="source-name">Tesouro Nacional</div>
-                  <div className="source-desc">Fiscal e divida</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl("https://agenciabrasil.ebc.com.br/rss");
-                    setSourceType("geopolitical");
-                  }}
-                >
-                  <div className="source-number">6️⃣</div>
-                  <div className="source-name">Agencia Brasil</div>
-                  <div className="source-desc">Governo federal</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl("https://www.estadao.com.br/rss/economia.xml");
-                    setSourceType("financial");
-                  }}
-                >
-                  <div className="source-number">7️⃣</div>
-                  <div className="source-name">Estadao Economia</div>
-                  <div className="source-desc">Politica economica</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl(
-                      "https://feeds.folha.uol.com.br/mercado/rss091.xml",
-                    );
-                    setSourceType("financial");
-                  }}
-                >
-                  <div className="source-number">8️⃣</div>
-                  <div className="source-name">Folha Mercado</div>
-                  <div className="source-desc">Mercado e fiscal</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl("https://www.ibge.gov.br/rss");
-                    setSourceType("financial");
-                  }}
-                >
-                  <div className="source-number">9️⃣</div>
-                  <div className="source-name">IBGE</div>
-                  <div className="source-desc">Dados oficiais</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl("https://www.b3.com.br/rss/");
-                    setSourceType("financial");
-                  }}
-                >
-                  <div className="source-number">🔟</div>
-                  <div className="source-name">B3</div>
-                  <div className="source-desc">Mercado de capitais</div>
-                </div>
-              </div>
-
-              <div className="custom-source">
-                <h3>Ou cadastre um feed RSS customizado:</h3>
-                <form
-                  onSubmit={handleCreateSource}
-                  className="source-form-custom"
-                >
-                  <input
-                    type="url"
-                    className="text-input"
-                    value={sourceUrl}
-                    onChange={(e) => setSourceUrl(e.target.value)}
-                    placeholder="https://exemplo.com/feed.xml"
-                    required
-                  />
-                  <select
-                    value={sourceType}
-                    onChange={(e) => setSourceType(e.target.value)}
-                    className="type-select"
-                  >
-                    {SOURCE_TYPE_OPTIONS.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  <button type="submit" className="primary-button">
-                    {sourceStatus === "loading"
-                      ? "Cadastrando..."
-                      : "Cadastrar"}
-                  </button>
-                  {sourceStatus === "success" && (
-                    <span style={{ color: "#10b981" }}>
-                      ✅ Fonte adicionada!
-                    </span>
-                  )}
-                  {sourceStatus === "error" && (
-                    <span style={{ color: "#ef4444" }}>❌ {sourceError}</span>
-                  )}
-                </form>
-              </div>
+              ))}
             </div>
+
+            <form onSubmit={handleCreateSource}>
+              <input
+                type="url"
+                className="glass-input"
+                style={{ width: "100%", marginBottom: 12 }}
+                placeholder="URL do Feed RSS (ex: https://site.com/rss)"
+                value={sourceUrl}
+                onChange={(e) => setSourceUrl(e.target.value)}
+                required
+              />
+              <select
+                className="glass-input"
+                style={{ width: "100%", marginBottom: 12 }}
+                value={sourceType}
+                onChange={(e) => setSourceType(e.target.value)}
+              >
+                {SOURCE_TYPE_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                type="submit"
+                className="btn primary"
+                style={{ width: "100%" }}
+                disabled={sourceStatus === "loading"}
+              >
+                {sourceStatus === "loading"
+                  ? "Adicionando..."
+                  : "Adicionar Fonte Monitorada"}
+              </button>
+
+              {sourceStatus === "success" && (
+                <p
+                  style={{
+                    color: "var(--status-low)",
+                    fontSize: 13,
+                    marginTop: 8,
+                  }}
+                >
+                  ✅ Fonte adicionada com sucesso!
+                </p>
+              )}
+              {sourceStatus === "error" && (
+                <p
+                  style={{
+                    color: "var(--status-urgent)",
+                    fontSize: 13,
+                    marginTop: 8,
+                  }}
+                >
+                  ❌ {sourceError}
+                </p>
+              )}
+            </form>
           </div>
         </div>
       )}
