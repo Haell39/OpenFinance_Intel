@@ -174,6 +174,15 @@ export default function App() {
                       <div className="description">
                         {event.description || ""}
                       </div>
+                      {event.keywords?.length ? (
+                        <div className="keywords">
+                          {event.keywords.map((keyword) => (
+                            <span className="keyword" key={keyword}>
+                              {keyword}
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
                     </td>
                     <td>
                       <span className="type-badge">{event.type || "-"}</span>

@@ -12,6 +12,7 @@ Todos os eventos processados pelo sistema seguem este schema:
   "description": "string",
   "impact": "high | medium | low",
   "urgency": "urgent | normal",
+  "keywords": ["string", "string"],
   "location": {
     "country": "BR",
     "region": "SP | RJ | DF | MG | RS | SC | PR | BA | PE | CE | ..."

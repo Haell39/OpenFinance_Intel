@@ -1,7 +1,8 @@
 import json
 import os
 import time
-from datetime import datetime
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 
 import bleach
 from pymongo import MongoClient
@@ -19,24 +20,52 @@ def get_settings() -> dict:
     }
 
 
-def classify_impact(event: dict) -> str:
+def classify_impact(event: dict, keywords: list[str]) -> str:
     """Classifica o impacto do evento baseado no tipo e conteúdo"""
     text = f"{event.get('title', '')} {event.get('body', '')}".lower()
+    keyword_set = set(keywords)
+    high_terms = {
+        "crise",
+        "crisis",
+        "guerra",
+        "war",
+        "sanction",
+        "sanções",
+        "default",
+        "calote",
+        "recessão",
+    }
+    medium_terms = {
+        "inflação",
+        "inflation",
+        "juros",
+        "tax",
+        "regulação",
+        "regulacao",
+        "tarifa",
+    }
+
     if event.get("event_type") == "geopolitical":
+        return "high"
+    if high_terms & keyword_set:
         return "high"
     if any(word in text for word in ["crisis", "war", "sanction", "default", "rate"]):
         return "high"
+    if medium_terms & keyword_set:
+        return "medium"
     if any(word in text for word in ["inflation", "tax", "regulation"]):
         return "medium"
     return "low"
 
 
-def classify_urgency(event: dict) -> str:
+def classify_urgency(event: dict, keywords: list[str]) -> str:
     """Classifica a urgência do evento"""
     text = f"{event.get('title', '')} {event.get('body', '')}".lower()
-    if any(word in text for word in ["urgent", "breaking", "immediate"]):
+    if any(word in text for word in ["urgent", "breaking", "immediate", "urgente"]):
         return "urgent"
     if event.get("event_type") == "geopolitical":
+        return "urgent"
+    if "hoje" in keywords or "agora" in keywords:
         return "urgent"
     return "normal"
 
@@ -78,6 +107,81 @@ def clean_text(text: str, max_length: int | None = None) -> str:
     return clean
 
 
+def extract_keywords(text: str, max_keywords: int = 6) -> list[str]:
+    """Extrai palavras-chave simples a partir do texto"""
+    if not text:
+        return []
+
+    stopwords = {
+        "a",
+        "ao",
+        "aos",
+        "as",
+        "com",
+        "como",
+        "da",
+        "das",
+        "de",
+        "do",
+        "dos",
+        "e",
+        "em",
+        "entre",
+        "na",
+        "nas",
+        "no",
+        "nos",
+        "o",
+        "os",
+        "para",
+        "por",
+        "que",
+        "se",
+        "sem",
+        "sua",
+        "suas",
+        "seu",
+        "seus",
+        "um",
+        "uma",
+        "ao",
+        "da",
+        "de",
+    }
+
+    tokens = []
+    for raw in text.lower().replace("-", " ").split():
+        token = "".join(ch for ch in raw if ch.isalnum())
+        if len(token) < 3 or token in stopwords:
+            continue
+        tokens.append(token)
+
+    if not tokens:
+        return []
+
+    frequencies: dict[str, int] = {}
+    for token in tokens:
+        frequencies[token] = frequencies.get(token, 0) + 1
+
+    sorted_tokens = sorted(
+        frequencies.items(), key=lambda item: (-item[1], item[0])
+    )
+    return [token for token, _count in sorted_tokens[:max_keywords]]
+
+
+def normalize_timestamp(value: str | None) -> str:
+    """Normaliza timestamps RSS para ISO 8601 em UTC"""
+    if not value:
+        return datetime.utcnow().isoformat() + "Z"
+    try:
+        parsed = parsedate_to_datetime(value)
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return parsed.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+    except (TypeError, ValueError):
+        return datetime.utcnow().isoformat() + "Z"
+
+
 def enrich_event(raw_event: dict) -> dict:
     """
     Enriquece um evento bruto com analise, seguindo o schema padrao do SentinelWatch.
@@ -90,16 +194,17 @@ def enrich_event(raw_event: dict) -> dict:
     event_type = raw_event.get("event_type", "financial")
     title = raw_event.get("title", "Sem titulo")
     body = raw_event.get("body", "")
-    created_at = raw_event.get("created_at", datetime.utcnow().isoformat() + "Z")
+    created_at = normalize_timestamp(raw_event.get("created_at"))
     source = raw_event.get("source", {})
 
     # Remove HTML tags from RSS content
     title = clean_text(title, max_length=140)
     body = clean_text(body, max_length=400)
+    keywords = extract_keywords(f"{title} {body}")
     
     # Classificacao e enriquecimento
-    impact = classify_impact(raw_event)
-    urgency = classify_urgency(raw_event)
+    impact = classify_impact(raw_event, keywords)
+    urgency = classify_urgency(raw_event, keywords)
     region = infer_region(raw_event)
     
     # Construção do documento final seguindo o schema
@@ -110,6 +215,7 @@ def enrich_event(raw_event: dict) -> dict:
         "description": body,
         "impact": impact,
         "urgency": urgency,
+        "keywords": keywords,
         "location": {
             "country": "BR",
             "region": region,
