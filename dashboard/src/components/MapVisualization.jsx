@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
-import { stateCoordinates } from "../data/brazilGeoJSON";
+import { worldCoordinates } from "../data/worldCoordinates"; // Updated
 import "../styles/map.css";
 
 export function MapVisualization({ geoData, selectedRegion, onRegionClick }) {
@@ -11,11 +11,11 @@ export function MapVisualization({ geoData, selectedRegion, onRegionClick }) {
   useEffect(() => {
     if (!mapRef.current) return;
 
-    // Initialize map
+    // Initialize map (World View)
     if (!mapInstanceRef.current) {
       mapInstanceRef.current = L.map(mapRef.current).setView(
-        [-14.24, -51.92],
-        4,
+        [20.0, 0.0], // Center of the world approximately
+        2, // Zoom level 2 for whole world
       );
 
       // Add OpenStreetMap tiles
@@ -34,18 +34,18 @@ export function MapVisualization({ geoData, selectedRegion, onRegionClick }) {
     });
     markersRef.current = {};
 
-    // Add markers for each state with data
-    Object.entries(geoData).forEach(([uf, count]) => {
-      if (uf === "BR" || !stateCoordinates[uf]) return;
+    // Add markers for each COUNTRY with data
+    Object.entries(geoData).forEach(([countryCode, count]) => {
+      if (countryCode === "GLOBAL" || !worldCoordinates[countryCode]) return;
 
-      const coords = stateCoordinates[uf];
-      const isSelected = selectedRegion === uf;
-      const size = Math.min(Math.max(count * 8, 20), 60); // Scale from 20 to 60px
+      const coords = worldCoordinates[countryCode];
+      const isSelected = selectedRegion === countryCode; // selectedRegion now holds ISO code
+      const size = Math.min(Math.max(count * 6, 20), 50); // Adjusted scale for world map
 
       const html = `
         <div class="map-badge ${isSelected ? "selected" : ""}">
           <div class="badge-content">
-            <div class="badge-uf">${uf}</div>
+            <div class="badge-uf">${countryCode}</div> 
             <div class="badge-count">${count}</div>
           </div>
         </div>
@@ -61,10 +61,10 @@ export function MapVisualization({ geoData, selectedRegion, onRegionClick }) {
 
       // Handle click to filter
       marker.on("click", () => {
-        onRegionClick(uf);
+        onRegionClick(countryCode);
       });
 
-      markersRef.current[uf] = marker;
+      markersRef.current[countryCode] = marker;
     });
   }, [geoData, selectedRegion, onRegionClick]);
 

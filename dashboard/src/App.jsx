@@ -3,27 +3,14 @@ import { createSource, fetchEvents, fetchGeoSummary } from "./api/events.js";
 import { MapVisualization } from "./components/MapVisualization.jsx";
 
 // Mock Data for "Analysis" / KPI Bar
-const MARKET_SIGNALS = [
+// Initial Mock Data (replaced by API)
+const INITIAL_MARKET_SIGNALS = [
   {
     id: 1,
-    title: "PIB Revisado para Baixo: IBGE",
+    title: "Carregando Mercado...",
     type: "financial",
-    trend: "down",
-  },
-  {
-    id: 2,
-    title: "Selic Pode Subir: Banco Central",
-    type: "financial",
-    trend: "up",
-  },
-  {
-    id: 3,
-    title: "Nova Crise no Congresso: Valor",
-    type: "geopolitical",
     trend: "neutral",
   },
-  { id: 4, title: "Dólar Comercial: R$ 5,72", type: "financial", trend: "up" },
-  { id: 5, title: "Petróleo Brent: $ 82.50", type: "financial", trend: "down" },
 ];
 
 const IMPACT_OPTIONS = ["all", "high", "medium", "low"];
@@ -70,6 +57,44 @@ function getEventLink(event) {
   return null;
 }
 
+async function fetchTickerData() {
+  try {
+    const res = await fetch(
+      "https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL",
+    );
+    const data = await res.json();
+    return [
+      {
+        id: "usd",
+        title: `Dólar: R$ ${parseFloat(data.USDBRL.bid).toFixed(2)}`,
+        type: "financial",
+        trend: parseFloat(data.USDBRL.pctChange) > 0 ? "up" : "down",
+      },
+      {
+        id: "eur",
+        title: `Euro: R$ ${parseFloat(data.EURBRL.bid).toFixed(2)}`,
+        type: "financial",
+        trend: parseFloat(data.EURBRL.pctChange) > 0 ? "up" : "down",
+      },
+      {
+        id: "btc",
+        title: `Bitcoin: R$ ${(parseFloat(data.BTCBRL.bid) / 1000).toFixed(1)}k`,
+        type: "financial",
+        trend: parseFloat(data.BTCBRL.pctChange) > 0 ? "up" : "down",
+      },
+      {
+        id: "selic",
+        title: "Selic Meta: 11.25%",
+        type: "financial",
+        trend: "neutral",
+      },
+    ];
+  } catch (e) {
+    console.error("Failed to fetch ticker", e);
+    return [];
+  }
+}
+
 export default function App() {
   const [impact, setImpact] = useState("all");
   const [type, setType] = useState("all");
@@ -80,12 +105,19 @@ export default function App() {
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
 
+  // Real-time & Ticker State
+  const [marketSignals, setMarketSignals] = useState(INITIAL_MARKET_SIGNALS);
+  const [refreshInterval, setRefreshInterval] = useState(0); // 0 = off
+  const [lastUpdated, setLastUpdated] = useState(new Date()); // New State
+  const [timeSinceUpdate, setTimeSinceUpdate] = useState("0s"); // New State
+
   // Source Modal State
   const [sourceUrl, setSourceUrl] = useState("");
   const [sourceType, setSourceType] = useState("financial");
   const [sourceStatus, setSourceStatus] = useState("idle");
   const [sourceError, setSourceError] = useState("");
   const [showSourceModal, setShowSourceModal] = useState(false);
+  const [activeTab, setActiveTab] = useState("recommended"); // recommended, rss, twitter
 
   const loadGeoData = () => {
     fetchGeoSummary()
@@ -123,6 +155,7 @@ export default function App() {
 
         setEvents(sorted);
         setStatus("ready");
+        setLastUpdated(new Date()); // Update timestamp on success
       })
       .catch((err) => {
         setError(err.message || "Failed to load events");
@@ -132,7 +165,31 @@ export default function App() {
 
   useEffect(() => {
     loadGeoData();
-  }, []);
+    fetchTickerData().then((data) => {
+      if (data.length) setMarketSignals(data);
+    });
+
+    // Timer for "X seconds ago"
+    const timer = setInterval(() => {
+      const diff = Math.floor((new Date() - lastUpdated) / 1000);
+      setTimeSinceUpdate(diff < 60 ? `${diff}s` : `${Math.floor(diff / 60)}m`);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [lastUpdated]);
+
+  // Auto-Refresh Logic
+  useEffect(() => {
+    if (refreshInterval > 0) {
+      const interval = setInterval(() => {
+        loadEvents();
+        loadGeoData();
+        fetchTickerData().then((data) => {
+          if (data.length) setMarketSignals(data);
+        });
+      }, refreshInterval);
+      return () => clearInterval(interval);
+    }
+  }, [refreshInterval, impact, type, selectedRegion, sortBy]);
   useEffect(() => {
     loadEvents();
   }, [impact, type, selectedRegion, sortBy]);
@@ -140,7 +197,30 @@ export default function App() {
   const handleCreateSource = (event) => {
     event.preventDefault();
     setSourceStatus("loading");
-    createSource({ url: sourceUrl.trim(), eventType: sourceType })
+
+    let finalUrl = sourceUrl.trim();
+    let finalSourceType = sourceType;
+
+    // Twitter/X Logic
+    if (activeTab === "twitter") {
+      finalSourceType = "social_media";
+      // Remove @ or # if present
+      const cleanInput = finalUrl.replace(/^[@#]/, "");
+      finalUrl = `https://nitter.privacydev.net/${cleanInput}/rss`;
+    }
+
+    // Google News Logic
+    if (activeTab === "google") {
+      finalSourceType = "news";
+      const query = encodeURIComponent(finalUrl);
+      finalUrl = `https://news.google.com/rss/search?q=${query}+when:1d&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
+    }
+
+    createSource({
+      url: finalUrl,
+      eventType: sourceType,
+      sourceType: finalSourceType,
+    })
       .then(() => {
         setSourceStatus("success");
         loadGeoData();
@@ -162,7 +242,7 @@ export default function App() {
             <span className="brand-name">OpenFinance Intel</span>
           </div>
           <div className="status-bar">
-            {MARKET_SIGNALS.map((signal) => (
+            {marketSignals.map((signal) => (
               <div key={signal.id} className="status-card">
                 {signal.trend === "down"
                   ? "📉"
@@ -176,6 +256,31 @@ export default function App() {
         </div>
 
         <div className="header-right">
+          <select
+            className="glass-input"
+            style={{ marginRight: 8, padding: "6px 10px" }}
+            value={refreshInterval}
+            onChange={(e) => setRefreshInterval(Number(e.target.value))}
+          >
+            <option value={0}>Auto: Off</option>
+            <option value={60000}>1 min</option>
+            <option value={300000}>5 min</option>
+            <option value={600000}>10 min</option>
+          </select>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginRight: 15,
+              fontSize: "12px",
+              color: "var(--text-secondary)",
+            }}
+          >
+            <span style={{ marginRight: 5 }}>●</span>
+            Atualizado há: <strong>{timeSinceUpdate}</strong>
+          </div>
+
           <button
             className="btn primary"
             onClick={() => setShowSourceModal(true)}
@@ -184,13 +289,17 @@ export default function App() {
           </button>
           <button
             className="btn-icon"
-            title="Atualizar"
+            title="Force Refresh (Busca Imediata)"
             onClick={() => {
+              setStatus("loading");
+              // In a real app, this might trigger a backend scrape job too.
+              // For now, it reloads data fresh from DB and Ticker.
               loadEvents();
               loadGeoData();
+              fetchTickerData().then((data) => setMarketSignals(data));
             }}
           >
-            🔄
+            ⚡
           </button>
         </div>
       </header>
@@ -301,13 +410,13 @@ export default function App() {
 
                 <div className="card-footer">
                   <div className="badges">
-                    {event.location?.region !== "BR" && (
+                    {event.location?.country !== "GLOBAL" && (
                       <span className="badge normal">
-                        📍 {event.location?.region}
+                        📍 {event.location?.country}
                       </span>
                     )}
-                    {event.location?.region === "BR" && (
-                      <span className="badge normal">🇧🇷 Nacional</span>
+                    {event.location?.country === "GLOBAL" && (
+                      <span className="badge normal">🌍 Global</span>
                     )}
                   </div>
 
@@ -335,7 +444,7 @@ export default function App() {
               <h3>Filtro Geográfico</h3>
               <p style={{ fontSize: "13px", margin: 0 }}>
                 {selectedRegion === "all"
-                  ? "Exibindo Todo o Brasil"
+                  ? "Exibindo Todo o Mundo"
                   : `Filtrando por: ${selectedRegion}`}
               </p>
               {selectedRegion !== "all" && (
@@ -377,110 +486,155 @@ export default function App() {
               </button>
             </div>
 
-            <p
-              style={{
-                marginBottom: 16,
-                fontSize: 13,
-                color: "var(--text-secondary)",
-              }}
-            >
-              Selecione uma fonte sugerida ou adicione um RSS customizado.
-            </p>
-
-            <div className="sources-grid">
-              {[
-                {
-                  name: "InfoMoney",
-                  url: "https://www.infomoney.com.br/feed/",
-                  desc: "Mercados",
-                },
-                {
-                  name: "Valor Econômico",
-                  url: "https://valor.globo.com/rss",
-                  desc: "Macroeconomia",
-                },
-                {
-                  name: "G1 Economia",
-                  url: "https://g1.globo.com/rss/g1/economia/",
-                  desc: "Geral",
-                },
-                {
-                  name: "Banco Central",
-                  url: "https://www.bcb.gov.br/rss/ultimasnoticias",
-                  desc: "Oficial",
-                },
-              ].map((src, i) => (
-                <div
-                  key={i}
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl(src.url);
-                    setSourceType("financial");
-                  }}
-                >
-                  <div className="source-name">{src.name}</div>
-                  <div className="source-desc">{src.desc}</div>
-                </div>
-              ))}
+            <div className="modal-tabs">
+              <button
+                className={`tab-btn ${activeTab === "recommended" ? "active" : ""}`}
+                onClick={() => setActiveTab("recommended")}
+              >
+                ⭐ Sugestões
+              </button>
+              <button
+                className={`tab-btn ${activeTab === "rss" ? "active" : ""}`}
+                onClick={() => setActiveTab("rss")}
+              >
+                🔗 RSS
+              </button>
+              <button
+                className={`tab-btn ${activeTab === "twitter" ? "active" : ""}`}
+                onClick={() => setActiveTab("twitter")}
+              >
+                🐦 Twitter/X
+              </button>
+              <button
+                className={`tab-btn ${activeTab === "google" ? "active" : ""}`}
+                onClick={() => setActiveTab("google")}
+              >
+                🌍 Google News
+              </button>
             </div>
 
-            <form onSubmit={handleCreateSource}>
-              <input
-                type="url"
-                className="glass-input"
-                style={{ width: "100%", marginBottom: 12 }}
-                placeholder="URL do Feed RSS (ex: https://site.com/rss)"
-                value={sourceUrl}
-                onChange={(e) => setSourceUrl(e.target.value)}
-                required
-              />
-              <select
-                className="glass-input"
-                style={{ width: "100%", marginBottom: 12 }}
-                value={sourceType}
-                onChange={(e) => setSourceType(e.target.value)}
-              >
-                {SOURCE_TYPE_OPTIONS.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
+            {activeTab === "recommended" && (
+              <div className="sources-grid">
+                {[
+                  {
+                    name: "InfoMoney",
+                    url: "https://www.infomoney.com.br/feed/",
+                    desc: "Mercados",
+                    type: "financial",
+                  },
+                  {
+                    name: "Valor Econômico",
+                    url: "https://valor.globo.com/rss",
+                    desc: "Macro",
+                    type: "financial",
+                  },
+                  {
+                    name: "G1 Economia",
+                    url: "https://g1.globo.com/rss/g1/economia/",
+                    desc: "Geral",
+                    type: "financial",
+                  },
+                  {
+                    name: "Banco Central",
+                    url: "https://www.bcb.gov.br/rss/ultimasnoticias",
+                    desc: "Oficial",
+                    type: "financial",
+                  },
+                ].map((src, i) => (
+                  <div
+                    key={i}
+                    className="source-item"
+                    onClick={() => {
+                      setSourceUrl(src.url);
+                      setSourceType(src.type);
+                      setActiveTab("rss"); // Switch to input view
+                    }}
+                  >
+                    <div className="source-name">{src.name}</div>
+                    <div className="source-desc">{src.desc}</div>
+                  </div>
                 ))}
-              </select>
+              </div>
+            )}
 
-              <button
-                type="submit"
-                className="btn primary"
-                style={{ width: "100%" }}
-                disabled={sourceStatus === "loading"}
-              >
-                {sourceStatus === "loading"
-                  ? "Adicionando..."
-                  : "Adicionar Fonte Monitorada"}
-              </button>
+            {(activeTab === "rss" ||
+              activeTab === "twitter" ||
+              activeTab === "google") && (
+              <form onSubmit={handleCreateSource} style={{ marginTop: 16 }}>
+                <input
+                  type={activeTab === "rss" ? "url" : "text"}
+                  className="glass-input"
+                  style={{ width: "100%", marginBottom: 12 }}
+                  placeholder={
+                    activeTab === "twitter"
+                      ? "Usuário (@elonmusk) ou Hashtag (#Bitcoin)"
+                      : activeTab === "google"
+                        ? "Tópico (ex: Fusão de Empresas, Petróleo)"
+                        : "URL do Feed RSS (ex: https://site.com/rss)"
+                  }
+                  value={sourceUrl}
+                  onChange={(e) => setSourceUrl(e.target.value)}
+                  required
+                />
 
-              {sourceStatus === "success" && (
-                <p
-                  style={{
-                    color: "var(--status-low)",
-                    fontSize: 13,
-                    marginTop: 8,
-                  }}
+                <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+                  <select
+                    className="glass-input"
+                    style={{ flex: 1 }}
+                    value={sourceType}
+                    onChange={(e) => setSourceType(e.target.value)}
+                  >
+                    {SOURCE_TYPE_OPTIONS.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt === "financial"
+                          ? "Financeiro"
+                          : opt === "geopolitical"
+                            ? "Geopolítico"
+                            : "Odds/Outros"}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn primary"
+                  style={{ width: "100%" }}
+                  disabled={sourceStatus === "loading"}
                 >
-                  ✅ Fonte adicionada com sucesso!
-                </p>
-              )}
-              {sourceStatus === "error" && (
-                <p
-                  style={{
-                    color: "var(--status-urgent)",
-                    fontSize: 13,
-                    marginTop: 8,
-                  }}
-                >
-                  ❌ {sourceError}
-                </p>
-              )}
-            </form>
+                  {sourceStatus === "loading"
+                    ? "Adicionando..."
+                    : activeTab === "twitter"
+                      ? "Monitorar Twitter"
+                      : activeTab === "google"
+                        ? "Monitorar Tópico no Google"
+                        : "Adicionar Fonte RSS"}
+                </button>
+
+                {sourceStatus === "success" && (
+                  <p
+                    style={{
+                      color: "var(--status-low)",
+                      fontSize: 13,
+                      marginTop: 8,
+                    }}
+                  >
+                    ✅ Fonte adicionada com sucesso!
+                  </p>
+                )}
+                {sourceStatus === "error" && (
+                  <p
+                    style={{
+                      color: "var(--status-urgent)",
+                      fontSize: 13,
+                      marginTop: 8,
+                    }}
+                  >
+                    ❌ {sourceError}
+                  </p>
+                )}
+              </form>
+            )}
           </div>
         </div>
       )}

@@ -21,6 +21,35 @@ def get_settings() -> dict:
     }
 
 
+BLOCKED_KEYWORDS = [
+    # Esportes
+    "futebol", "campeonato", "paulistão", "brasileirão", "copa do brasil",
+    "libertadores", "neymar", "messi", "flamengo", "corinthians", "palmeiras",
+    "são paulo fc", "vasco", "grêmio", "inter", "atlético-mg", "cruzeiro",
+    "botafogo", "fluminense", "santos fc", "bahia fc", "estádio", "torcida",
+    "golaço", "artilheiro", "técnico abel", "técnico tite",
+    # Entretenimento / Fofoca
+    "bbb", "big brother", "reality", "paredão", "famoso", "celebridade",
+    "fofoca", "novela", "renascer", "influencer", "horóscopo", "signo",
+    "look do dia", "red carpet", "oscar", "grammy", "show de",
+    "namorado de", "separação de",
+]
+
+
+def is_relevant(text: str) -> bool:
+    """Verifica se o texto é relevante para investidores (filtra ruído)"""
+    text_lower = text.lower()
+    
+    # Se tiver qualquer palavra bloqueada, descarta
+    for word in BLOCKED_KEYWORDS:
+        if f" {word} " in f" {text_lower} ": # Match exato de palavra tokenizada
+            return False
+        if word in text_lower and len(word) > 5: # Match parcial seguro para palavras longas
+            return False
+            
+    return True
+
+
 def score_event(event: dict, keywords: list[str]) -> int:
     """Calcula um score simples de impacto/urgencia baseado em palavras-chave"""
     text = f"{event.get('title', '')} {event.get('body', '')}".lower()
@@ -49,6 +78,20 @@ def score_event(event: dict, keywords: list[str]) -> int:
         "dólar": 2,
         "petroleo": 2,
         "petróleo": 2,
+        # Novos termos investidor
+        "dividendos": 3,
+        "fii": 3,
+        "lucro": 3,
+        "prejuízo": 3,
+        "balanço": 3,
+        "trimestre": 2,
+        "b3": 3,
+        "fed": 4,
+        "ipca": 3,
+        "selic": 4,
+        "cdi": 2,
+        "bitcoin": 3,
+        "crypto": 2,
     }
 
     score = 0
@@ -84,225 +127,72 @@ def classify_urgency(event: dict, keywords: list[str], score: int) -> str:
     return "normal"
 
 
-BRAZILIAN_STATES_MAP = {
-    # São Paulo
-    "são paulo": "SP",
-    "sao paulo": "SP",
-    "sp": "SP",
-    "bolsa": "SP",  # B3 Bolsa em SP
-    # Rio de Janeiro
-    "rio de janeiro": "RJ",
-    "rio janeiro": "RJ",
-    "rj": "RJ",
-    "petrobras": "RJ",  # Headquarters
-    # Minas Gerais
-    "minas gerais": "MG",
-    "minas": "MG",
-    "mg": "MG",
-    "belo horizonte": "MG",
-    # Distrito Federal
-    "brasília": "DF",
-    "brasilia": "DF",
-    "distrito federal": "DF",
-    "df": "DF",
-    # Bahia
-    "bahia": "BA",
-    "ba": "BA",
-    "salvador": "BA",
-    # Pernambuco
-    "pernambuco": "PE",
-    "pe": "PE",
-    "recife": "PE",
-    # Rio Grande do Sul
-    "rio grande do sul": "RS",
-    "rs": "RS",
-    "porto alegre": "RS",
-    # Santa Catarina
-    "santa catarina": "SC",
-    "sc": "SC",
-    "florianópolis": "SC",
-    "florianopolis": "SC",
-    # Paraná
-    "paraná": "PR",
-    "parana": "PR",
-    "pr": "PR",
-    "curitiba": "PR",
-    # Ceará
-    "ceará": "CE",
-    "ceara": "CE",
-    "ce": "CE",
-    "fortaleza": "CE",
-    # Pará
-    "pará": "PA",
-    "pa": "PA",
-    "belém": "PA",
-    "belem": "PA",
-    # Maranhão
-    "maranhão": "MA",
-    "maranhao": "MA",
-    "ma": "MA",
-    # Goiás
-    "goiás": "GO",
-    "goias": "GO",
-    "go": "GO",
-    "goiânia": "GO",
-    "goiania": "GO",
-    # Espírito Santo
-    "espírito santo": "ES",
-    "espirito santo": "ES",
-    "es": "ES",
-    # Mato Grosso
-    "mato grosso": "MT",
-    "mt": "MT",
-    # Mato Grosso do Sul
-    "mato grosso do sul": "MS",
-    "ms": "MS",
-    # Tocantins
-    "tocantins": "TO",
-    "to": "TO",
-    # Rondônia
-    "rondônia": "RO",
-    "rondonia": "RO",
-    "ro": "RO",
-    # Roraima
-    "roraima": "RR",
-    "rr": "RR",
-    # Amapá
-    "amapá": "AP",
-    "amapa": "AP",
-    "ap": "AP",
-    # Amazonas
-    "amazonas": "AM",
-    "am": "AM",
-    # Alagoas
-    "alagoas": "AL",
-    "al": "AL",
-    # Acre
-    "acre": "AC",
-    "ac": "AC",
-    "rio branco": "AC",
-    # Sergipe
-    "sergipe": "SE",
-    "se": "SE",
-    # Paraíba
-    "paraíba": "PB",
-    "paraiba": "PB",
-    "pb": "PB",
-    # Rio Grande do Norte
-    "rio grande do norte": "RN",
-    "rn": "RN",
-    # Piauí
-    "piauí": "PI",
-    "piaui": "PI",
-    "pi": "PI",
-    "teresina": "PI",
-}
+COUNTRY_MAP = {
+    # North America
+    "estados unidos": "US", "usa": "US", "eua": "US", "fed": "US", "biden": "US", "trump": "US", "wall street": "US", "nyse": "US", "nasdaq": "US", "dólar": "US", "dollar": "US",
+    "canadá": "CA", "canada": "CA",
+    "méxico": "MX", "mexico": "MX",
 
+    # South America
+    "brasil": "BR", "brazil": "BR", "lula": "BR", "bolsonaro": "BR", "ibovespa": "BR", "real": "BR", "b3": "BR", "copom": "BR", "bc": "BR", "campos neto": "BR", "haddad": "BR", "petrobras": "BR", "vale": "BR",
+    "argentina": "AR", "milei": "AR", "buenos aires": "AR",
+    "chile": "CL",
+    "colômbia": "CO", "colombia": "CO",
+    "venezuela": "VE", "maduro": "VE",
 
-BRAZILIAN_CITIES_MAP = {
-    # Capitais (todas)
-    "rio branco": "AC",
-    "maceió": "AL",
-    "maceio": "AL",
-    "macapá": "AP",
-    "macapa": "AP",
-    "manaus": "AM",
-    "salvador": "BA",
-    "fortaleza": "CE",
-    "brasília": "DF",
-    "brasilia": "DF",
-    "vitória": "ES",
-    "vitoria": "ES",
-    "goiânia": "GO",
-    "goiania": "GO",
-    "são luís": "MA",
-    "sao luis": "MA",
-    "cuiabá": "MT",
-    "cuiaba": "MT",
-    "campo grande": "MS",
-    "belém": "PA",
-    "belem": "PA",
-    "joão pessoa": "PB",
-    "joao pessoa": "PB",
-    "recife": "PE",
-    "teresina": "PI",
-    "rio de janeiro": "RJ",
-    "natal": "RN",
-    "porto alegre": "RS",
-    "porto velho": "RO",
-    "boa vista": "RR",
-    "florianópolis": "SC",
-    "florianopolis": "SC",
-    "são paulo": "SP",
-    "sao paulo": "SP",
-    "aracaju": "SE",
-    "palmas": "TO",
-    # Polos tecnologicos/financeiros
-    "campinas": "SP",
-    "são josé dos campos": "SP",
-    "sao jose dos campos": "SP",
-    "são carlos": "SP",
-    "sao carlos": "SP",
-    "ribeirão preto": "SP",
-    "ribeirao preto": "SP",
-    "santos": "SP",
-    "guarulhos": "SP",
-    "osasco": "SP",
-    "sorocaba": "SP",
-    "jundiaí": "SP",
-    "jundiai": "SP",
-    "porto digital": "PE",
-    "joinville": "SC",
-    "blumenau": "SC",
-    "itajai": "SC",
-    "itajaí": "SC",
-    "belo horizonte": "MG",
-    "contagem": "MG",
-    "betim": "MG",
-    "uberaba": "MG",
-    "uberlândia": "MG",
-    "uberlandia": "MG",
-    "juiz de fora": "MG",
-    "curitiba": "PR",
-    "londrina": "PR",
-    "maringá": "PR",
-    "maringa": "PR",
-    "cascavel": "PR",
-    "foz do iguaçu": "PR",
-    "foz do iguacu": "PR",
-    "caxias do sul": "RS",
-    "pelotas": "RS",
-    "canoas": "RS",
-    "niterói": "RJ",
-    "niteroi": "RJ",
-    "duque de caxias": "RJ",
-    "nova iguaçu": "RJ",
-    "nova iguacu": "RJ",
-    "campos dos goytacazes": "RJ",
-    "feira de santana": "BA",
-    "vitória da conquista": "BA",
-    "vitoria da conquista": "BA",
-    "jaboatão": "PE",
-    "jaboatao": "PE",
-    "olinda": "PE",
-    "juazeiro do norte": "CE",
-    "sobral": "CE",
-    "santarém": "PA",
-    "santarem": "PA",
-    "marabá": "PA",
-    "maraba": "PA",
-    "anápolis": "GO",
-    "anapolis": "GO",
-    "aparecida de goiânia": "GO",
-    "aparecida de goiania": "GO",
-    "taguatinga": "DF",
+    # Europe
+    "zona do euro": "EU", "eurozone": "EU", "bce": "EU", "ecb": "EU", "lagarde": "EU", "união europeia": "EU",
+    "alemanha": "DE", "germany": "DE", "berlim": "DE", "scholz": "DE",
+    "reino unido": "GB", "uk": "GB", "reinounido": "GB", "inglaterra": "GB", "londres": "GB", "london": "GB", "sunak": "GB", "starmer": "GB",
+    "frança": "FR", "france": "FR", "macron": "FR", "paris": "FR",
+    "itália": "IT", "italy": "IT", "meloni": "IT",
+    "espanha": "ES", "spain": "ES",
+    "ucrânia": "UA", "ukraine": "UA", "zelensky": "UA", "kiev": "UA",
+    "rússia": "RU", "russia": "RU", "putin": "RU", "moscou": "RU", "moscow": "RU", "kremlin": "RU",
+    "turquia": "TR", "turkey": "TR", "erdogan": "TR",
+
+    # Asia
+    "china": "CN", "pequim": "CN", "beijing": "CN", "xi jinping": "CN", "xangai": "CN",
+    "japão": "JP", "japan": "JP", "tóquio": "JP", "tokyo": "JP", "yen": "JP", "iene": "JP", "boj": "JP",
+    "índia": "IN", "india": "IN", "modi": "IN",
+    "coreia do sul": "KR", "south korea": "KR",
+    "taiwan": "TW",
+
+    # Middle East
+    "israel": "IL", "netanyahu": "IL", "tel aviv": "IL", "jerusalém": "IL", "idf": "IL",
+    "irã": "IR", "iran": "IR", "teerã": "IR",
+    "gaza": "PS", "hamas": "PS", "palestina": "PS",
+    "arábia saudita": "SA", "saudi arabia": "SA", "riade": "SA", "opec": "SA", "opep": "SA",
+    "emirados árabes": "AE", "uae": "AE", "dubai": "AE",
+
+    # Oceania
+    "austrália": "AU", "australia": "AU",
+
+    # Africa
+    "áfrica do sul": "ZA", "south africa": "ZA",
+    "egito": "EG", "egypt": "EG",
+    "nigéria": "NG", "nigeria": "NG",
 }
 
 
 def match_location_token(text: str, token: str) -> bool:
+    """
+    Verifica se o token de localizacao esta no texto.
+    Para tokens curtos ou comuns (rio, santa, espirito), exige match exato ou contexto.
+    """
+    token_lower = token.lower()
+    
+    # Lista de tokens perigosos que sao palavras comuns
+    common_words = ["rio", "santa", "espirito", "belo", "nova", "campo", "grande", "faria"]
+    
+    if token_lower in common_words:
+        return False # Ignora sozinho. Só pega se vier composto (ex: "Rio de Janeiro")
+        
     if len(token) <= 3:
-        return re.search(rf"\b{re.escape(token)}\b", text) is not None
-    return token in text
+        # Para siglas ou nomes curtos, exige word boundary
+        return re.search(rf"\b{re.escape(token_lower)}\b", text) is not None
+        
+    return token_lower in text
 
 
 def extract_location_ner(text: str) -> str | None:
@@ -338,30 +228,21 @@ def extract_location_ner(text: str) -> str | None:
     return None
 
 
-def infer_region(event: dict) -> str:
-    """Infere a sigla do estado (UF) do Brasil baseada no conteúdo do evento"""
+def infer_country(event: dict) -> str:
+    """Infere o código do país (ISO Alpha-2) baseado no conteúdo do evento"""
     text = f"{event.get('title', '')} {event.get('body', '')}".lower()
     
-    # Método 1 (PRIORITÁRIO): Reconhecimento de entidades contextuais (NER)
-    ner_result = extract_location_ner(text)
-    if ner_result:
-        return ner_result
+    # Busca por matches de países no mapa (mais específicos primeiro)
+    sorted_keys = sorted(COUNTRY_MAP.keys(), key=len, reverse=True)
+    for term in sorted_keys:
+        if f" {term} " in f" {text} " or (len(term) > 4 and term in text):
+             return COUNTRY_MAP[term]
     
-    # Método 2: Busca por matches de cidades no mapa (mais específicas primeiro)
-    sorted_cities = sorted(BRAZILIAN_CITIES_MAP.keys(), key=len, reverse=True)
-    for city_name in sorted_cities:
-        if match_location_token(text, city_name):
-            return BRAZILIAN_CITIES_MAP[city_name]
-
-    # Método 3: Busca por matches de estados no mapa (mais específicos primeiro)
-    # Ordena por tamanho decrescente para capturar "rio grande do sul" antes de "rio"
-    sorted_keys = sorted(BRAZILIAN_STATES_MAP.keys(), key=len, reverse=True)
-    for state_name in sorted_keys:
-        if match_location_token(text, state_name):
-            return BRAZILIAN_STATES_MAP[state_name]
+    # Se o texto estiver em português e não tiver match, pode ser BR por default?
+    # Melhor assumir "Global" ou vazio se não tiver certeza.
+    # Mas para o MVP vamos usar "GLOBAL" ou "US" se for ingles.
     
-    # Default: Brasil (todos os eventos sem localização específica ficam em BR)
-    return "BR"
+    return "GLOBAL"
 
 
 def clean_text(text: str, max_length: int | None = None) -> str:
@@ -494,12 +375,13 @@ def normalize_timestamp(value: str | None) -> str:
         return datetime.utcnow().isoformat() + "Z"
 
 
-def enrich_event(raw_event: dict) -> dict:
-    """
-    Enriquece um evento bruto com analise, seguindo o schema padrao do SentinelWatch.
+    except (TypeError, ValueError):
+        return datetime.utcnow().isoformat() + "Z"
 
-    Entrada: raw_event (do Collector e Scraper)
-    Saida: enriched_event (persistivel e consumivel pela API)
+
+def enrich_event(raw_event: dict) -> dict | None:
+    """
+    Enriquece um evento bruto com analise. Retorna None se irrelevante.
     """
     # Extracao segura de campos do evento bruto
     event_id = raw_event.get("event_id", "")
@@ -510,17 +392,24 @@ def enrich_event(raw_event: dict) -> dict:
     source = raw_event.get("source", {})
     link = raw_event.get("link", "")
 
-    # Remove HTML tags from RSS content
+    # Remove HTML tags form RSS content
     title = clean_text(title, max_length=140)
     body = clean_text(body, max_length=400)
-    keywords = extract_keywords(f"{title} {body}")
-    entities = extract_entities(f"{title} {body}")
+    
+    # --- FILTRO DE RELEVÂNCIA ---
+    full_text = f"{title} {body}"
+    if not is_relevant(full_text):
+        return None
+    # ----------------------------
+
+    keywords = extract_keywords(full_text)
+    entities = extract_entities(full_text)
     
     # Classificacao e enriquecimento
     score = score_event(raw_event, keywords)
     impact = classify_impact(raw_event, score)
     urgency = classify_urgency(raw_event, keywords, score)
-    region = infer_region(raw_event)
+    region = infer_country(raw_event)
     
     # Construção do documento final seguindo o schema
     enriched_event = {
@@ -533,8 +422,8 @@ def enrich_event(raw_event: dict) -> dict:
         "keywords": keywords,
         "entities": entities,
         "location": {
-            "country": "BR",
-            "region": region,
+            "country": region, # Agora armazena o código do país
+            "region": region,  # Mantem compatibilidade retroativa por enquanto
         },
         "source": source if isinstance(source, dict) else {},
         "link": link,
@@ -575,6 +464,10 @@ def run() -> None:
             # Enriquecimento único e centralizado
             enriched_event = enrich_event(raw_event)
             
+            if enriched_event is None:
+                print(f"[analysis] ✕ evento ignorado (filtro de ruído): {raw_event.get('title', '')[:40]}...")
+                continue
+
             # Persistência única em MongoDB (Upsert para evitar duplicatas)
             mongo_db.events.update_one(
                 {"id": enriched_event["id"]},

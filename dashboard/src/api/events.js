@@ -26,13 +26,17 @@ export async function fetchGeoSummary() {
   return response.json();
 }
 
-export async function createSource({ url, eventType }) {
+export async function createSource({ url, eventType, sourceType }) {
   const response = await fetch("/sources", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ url, event_type: eventType }),
+    body: JSON.stringify({
+      url,
+      event_type: eventType,
+      source_type: sourceType || "news",
+    }),
   });
 
   if (!response.ok) {
