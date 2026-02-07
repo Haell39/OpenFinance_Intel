@@ -134,7 +134,6 @@ BRAZILIAN_STATES_MAP = {
     "fortaleza": "CE",
     # Pará
     "pará": "PA",
-    "para": "PA",
     "pa": "PA",
     "belém": "PA",
     "belem": "PA",
@@ -306,17 +305,55 @@ def match_location_token(text: str, token: str) -> bool:
     return token in text
 
 
+def extract_location_ner(text: str) -> str | None:
+    """Extrai localização usando padrões contextuais (NER simplificado)"""
+    # Padrões contextuais que indicam localização geográfica
+    patterns = [
+        r"governo d[oa]s? (\w+(?:\s+\w+){0,3})",
+        r"assembleia legislativa d[oa]s? (\w+(?:\s+\w+){0,3})",
+        r"prefeitura d[ea] (\w+(?:\s+\w+){0,2})",
+        r"tribunal de justiça d[oa]s? (\w+(?:\s+\w+){0,3})",
+        r"secretaria d[ea] (\w+(?:\s+\w+){0,2})",
+        r"operação em (\w+(?:\s+\w+){0,2})",
+        r"ação em (\w+(?:\s+\w+){0,2})",
+        r"estado d[oa]s? (\w+(?:\s+\w+){0,3})",
+        r"cidade de (\w+(?:\s+\w+){0,2})",
+        r"município de (\w+(?:\s+\w+){0,2})",
+        r"em (\w+(?:\s+\w+){0,2}), (\w{2})\b",  # "em CidadeX, SP"
+    ]
+    
+    for pattern in patterns:
+        matches = re.finditer(pattern, text, re.IGNORECASE)
+        for match in matches:
+            location = match.group(1).lower().strip()
+            
+            # Tenta encontrar nos mapas de cidade primeiro
+            if location in BRAZILIAN_CITIES_MAP:
+                return BRAZILIAN_CITIES_MAP[location]
+            
+            # Depois tenta estados
+            if location in BRAZILIAN_STATES_MAP:
+                return BRAZILIAN_STATES_MAP[location]
+    
+    return None
+
+
 def infer_region(event: dict) -> str:
     """Infere a sigla do estado (UF) do Brasil baseada no conteúdo do evento"""
     text = f"{event.get('title', '')} {event.get('body', '')}".lower()
     
-    # Busca por matches de cidades no mapa (mais específicas primeiro)
+    # Método 1 (PRIORITÁRIO): Reconhecimento de entidades contextuais (NER)
+    ner_result = extract_location_ner(text)
+    if ner_result:
+        return ner_result
+    
+    # Método 2: Busca por matches de cidades no mapa (mais específicas primeiro)
     sorted_cities = sorted(BRAZILIAN_CITIES_MAP.keys(), key=len, reverse=True)
     for city_name in sorted_cities:
         if match_location_token(text, city_name):
             return BRAZILIAN_CITIES_MAP[city_name]
 
-    # Busca por matches de estados no mapa (mais específicos primeiro)
+    # Método 3: Busca por matches de estados no mapa (mais específicos primeiro)
     # Ordena por tamanho decrescente para capturar "rio grande do sul" antes de "rio"
     sorted_keys = sorted(BRAZILIAN_STATES_MAP.keys(), key=len, reverse=True)
     for state_name in sorted_keys:
