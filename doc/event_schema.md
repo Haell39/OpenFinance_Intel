@@ -13,6 +13,11 @@ Todos os eventos processados pelo sistema seguem este schema:
   "impact": "high | medium | low",
   "urgency": "urgent | normal",
   "keywords": ["string", "string"],
+  "entities": {
+    "people": ["string"],
+    "orgs": ["string"],
+    "locations": ["string"]
+  },
   "location": {
     "country": "BR",
     "region": "SP | RJ | DF | MG | RS | SC | PR | BA | PE | CE | ..."

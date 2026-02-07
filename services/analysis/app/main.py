@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import time
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
@@ -20,52 +21,65 @@ def get_settings() -> dict:
     }
 
 
-def classify_impact(event: dict, keywords: list[str]) -> str:
-    """Classifica o impacto do evento baseado no tipo e conteúdo"""
+def score_event(event: dict, keywords: list[str]) -> int:
+    """Calcula um score simples de impacto/urgencia baseado em palavras-chave"""
     text = f"{event.get('title', '')} {event.get('body', '')}".lower()
     keyword_set = set(keywords)
-    high_terms = {
-        "crise",
-        "crisis",
-        "guerra",
-        "war",
-        "sanction",
-        "sanções",
-        "default",
-        "calote",
-        "recessão",
-    }
-    medium_terms = {
-        "inflação",
-        "inflation",
-        "juros",
-        "tax",
-        "regulação",
-        "regulacao",
-        "tarifa",
+
+    weights = {
+        "crise": 4,
+        "crisis": 4,
+        "guerra": 5,
+        "war": 5,
+        "sanction": 4,
+        "sanções": 4,
+        "default": 5,
+        "calote": 5,
+        "recessão": 4,
+        "inflacao": 3,
+        "inflação": 3,
+        "juros": 3,
+        "tarifa": 2,
+        "regulacao": 2,
+        "regulação": 2,
+        "ata": 2,
+        "copom": 3,
+        "ibovespa": 2,
+        "dolar": 2,
+        "dólar": 2,
+        "petroleo": 2,
+        "petróleo": 2,
     }
 
+    score = 0
+    for key, weight in weights.items():
+        if key in keyword_set or key in text:
+            score += weight
+
     if event.get("event_type") == "geopolitical":
+        score += 3
+
+    return score
+
+
+def classify_impact(event: dict, score: int) -> str:
+    """Classifica impacto com base em score"""
+    if score >= 7:
         return "high"
-    if high_terms & keyword_set:
-        return "high"
-    if any(word in text for word in ["crisis", "war", "sanction", "default", "rate"]):
-        return "high"
-    if medium_terms & keyword_set:
-        return "medium"
-    if any(word in text for word in ["inflation", "tax", "regulation"]):
+    if score >= 3:
         return "medium"
     return "low"
 
 
-def classify_urgency(event: dict, keywords: list[str]) -> str:
-    """Classifica a urgência do evento"""
+def classify_urgency(event: dict, keywords: list[str], score: int) -> str:
+    """Classifica a urgência com base em score e termos de tempo"""
     text = f"{event.get('title', '')} {event.get('body', '')}".lower()
-    if any(word in text for word in ["urgent", "breaking", "immediate", "urgente"]):
+    urgent_terms = ["urgent", "breaking", "immediate", "urgente", "agora", "hoje"]
+    if any(word in text for word in urgent_terms):
         return "urgent"
     if event.get("event_type") == "geopolitical":
         return "urgent"
-    if "hoje" in keywords or "agora" in keywords:
+    if score >= 6:
         return "urgent"
     return "normal"
 
@@ -169,6 +183,50 @@ def extract_keywords(text: str, max_keywords: int = 6) -> list[str]:
     return [token for token, _count in sorted_tokens[:max_keywords]]
 
 
+def extract_entities(text: str) -> dict:
+    """Extrai entidades simples (pessoa, org, loc) por heuristica"""
+    if not text:
+        return {"people": [], "orgs": [], "locations": []}
+
+    org_markers = ["SA", "S.A", "Ltda", "LTDA", "Corp", "Bank", "Banco"]
+    location_terms = [
+        "Brasil",
+        "São Paulo",
+        "Rio de Janeiro",
+        "Brasília",
+        "Minas Gerais",
+        "Bahia",
+        "Paraná",
+        "Pernambuco",
+        "Ceará",
+        "Rio Grande do Sul",
+    ]
+
+    candidates = re.findall(r"\b[A-ZÁÉÍÓÚÂÊÔÃÕÇ][\wÁÉÍÓÚÂÊÔÃÕÇ-]+(?:\s+[A-ZÁÉÍÓÚÂÊÔÃÕÇ][\wÁÉÍÓÚÂÊÔÃÕÇ-]+){0,3}", text)
+    people = set()
+    orgs = set()
+    locations = set()
+
+    for term in location_terms:
+        if term.lower() in text.lower():
+            locations.add(term)
+
+    for candidate in candidates:
+        if any(marker in candidate for marker in org_markers):
+            orgs.add(candidate)
+        elif candidate.lower() in [loc.lower() for loc in location_terms]:
+            locations.add(candidate)
+        else:
+            if len(candidate.split()) >= 2:
+                people.add(candidate)
+
+    return {
+        "people": sorted(people)[:5],
+        "orgs": sorted(orgs)[:5],
+        "locations": sorted(locations)[:5],
+    }
+
+
 def normalize_timestamp(value: str | None) -> str:
     """Normaliza timestamps RSS para ISO 8601 em UTC"""
     if not value:
@@ -201,10 +259,12 @@ def enrich_event(raw_event: dict) -> dict:
     title = clean_text(title, max_length=140)
     body = clean_text(body, max_length=400)
     keywords = extract_keywords(f"{title} {body}")
+    entities = extract_entities(f"{title} {body}")
     
     # Classificacao e enriquecimento
-    impact = classify_impact(raw_event, keywords)
-    urgency = classify_urgency(raw_event, keywords)
+    score = score_event(raw_event, keywords)
+    impact = classify_impact(raw_event, score)
+    urgency = classify_urgency(raw_event, keywords, score)
     region = infer_region(raw_event)
     
     # Construção do documento final seguindo o schema
@@ -216,6 +276,7 @@ def enrich_event(raw_event: dict) -> dict:
         "impact": impact,
         "urgency": urgency,
         "keywords": keywords,
+        "entities": entities,
         "location": {
             "country": "BR",
             "region": region,
