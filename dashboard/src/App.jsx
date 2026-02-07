@@ -278,127 +278,123 @@ export default function App() {
                 <div
                   className="source-item"
                   onClick={() => {
-                    setSourceUrl("https://feeds.reuters.com/finance/markets");
-                    setSourceType("geopolitical");
-                  }}
-                >
-                  <div className="source-number">1️⃣</div>
-                  <div className="source-name">Reuters</div>
-                  <div className="source-desc">Mercados e geopolítica</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl(
-                      "https://www.bloomberg.com/feed/podcast/etf-report.xml",
-                    );
-                    setSourceType("financial");
-                  }}
-                >
-                  <div className="source-number">2️⃣</div>
-                  <div className="source-name">Bloomberg</div>
-                  <div className="source-desc">Macro e política monetária</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl("https://feeds.ft.com/markets");
-                    setSourceType("financial");
-                  }}
-                >
-                  <div className="source-number">3️⃣</div>
-                  <div className="source-name">Financial Times</div>
-                  <div className="source-desc">Economia global</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl(
-                      "https://www.economist.com/international/rss.xml",
-                    );
-                    setSourceType("geopolitical");
-                  }}
-                >
-                  <div className="source-number">4️⃣</div>
-                  <div className="source-name">The Economist</div>
-                  <div className="source-desc">Geopolítica global</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl("https://feeds.cnbc.com/cnbc/financials/");
-                    setSourceType("financial");
-                  }}
-                >
-                  <div className="source-number">5️⃣</div>
-                  <div className="source-name">CNBC</div>
-                  <div className="source-desc">Mercados financeiros</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
                     setSourceUrl("https://www.infomoney.com.br/feed/");
                     setSourceType("financial");
                   }}
                 >
-                  <div className="source-number">6️⃣</div>
+                  <div className="source-number">1️⃣</div>
                   <div className="source-name">InfoMoney</div>
-                  <div className="source-desc">Mercado Brasil</div>
+                  <div className="source-desc">Mercados no Brasil</div>
                 </div>
 
                 <div
                   className="source-item"
                   onClick={() => {
-                    setSourceUrl("https://www.valor.com.br/feed");
+                    setSourceUrl("https://valor.globo.com/rss");
+                    setSourceType("financial");
+                  }}
+                >
+                  <div className="source-number">2️⃣</div>
+                  <div className="source-name">Valor Economico</div>
+                  <div className="source-desc">Macro e bastidores</div>
+                </div>
+
+                <div
+                  className="source-item"
+                  onClick={() => {
+                    setSourceUrl("https://g1.globo.com/rss/g1/economia/");
+                    setSourceType("financial");
+                  }}
+                >
+                  <div className="source-number">3️⃣</div>
+                  <div className="source-name">G1 Economia</div>
+                  <div className="source-desc">Politica e economia</div>
+                </div>
+
+                <div
+                  className="source-item"
+                  onClick={() => {
+                    setSourceUrl("https://www.bcb.gov.br/rss/ultimasnoticias");
+                    setSourceType("financial");
+                  }}
+                >
+                  <div className="source-number">4️⃣</div>
+                  <div className="source-name">Banco Central</div>
+                  <div className="source-desc">Juros e comunicados</div>
+                </div>
+
+                <div
+                  className="source-item"
+                  onClick={() => {
+                    setSourceUrl("https://www.tesouro.gov.br/rss");
+                    setSourceType("financial");
+                  }}
+                >
+                  <div className="source-number">5️⃣</div>
+                  <div className="source-name">Tesouro Nacional</div>
+                  <div className="source-desc">Fiscal e divida</div>
+                </div>
+
+                <div
+                  className="source-item"
+                  onClick={() => {
+                    setSourceUrl("https://agenciabrasil.ebc.com.br/rss");
+                    setSourceType("geopolitical");
+                  }}
+                >
+                  <div className="source-number">6️⃣</div>
+                  <div className="source-name">Agencia Brasil</div>
+                  <div className="source-desc">Governo federal</div>
+                </div>
+
+                <div
+                  className="source-item"
+                  onClick={() => {
+                    setSourceUrl("https://www.estadao.com.br/rss/economia.xml");
                     setSourceType("financial");
                   }}
                 >
                   <div className="source-number">7️⃣</div>
-                  <div className="source-name">Valor Econômico</div>
-                  <div className="source-desc">Macro e empresas</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl("https://www.bcb.gov.br/feed");
-                    setSourceType("financial");
-                  }}
-                >
-                  <div className="source-number">8️⃣</div>
-                  <div className="source-name">Banco Central</div>
-                  <div className="source-desc">Juros e política</div>
-                </div>
-
-                <div
-                  className="source-item"
-                  onClick={() => {
-                    setSourceUrl("https://www.imf.org/rss/feed.xml");
-                    setSourceType("geopolitical");
-                  }}
-                >
-                  <div className="source-number">9️⃣</div>
-                  <div className="source-name">IMF</div>
-                  <div className="source-desc">Crises globais</div>
+                  <div className="source-name">Estadao Economia</div>
+                  <div className="source-desc">Politica economica</div>
                 </div>
 
                 <div
                   className="source-item"
                   onClick={() => {
                     setSourceUrl(
-                      "https://api.twitter.com/2/tweets/search/stream",
+                      "https://feeds.folha.uol.com.br/mercado/rss091.xml",
                     );
                     setSourceType("financial");
                   }}
                 >
+                  <div className="source-number">8️⃣</div>
+                  <div className="source-name">Folha Mercado</div>
+                  <div className="source-desc">Mercado e fiscal</div>
+                </div>
+
+                <div
+                  className="source-item"
+                  onClick={() => {
+                    setSourceUrl("https://www.ibge.gov.br/rss");
+                    setSourceType("financial");
+                  }}
+                >
+                  <div className="source-number">9️⃣</div>
+                  <div className="source-name">IBGE</div>
+                  <div className="source-desc">Dados oficiais</div>
+                </div>
+
+                <div
+                  className="source-item"
+                  onClick={() => {
+                    setSourceUrl("https://www.b3.com.br/rss/");
+                    setSourceType("financial");
+                  }}
+                >
                   <div className="source-number">🔟</div>
-                  <div className="source-name">Reuters Twitter</div>
-                  <div className="source-desc">Early signals</div>
+                  <div className="source-name">B3</div>
+                  <div className="source-desc">Mercado de capitais</div>
                 </div>
               </div>
 
