@@ -20,6 +20,25 @@ def get_settings() -> dict:
         "alerts_queue": os.getenv("ALERTS_QUEUE", "alerts_queue"),
     }
 
+# --- NLP SETUP ---
+import spacy
+from spacy.language import Language
+
+print("[analysis] Carregando modelos NLP...")
+try:
+    nlp_pt = spacy.load("pt_core_news_sm")
+    nlp_en = spacy.load("en_core_web_sm")
+    print("[analysis] Modelos EN/PT carregados com sucesso.")
+except OSError:
+    print("[analysis] AVISO: Modelos Spacy não encontrados. Baixando fallback...")
+    from spacy.cli import download
+    download("en_core_web_sm")
+    download("pt_core_news_sm")
+    nlp_pt = spacy.load("pt_core_news_sm")
+    nlp_en = spacy.load("en_core_web_sm")
+# -----------------
+
+
 
 BLOCKED_KEYWORDS = [
     # Esportes
@@ -229,20 +248,34 @@ def extract_location_ner(text: str) -> str | None:
 
 
 def infer_country(event: dict) -> str:
-    """Infere o código do país (ISO Alpha-2) baseado no conteúdo do evento"""
-    text = f"{event.get('title', '')} {event.get('body', '')}".lower()
+    """Infere o código do país (ISO Alpha-2) usando NLP e Fallback de Palavras-Chave"""
+    text = f"{event.get('title', '')} {event.get('body', '')}"
+    text_lower = text.lower()
     
-    # Busca por matches de países no mapa (mais específicos primeiro)
+    # 1. Tenta detecção via NLP (NER)
+    # Escolhe modelo baseado em heuristica simples (se tem palavras comuns em PT)
+    common_pt = [" o ", " a ", " de ", " do ", " da ", " em ", " um ", " uma "]
+    is_pt = any(w in text_lower for w in common_pt)
+    
+    model = nlp_pt if is_pt else nlp_en
+    doc = model(text)
+    
+    # Procura entidades GPE (Geopolitical Entity)
+    for ent in doc.ents:
+        if ent.label_ == "GPE":
+            # Tenta mapear o nome da entidade para o codigo ISO
+            normalized = ent.text.lower().strip()
+            if normalized in COUNTRY_MAP:
+                return COUNTRY_MAP[normalized]
+    
+    # 2. Fallback: Busca por matches de dicionário (Keywords)
     sorted_keys = sorted(COUNTRY_MAP.keys(), key=len, reverse=True)
     for term in sorted_keys:
-        if f" {term} " in f" {text} " or (len(term) > 4 and term in text):
+        if f" {term} " in f" {text_lower} " or (len(term) > 4 and term in text_lower):
              return COUNTRY_MAP[term]
     
-    # Se o texto estiver em português e não tiver match, pode ser BR por default?
-    # Melhor assumir "Global" ou vazio se não tiver certeza.
-    # Mas para o MVP vamos usar "GLOBAL" ou "US" se for ingles.
-    
-    return "GLOBAL"
+    # 3. Default baseado na lingua
+    return "BR" if is_pt else "GLOBAL"
 
 
 def clean_text(text: str, max_length: int | None = None) -> str:

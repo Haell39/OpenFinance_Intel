@@ -155,8 +155,9 @@ def list_events(
         filters["impact"] = impact
     if event_type:
         filters["type"] = event_type
-    if region and region != "BR":
-        filters["location.region"] = region
+    if region and region != "all":
+        # Supports both "BR", "US", "GLOBAL", etc.
+        filters["location.country"] = region
 
     events = list(
         mongo_db.events.find(filters, {"_id": 0}).sort("timestamp", -1).limit(100)
