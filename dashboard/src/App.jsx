@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { createSource, fetchEvents, fetchGeoSummary } from "./api/events.js";
-import { MapVisualization } from "./components/MapVisualization.jsx";
+import { createSource, fetchEvents } from "./api/events.js";
 import ImpactBoard from "./components/ImpactBoard.jsx";
 import EventCard from "./components/EventCard.jsx";
 
@@ -14,8 +13,6 @@ const INITIAL_MARKET_SIGNALS = [
   },
 ];
 
-const IMPACT_OPTIONS = ["all", "high", "medium", "low"];
-const TYPE_OPTIONS = ["all", "financial", "geopolitical", "odds"];
 const SOURCE_TYPE_OPTIONS = ["financial", "geopolitical", "odds"];
 
 async function fetchTickerData() {
@@ -57,13 +54,10 @@ async function fetchTickerData() {
 }
 
 export default function App() {
-  const [viewMode, setViewMode] = useState("board"); // 'board' | 'map'
   const [impact, setImpact] = useState("all");
   const [type, setType] = useState("all");
-  const [selectedRegion, setSelectedRegion] = useState("all");
   const [sortBy, setSortBy] = useState("timestamp");
   const [events, setEvents] = useState([]);
-  const [geoData, setGeoData] = useState({});
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
 
@@ -81,15 +75,9 @@ export default function App() {
   const [showSourceModal, setShowSourceModal] = useState(false);
   const [activeTab, setActiveTab] = useState("recommended"); // recommended, rss, twitter
 
-  const loadGeoData = () => {
-    fetchGeoSummary()
-      .then(setGeoData)
-      .catch((err) => console.error("Failed to load geo data:", err));
-  };
-
   const loadEvents = () => {
     setStatus("loading");
-    return fetchEvents({ impact, type, region: selectedRegion })
+    return fetchEvents({ impact, type, region: "all" })
       .then((data) => {
         // Sorting logic
         const sorted = [...data].sort((a, b) => {
@@ -126,7 +114,6 @@ export default function App() {
   };
 
   useEffect(() => {
-    loadGeoData();
     fetchTickerData().then((data) => {
       if (data.length) setMarketSignals(data);
     });
@@ -144,17 +131,17 @@ export default function App() {
     if (refreshInterval > 0) {
       const interval = setInterval(() => {
         loadEvents();
-        loadGeoData();
         fetchTickerData().then((data) => {
           if (data.length) setMarketSignals(data);
         });
       }, refreshInterval);
       return () => clearInterval(interval);
     }
-  }, [refreshInterval, impact, type, selectedRegion, sortBy]);
+  }, [refreshInterval, impact, type, sortBy]);
+
   useEffect(() => {
     loadEvents();
-  }, [impact, type, selectedRegion, sortBy]);
+  }, [impact, type, sortBy]);
 
   const handleCreateSource = (event) => {
     event.preventDefault();
@@ -185,7 +172,6 @@ export default function App() {
     })
       .then(() => {
         setSourceStatus("success");
-        loadGeoData();
         return loadEvents();
       })
       .catch((err) => {
@@ -218,22 +204,6 @@ export default function App() {
         </div>
 
         <div className="header-right flex items-center">
-          {/* View Switching Toggle */}
-          <div className="bg-slate-800 p-1 rounded-lg flex mr-4 border border-slate-700">
-            <button
-              onClick={() => setViewMode("board")}
-              className={`px-3 py-1 text-xs rounded transition-colors ${viewMode === "board" ? "bg-blue-600 text-white shadow" : "text-slate-400 hover:text-slate-200"}`}
-            >
-              Analista (Board)
-            </button>
-            <button
-              onClick={() => setViewMode("map")}
-              className={`px-3 py-1 text-xs rounded transition-colors ${viewMode === "map" ? "bg-blue-600 text-white shadow" : "text-slate-400 hover:text-slate-200"}`}
-            >
-              Geopolítica (Mapa)
-            </button>
-          </div>
-
           <select
             className="glass-input hidden md:block"
             style={{ marginRight: 8, padding: "6px 10px" }}
@@ -271,7 +241,6 @@ export default function App() {
             onClick={() => {
               setStatus("loading");
               loadEvents();
-              loadGeoData();
               fetchTickerData().then((data) => setMarketSignals(data));
             }}
           >
@@ -282,51 +251,15 @@ export default function App() {
 
       {/* Main Layout Area */}
       <main className="flex-1 relative overflow-hidden bg-slate-900">
-        {/* VIEW: IMPACT BOARD */}
-        {viewMode === "board" && (
-          <div className="h-full w-full">
-            {status === "loading" && (
-              <div className="text-center p-10 text-slate-500">
-                Carregando Board...
-              </div>
-            )}
-            {status === "ready" && <ImpactBoard events={events} />}
-          </div>
-        )}
-
-        {/* VIEW: GEO MAP */}
-        {viewMode === "map" && (
-          <div className="h-full w-full relative">
-            <div className="absolute top-4 left-4 z-[500]">
-              <div className="bg-slate-800/90 p-4 rounded border border-slate-700 shadow-xl backdrop-blur">
-                <h3 className="font-bold text-slate-200 mb-1">
-                  Filtro Geográfico
-                </h3>
-                <p className="text-xs text-slate-400 mb-2">
-                  {selectedRegion === "all"
-                    ? "Exibindo Todo o Mundo"
-                    : `Filtrando por: ${selectedRegion}`}
-                </p>
-                {selectedRegion !== "all" && (
-                  <button
-                    className="btn primary w-full text-xs"
-                    onClick={() => setSelectedRegion("all")}
-                  >
-                    Limpar Filtro
-                  </button>
-                )}
-              </div>
+        {/* VIEW: IMPACT BOARD (ALWAYS ON) */}
+        <div className="h-full w-full">
+          {status === "loading" && (
+            <div className="text-center p-10 text-slate-500">
+              Carregando Board...
             </div>
-
-            <MapVisualization
-              geoData={geoData}
-              selectedRegion={selectedRegion}
-              onRegionClick={(uf) =>
-                setSelectedRegion(uf === selectedRegion ? "all" : uf)
-              }
-            />
-          </div>
-        )}
+          )}
+          {status === "ready" && <ImpactBoard events={events} />}
+        </div>
       </main>
 
       {/* Add Source Modal */}
