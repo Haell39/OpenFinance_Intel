@@ -1,0 +1,3 @@
+1. Filtros: Urgencia, Localidade, e outros (pedir sugestões).
+2. Mudar o simbolo do botao de refresh.
+3. Pensar numa nova ideia de visualização do dashboard (Ve com o gemini pro e com o antigravity)

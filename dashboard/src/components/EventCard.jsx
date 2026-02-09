@@ -52,9 +52,17 @@ const EventCard = ({ event, compact = false }) => {
 
       <div className="flex justify-between items-start mb-2 relative z-10">
         <div className="flex items-center gap-2">
-          {event.location?.country && event.location?.country !== "GLOBAL" && (
-            <span className="text-[10px] font-bold bg-slate-900 text-slate-300 px-1.5 py-0.5 rounded border border-slate-700">
-              {event.location.country}
+          {event.location?.country && (
+            <span
+              className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${
+                event.location.country === "Brasil"
+                  ? "bg-green-900/30 text-green-400 border-green-800"
+                  : "bg-slate-700 text-slate-300 border-slate-600"
+              }`}
+            >
+              {event.location.country === "Brasil"
+                ? "🇧🇷 Brasil"
+                : "🌐 Internacional"}
             </span>
           )}
           <span

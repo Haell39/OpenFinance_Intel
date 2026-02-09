@@ -2,7 +2,7 @@
 
 ## 🎯 Conceito
 
-Plataforma **Event-Driven** para inteligência financeira global. O sistema ingere o caos da web (RSS, News) e o transforma em sinais estruturados, geolocalizados e classificados para investidores.
+Plataforma **Event-Driven** para inteligência de investimento. O sistema ingere o caos da web (RSS, News) e o transforma em **Sinais de Mercado** estruturados, classificados por sentimento e impacto.
 
 ---
 
@@ -15,51 +15,56 @@ O sistema opera em containers Docker orquestrados, comunicando-se via **Redis** 
 _O "Braço" do sistema._
 
 - **Responsabilidade**: Ir até a internet e buscar dados.
-- **Fontes**: Suporta RSS, Atom e scraping direto.
-- **Deduplicação**: Gera um ID único (`md5(url+title)`) para cada evento antes mesmo de entrar na fila, economizando processamento.
+- **Fontes**: Suporta RSS, Atom, Google News e Twitter/X (via Nitter/RSS).
+- **Deduplicação**: Gera um ID único (`md5(url+title)`) para cada evento, garantindo que a mesma notícia não gere ruído duplicado.
 
 ### 2. 🧠 Analysis Service (AI Core)
 
 _O "Cérebro" do sistema._
 
-- **Responsabilidade**: Ler, entender e enriquecer o evento.
-- **NLP (Natural Language Processing)**:
-  - Utiliza **spaCy** com modelos `en_core_web_sm` (Inglês) e `pt_core_news_sm` (Português).
-  - **NER (Named Entity Recognition)**: Identifica Países (GPE), Organizações (ORG) e Pessoas (PERSON).
-  - **Country Mapping**: Converte entidades ("United States", "EUA") em códigos ISO (`US`, `BR`), permitindo plotagem precisa no mapa.
-- **Scoring**: Calcula pontuação de **Impacto** (0-10) e **Urgência**.
+- **Responsabilidade**: Ler, entender, classificar e pontuar o evento.
+- **Pipeline de NLP**:
+  1.  **Limpeza**: Remove HTML e caracteres irrelevantes.
+  2.  **Detecção de Setor**: Usa palavras-chave e spaCy para classificar em `Crypto`, `Tech`, `Energy`, `Forex`, `Macro`.
+  3.  **Análise de Sentimento (TextBlob)**:
+      - **Polaridade**: Calcula score de -1.0 a +1.0.
+      - **Classificação**: `Bullish` (>0.1), `Bearish` (<-0.1) ou `Neutral`.
+  4.  **Scoring**: Calcula pontuação de **Impacto** (0-10) baseada em palavras-chave de crise e intensidade do sentimento.
+  5.  **Insight**: Gera uma frase de ação (ex: "Atenção à volatilidade cambial").
 
 ### 3. 🌐 API Gateway
 
 _A "Porta de Entrada"._
 
 - **Responsabilidade**: Servir dados para o Frontend e gerenciar configurações.
-- **Scheduler**: Possui um loop assíncrono que re-agenda a verificação de todas as fontes a cada 5 minutos.
-- **Endpoints**: `/events` (com filtros globais), `/sources` (gestão de feeds).
+- **Scheduler**: Loop assíncrono que re-agenda a verificação de fontes.
+- **Smart Seeder**: Lógica de Upsert que permite adicionar novas fontes padrão sem resetar o banco de dados.
 
 ### 4. 🖥️ Dashboard (Frontend)
 
 _A "Face" do sistema._
 
-- **Tecnologia**: React + Vite + Leaflet.
-- **Mapa Global**: Renderiza marcadores em coordenadas de países (Lat/Lng).
-- **Auto-Refresh**: Polling inteligente que verifica atualizações sem recarregar a página.
+- **Tecnologia**: React + Vite + Tailwind CSS.
+- **Impact Board**: Visualização estilo Kanban organizada por setores.
+- **UX Financeira**: Cores semânticas (Verde/Vermelho) para rápida leitura de mercado ("5-second rule").
+- **Auto-Refresh**: Polling inteligente que atualiza o board sem recarregar a página.
 
 ---
 
-## 🔄 Fluxo de Dados (Pipeline V5)
+## 🔄 Fluxo de Dados (Pipeline V6)
 
 1.  **Ingestão**: API agenda tarefa -> Redis `tasks_queue`.
-2.  **Coleta**: Collector baixa o HTML/XML -> Extrai Título/Corpo -> Redis `events_queue`.
-3.  **Inteligência**: Analysis carrega modelos NLP -> Detecta Idioma -> Extrai País -> Calcula Score -> Salva no **MongoDB**.
-4.  **Consumo**: Frontend solicita `/events` -> API consulta Mongo -> Usuário vê "Breaking News" na China.
+2.  **Coleta**: Collector baixa o conteúdo -> Extrai Título/Corpo -> Redis `events_queue`.
+3.  **Inteligência**: Analysis processa NLP -> Detecta Setor e Sentimento -> Gera Insight -> Salva no **MongoDB**.
+4.  **Consumo**: Frontend solicita `/events` -> API consulta Mongo -> Usuário vê "Bitcoin Bullish" na coluna Crypto.
 
 ---
 
 ## 🗄️ Stack de Dados
 
-- **MongoDB**: Schema flexível para eventos. Documentos incluem `location: { country: "US" }`, `analytics: { score: 8 }`.
-- **Redis**: Broker de mensagens de baixa latência. Essencial para desacoplar a coleta (lenta) da análise (cpu-intensive).
+- **MongoDB**: Armazena eventos enriquecidos.
+  - Exemplo: `analytics: { sentiment: { label: "Bullish", polarity: 0.8 }, score: 9 }`.
+- **Redis**: Broker de mensagens de baixa latência.
 
 ---
 
@@ -67,4 +72,4 @@ _A "Face" do sistema._
 
 - O sistema utiliza apenas dados públicos.
 - Respeita `robots.txt` e headers de User-Agent.
-- Focado em análise de tendências, não recomendação de investimento.
+- Ferramenta de apoio à decisão, não recomendação de investimento automatizada.

@@ -333,34 +333,25 @@ def extract_location_ner(text: str) -> str | None:
 
 
 def infer_country(event: dict) -> str:
-    """Infere o código do país (ISO Alpha-2) usando NLP e Fallback de Palavras-Chave"""
-    text = f"{event.get('title', '')} {event.get('body', '')}"
-    text_lower = text.lower()
+    """
+    Infere apenas se é 'Brasil' ou 'Internacional'.
+    """
+    title = event.get("title", "").lower()
+    body = event.get("body", "").lower()
+    full_text = f"{title} {body}"
     
-    # 1. Tenta detecção via NLP (NER)
-    # Escolhe modelo baseado em heuristica simples (se tem palavras comuns em PT)
-    common_pt = [" o ", " a ", " de ", " do ", " da ", " em ", " um ", " uma "]
-    is_pt = any(w in text_lower for w in common_pt)
-    
-    model = nlp_pt if is_pt else nlp_en
-    doc = model(text)
-    
-    # Procura entidades GPE (Geopolitical Entity)
-    for ent in doc.ents:
-        if ent.label_ == "GPE":
-            # Tenta mapear o nome da entidade para o codigo ISO
-            normalized = ent.text.lower().strip()
-            if normalized in COUNTRY_MAP:
-                return COUNTRY_MAP[normalized]
-    
-    # 2. Fallback: Busca por matches de dicionário (Keywords)
-    sorted_keys = sorted(COUNTRY_MAP.keys(), key=len, reverse=True)
-    for term in sorted_keys:
-        if f" {term} " in f" {text_lower} " or (len(term) > 4 and term in text_lower):
-             return COUNTRY_MAP[term]
-    
-    # 3. Default baseado na lingua
-    return "BR" if is_pt else "GLOBAL"
+    # 1. Check Explicit BR terms
+    br_terms = ["brasil", "brazil", "real", "b3", "ibovespa", "copom", "selic", "campos neto", "lula", "haddad", "petrobras", "vale", "brl"]
+    for term in br_terms:
+        if f" {term} " in f" {full_text} ":
+             return "Brasil"
+
+    # 2. Check source URL (br root)
+    source_url = event.get("source", {}).get("url", "") or event.get("link", "")
+    if ".br" in source_url or "valor.globo" in source_url or "infomoney" in source_url:
+        return "Brasil"
+
+    return "Internacional"
 
 
 def clean_text(text: str, max_length: int | None = None) -> str:

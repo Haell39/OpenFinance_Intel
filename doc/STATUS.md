@@ -1,46 +1,48 @@
 # Status do Projeto - OpenFinance Intel 🌍
 
-**Versão Atual**: v5.0 (Global Intelligence Release)
+**Versão Atual**: v6.0 (Investment Impact Release)
 
 ## ✅ Visão Geral
 
-O **OpenFinance Intel** evoluiu de um monitor regional para uma **Plataforma Global de Inteligência Financeira**. O sistema agora monitora as principais economias do mundo (G20), utilizando Inteligência Artificial (NLP) para entender o contexto geográfico e econômico de cada evento em tempo real.
+O **OpenFinance Intel** realizou um pivô estratégico para se tornar uma **Plataforma de Decisão de Investimentos**. O foco mudou de visualização geográfica para **Análise de Impacto e Sentimento**. O sistema agora classifica automaticamente eventos como _Bullish_ ou _Bearish_ e sugere ações baseadas no setor afetado.
 
 ## 🚀 Funcionalidades Entregues
 
-### 1. Inteligência & AI
+### 1. Inteligência & AI (Backend)
 
-- **[NOVO] NLP com spaCy**: Substituição de regex simples por modelos neurais (`en_core_web_sm` e `pt_core_news_sm`) para detecção de entidades (Países, Cidades, Organizações).
-- **Infrência Geográfica Global**: O sistema entende que "Fed" se refere aos EUA e "OPEP" à Arábia Saudita.
-- **Filtro de Ruído**: Bloqueio ativo de conteúdo irrelevante (esportes, entretenimento).
+- **[NOVO] Análise de Sentimento**: Classificação automática de otimismo/pessimismo do mercado (TextBlob).
+- **[NOVO] Detecção de Setores**: Classificação automática em **Crypto, Tech, Energy, Forex, Macro** e **Global**.
+- **[NOVO] Geração de Insights**: Regras de negócio que transformam dados brutos em sugestões (ex: "Risco de Recessão -> Defensivos").
+- **NLP com spaCy**: NER (Reconhecimento de Entidade Nomeada) para contexto geográfico e organizacional.
 
-### 2. Visualização & UI
+### 2. Visualização & UI (Frontend)
 
-- **Mapa Mundi Interativo**: Visualização global com marcadores dinâmicos nos principais centros financeiros.
-- **Real-Time Ticker**: Cotações de moedas e cripto (USD, EUR, BTC) atualizadas ao vivo.
-- **Timer & Force Refresh**: Controle total sobre a atualização dos dados.
+- **[NOVO] Impact Board**: Substituição do Mapa Mundi por um Kanban Board setorizado.
+- **[NOVO] Sentiment UX**: Bordas coloridas (Verde/Vermelho) para indicação imediata de tendência.
+- **[NOVO] Scrollbar Personalizada**: Estilização premium alinhada ao tema Dark.
+- **Real-Time Ticker**: Cotações ao vivo de USD, EUR e BTC.
 
 ### 3. Engenharia de Dados
 
-- **Agendador Inteligente**: Coleta automática de fontes a cada 5 minutos.
-- **Deduplicação Robusta**: Hashs determinísticos garantem que a mesma notícia não seja processada duas vezes.
-- **Fontes Globais**: Integração nativa com CNBC, MarketWatch, Google News Geopolitics.
+- **Fontes Globais**: Integração com BBC, Reuters, Al Jazeera, NYT e Google News Topics.
+- **Smart Seeder**: Capacidade de adicionar novas fontes ao sistema em produção via Upsert.
+- **Deduplicação Inteligente**: Hashs determinísticos para evitar ruído.
 
 ---
 
 ## 🏗️ Estado da Arquitetura
 
-| Serviço       | Status     | Tecnologia   | Obs                                         |
-| ------------- | ---------- | ------------ | ------------------------------------------- |
-| **Collector** | 🟢 Estável | Python/RSS   | Scraper universal + Twitter Bridge          |
-| **Analysis**  | 🟢 Estável | Python/spaCy | "Cérebro" do sistema. Processa NER e Scores |
-| **API**       | 🟢 Estável | FastAPI      | Cache e Gestão de Fontes                    |
-| **Dashboard** | 🟢 Estável | React/Vite   | Dark Mode, Leaflet Map                      |
+| Serviço       | Status     | Tecnologia     | Obs                                |
+| ------------- | ---------- | -------------- | ---------------------------------- |
+| **Collector** | 🟢 Estável | Python/RSS     | Scraper universal + Twitter Bridge |
+| **Analysis**  | 🟢 Estável | Python/NLP     | Sentiment Engine + Sector Tagger   |
+| **API**       | 🟢 Estável | FastAPI        | Gestão de Fontes e Dados           |
+| **Dashboard** | 🟢 Estável | React/Tailwind | Impact Board (Kanban)              |
 
 ---
 
 ## 🔮 Próximos Passos (Roadmap)
 
-1.  **Análise de Sentimento (Sentiment Analysis)**: Classificar notícias como _Bullish_ (Otimista) ou _Bearish_ (Pessimista) para o mercado.
-2.  **Alertas Push**: Integração com Telegram Bot ou E-mail para alertas urgentes ("Breaking News").
-3.  **Gráficos Históricos**: Visualizar a tendência de volume de notícias por país ao longo do tempo.
+1.  **Integração com Portfólio**: Permitir que o usuário cadastre seus ativos para receber notícias personalizadas.
+2.  **Alertas via WhatsApp/Telegram**: Notificar imediatamente quando um evento "High Impact" ocorrer.
+3.  **Backtesting de Sentimento**: Cruzar o sentimento histórico das notícias com a variação de preços dos ativos.

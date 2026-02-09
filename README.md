@@ -1,18 +1,19 @@
 # OpenFinance Intel 🌍⚡
 
-**Plataforma de Inteligência Financeira Global** impulsionada por eventos em tempo real e IA.
+**Plataforma de Inteligência de Investimentos** impulsionada por IA e análise de sentimento.
 
-O OpenFinance Intel monitora o ecossistema financeiro mundial, coletando notícias, sinais de mercado e eventos geopolíticos. Utilizando **NLP (Processamento de Linguagem Natural)** avançado, ele detecta autonomamente países relevantes, classifica o impacto e visualiza dados em um mapa global em tempo real.
+O OpenFinance Intel monitora o ecossistema financeiro global, transformando o caos de notícias e eventos em **Sinais de Investimento** claros. Utilizando **NLP (Processamento de Linguagem Natural)** e **Análise de Sentimento**, ele classifica eventos como _Bullish_ (Otimista) ou _Bearish_ (Pessimista) e os organiza por setor (Crypto, Tech, Macro, etc.).
 
 ---
 
 ## 🚀 Funcionalidades Principais
 
-- **🌍 Inteligência Global**: Detecta automaticamente países em notícias (ex: "Wall Street" → 🇺🇸 EUA, "B3" → 🇧🇷 BR) usando **spaCy NER**.
-- **⚡ Ticker em Tempo Real**: Dados de mercado ao vivo (USD, EUR, BTC) e atualizações de eventos com latência sub-segundo.
-- **🛡️ Filtro de Ruído**: Filtragem baseada em IA bloqueia esportes, fofocas e ruídos irrelevantes.
-- **📊 UI Profissional**: Dashboard em modo escuro inspirado em Terminais Bloomberg.
-- **🔍 Fontes Inteligentes**: Integra CNBC, Reuters, Google News (Geopolítica) e feeds oficiais de Bancos Centrais.
+- **🧠 Análise de Sentimento**: Classifica notícias em **Bullish** 🟢, **Bearish** 🔴 ou **Neutral** ⚪ usando TextBlob.
+- **📊 Impact Board**: Visualização Kanban profissional focada em setores de investimento (**Crypto, Tech, Energy, Forex, Macro**).
+- **💡 Insights Acionáveis**: A IA gera insights rápidos baseados no contexto (ex: "Setor Forex Bearish -> Monitorar Dólar").
+- **⚡ Ticker em Tempo Real**: Cotações ao vivo (USD, EUR, BTC) e atualizações de eventos com latência sub-segundo.
+- **🛡️ Filtro de Ruído**: Bloqueio ativo de esportes, fofocas e conteúdo irrelevante para o mercado.
+- **🔍 Fontes Globais**: Integração com Bloomberg, Reuters, CNBC, Google News e feeds oficiais de Bancos Centrais.
 
 ---
 
@@ -20,10 +21,10 @@ O OpenFinance Intel monitora o ecossistema financeiro mundial, coletando notíci
 
 O sistema é construído sobre uma arquitetura de **Microserviços**:
 
-1.  **Collector**: Faz scraping de feeds RSS/HTML (IDs determinísticos para desduplicação).
-2.  **Analysis**: O "Cérebro". Usa **spaCy (EN/PT)** para Reconhecimento de Entidade Nomeada (NER) para inferir localização e impacto.
-3.  **API Gateway**: Serviço FastAPI gerenciando fontes e recuperação de dados.
-4.  **Dashboard**: Frontend React + Leaflet + Vite.
+1.  **Collector**: Faz scraping de feeds RSS/HTML e Twitter/X (IDs determinísticos para desduplicação).
+2.  **Analysis**: O "Cérebro". Usa **spaCy** para categorização de setores e **TextBlob** para análise de sentimento (Polaridade/Subjetividade).
+3.  **API Gateway**: Serviço FastAPI gerenciando fontes, eventos e websocket.
+4.  **Dashboard**: Frontend React + Vite + Tailwind CSS (Focado em UX de terminal financeiro).
 5.  **Infraestrutura**: Docker Compose, Redis (Filas), MongoDB (Persistência).
 
 ---
@@ -46,21 +47,21 @@ Acesse o dashboard em: **http://localhost:5173**
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Python 3.11, FastAPI, spaCy (NLP)
-- **Frontend**: React 18, Leaflet (Mapas), Chart.js
+- **Backend**: Python 3.11, FastAPI, spaCy (NLP), TextBlob (Sentiment)
+- **Frontend**: React 18, Tailwind CSS, Vite
 - **Dados**: MongoDB, Redis
-- **DevOps**: Docker, Nginx (proxy opcional)
+- **DevOps**: Docker, Nginx
 
 ---
 
 ## 🤝 Contribuição
 
 1.  Faça um Fork do repositório
-2.  Crie uma branch para sua feature (`git checkout -b feature/RecursoIncrivel`)
-3.  Commit suas mudanças (`git commit -m 'Adiciona algum RecursoIncrivel'`)
-4.  Push para a branch (`git push origin feature/RecursoIncrivel`)
+2.  Crie uma branch (`git checkout -b feature/NovaAnalise`)
+3.  Commit suas mudanças (`git commit -m 'Adiciona modelo de análise de Commodities'`)
+4.  Push para a branch
 5.  Abra um Pull Request
 
 ---
 
-_OpenFinance Intel - Transformando Ruído em Sinal._
+_OpenFinance Intel - Transformando Notícia em Alpha._
