@@ -23,6 +23,7 @@ def get_settings() -> dict:
 # --- NLP SETUP ---
 import spacy
 from spacy.language import Language
+from textblob import TextBlob # Sentiment Analysis
 
 print("[analysis] Carregando modelos NLP...")
 try:
@@ -69,8 +70,85 @@ def is_relevant(text: str) -> bool:
     return True
 
 
-def score_event(event: dict, keywords: list[str]) -> int:
-    """Calcula um score simples de impacto/urgencia baseado em palavras-chave"""
+    return True
+
+
+def analyze_sentiment(text: str) -> dict:
+    """Calcula polaridade e classifica como Bullish/Bearish/Neutral"""
+    blob = TextBlob(text)
+    polarity = blob.sentiment.polarity
+    subjectivity = blob.sentiment.subjectivity
+    
+    # Regra definida pelo User
+    if polarity > 0.1:
+        label = "Bullish"
+    elif polarity < -0.1:
+        label = "Bearish"
+    else:
+        label = "Neutral"
+        
+    return {
+        "polarity": round(polarity, 2),
+        "subjectivity": round(subjectivity, 2),
+        "label": label
+    }
+
+
+def infer_sector(text: str) -> str:
+    """Classifica o evento em um setor de investimento"""
+    text_lower = text.lower()
+    
+    sectors = {
+        "Crypto": ["bitcoin", "btc", "ethereum", "eth", "crypto", "blockchain", "coinbase", "binance", "solana"],
+        "Tech": ["ai", "artificial intelligence", "nvidia", "nvda", "apple", "aapl", "microsoft", "google", "meta", "tech", "nasdaq", "software", "chip"],
+        "Energy": ["oil", "petrol", "brent", "wti", "petrobras", "pbr", "shell", "bp", "energy", "opec", "opep", "gas"],
+        "Forex": ["usd", "eur", "jpy", "gbp", "dollar", "dólar", "euro", "yen", "cambio", "exchange rate", "forex", "fx"],
+        "Macro": ["inflation", "ipca", "cpi", "gdp", "pib", "recession", "economy", "fed", "fomc", "central bank", "juros", "taxa", "interest rate", "payroll", "job"]
+    }
+    
+    # 1. Busca por palavras-chave
+    for sector, keywords in sectors.items():
+        for kw in keywords:
+            if f" {kw} " in f" {text_lower} " or kw in text_lower.split():
+                return sector
+                
+    # 2. Fallback
+    return "Global"
+
+
+def generate_insight(sector: str, sentiment_label: str) -> str:
+    """Gera um insight acionável rápido baseado em setor e sentimento"""
+    
+    if sector == "Global":
+        return "Monitorar impacto nos índices globais."
+
+    insights = {
+        ("Crypto", "Bullish"): "Momentum positivo. Monitorar resistência do BTC.",
+        ("Crypto", "Bearish"): "Risco de liquidação. Atenção a suportes chaves.",
+        ("Crypto", "Neutral"): "Acumulação lateral. Aguardar definição.",
+        
+        ("Tech", "Bullish"): "Fluxo comprador em Growth. Bom para Nasdaq.",
+        ("Tech", "Bearish"): "Rotação de capital. Cuidado com valuations altos.",
+        ("Tech", "Neutral"): "Monitorar earnings e guidance.",
+
+        ("Energy", "Bullish"): "Pressão inflacionária possível. Bom para Oil & Gas.",
+        ("Energy", "Bearish"): "Alívio na inflação global. Oportunidade em Airline/Transport.",
+        ("Energy", "Neutral"): "Estabilidade na oferta/demanda.",
+
+        ("Forex", "Bullish"): "Moeda forte. Atenção a exportadores.", # Contexto genérico, assumindo USD bullish
+        ("Forex", "Bearish"): "Desvalorização cambial. Oportunidade em hedge.",
+        ("Forex", "Neutral"): "Paridade estável. Carry trade favorecido.",
+
+        ("Macro", "Bullish"): "Dados econômicos fortes. Bom para Equities.",
+        ("Macro", "Bearish"): "Risco de recessão/inflação. Defensivos favorecidos.",
+        ("Macro", "Neutral"): "Cenário aguardando novos dados (Data Dependent).",
+    }
+    
+    return insights.get((sector, sentiment_label), f"Acompanhar volatilidade em {sector}.")
+
+
+def score_event(event: dict, keywords: list[str], sentiment: dict) -> int:
+    """Calcula score de impacto ajustado pelo sentimento"""
     text = f"{event.get('title', '')} {event.get('body', '')}".lower()
     keyword_set = set(keywords)
 
@@ -121,6 +199,12 @@ def score_event(event: dict, keywords: list[str]) -> int:
     if event.get("event_type") == "geopolitical":
         score += 3
 
+    # Boost de Impacto se for Bearish Forte ou Bullish Forte (Volatilidade = Oportunidade)
+    if sentiment["label"] == "Bearish" and sentiment["polarity"] <= -0.3:
+        score += 3
+    elif sentiment["label"] == "Bullish" and sentiment["polarity"] >= 0.3:
+        score += 2
+        
     return score
 
 
@@ -161,35 +245,36 @@ COUNTRY_MAP = {
 
     # Europe
     "zona do euro": "EU", "eurozone": "EU", "bce": "EU", "ecb": "EU", "lagarde": "EU", "união europeia": "EU",
-    "alemanha": "DE", "germany": "DE", "berlim": "DE", "scholz": "DE",
-    "reino unido": "GB", "uk": "GB", "reinounido": "GB", "inglaterra": "GB", "londres": "GB", "london": "GB", "sunak": "GB", "starmer": "GB",
+    "alemanha": "DE", "germany": "DE", "berlim": "DE", "berlin": "DE", "scholz": "DE", "bundesbank": "DE",
+    "reino unido": "GB", "uk": "GB", "united kingdom": "GB", "inglaterra": "GB", "londres": "GB", "london": "GB", "sunak": "GB", "starmer": "GB", "boe": "GB",
     "frança": "FR", "france": "FR", "macron": "FR", "paris": "FR",
-    "itália": "IT", "italy": "IT", "meloni": "IT",
-    "espanha": "ES", "spain": "ES",
-    "ucrânia": "UA", "ukraine": "UA", "zelensky": "UA", "kiev": "UA",
+    "itália": "IT", "italy": "IT", "meloni": "IT", "roma": "IT", "rome": "IT",
+    "espanha": "ES", "spain": "ES", "madrid": "ES",
+    "ucrânia": "UA", "ukraine": "UA", "zelensky": "UA", "kiev": "UA", "kyiv": "UA",
     "rússia": "RU", "russia": "RU", "putin": "RU", "moscou": "RU", "moscow": "RU", "kremlin": "RU",
-    "turquia": "TR", "turkey": "TR", "erdogan": "TR",
+    "turquia": "TR", "turkey": "TR", "erdogan": "TR", "istambul": "TR",
 
     # Asia
-    "china": "CN", "pequim": "CN", "beijing": "CN", "xi jinping": "CN", "xangai": "CN",
-    "japão": "JP", "japan": "JP", "tóquio": "JP", "tokyo": "JP", "yen": "JP", "iene": "JP", "boj": "JP",
-    "índia": "IN", "india": "IN", "modi": "IN",
-    "coreia do sul": "KR", "south korea": "KR",
-    "taiwan": "TW",
+    "china": "CN", "pequim": "CN", "beijing": "CN", "xi jinping": "CN", "xangai": "CN", "shanghai": "CN",
+    "japão": "JP", "japan": "JP", "tóquio": "JP", "tokyo": "JP", "yen": "JP", "iene": "JP", "boj": "JP", "ueda": "JP",
+    "índia": "IN", "india": "IN", "modi": "IN", "nova delhi": "IN", "new delhi": "IN",
+    "coreia do sul": "KR", "south korea": "KR", "seul": "KR", "seoul": "KR",
+    "taiwan": "TW", "taipé": "TW", "taipei": "TW", "tsmc": "TW",
+    "hong kong": "HK", "hsi": "HK",
 
     # Middle East
     "israel": "IL", "netanyahu": "IL", "tel aviv": "IL", "jerusalém": "IL", "idf": "IL",
-    "irã": "IR", "iran": "IR", "teerã": "IR",
+    "irã": "IR", "iran": "IR", "teerã": "IR", "tehran": "IR",
     "gaza": "PS", "hamas": "PS", "palestina": "PS",
-    "arábia saudita": "SA", "saudi arabia": "SA", "riade": "SA", "opec": "SA", "opep": "SA",
+    "arábia saudita": "SA", "saudi arabia": "SA", "riade": "SA", "riyadh": "SA", "opec": "SA", "opep": "SA", "aramco": "SA",
     "emirados árabes": "AE", "uae": "AE", "dubai": "AE",
 
     # Oceania
-    "austrália": "AU", "australia": "AU",
+    "austrália": "AU", "australia": "AU", "sydney": "AU", "rba": "AU",
 
     # Africa
     "áfrica do sul": "ZA", "south africa": "ZA",
-    "egito": "EG", "egypt": "EG",
+    "egito": "EG", "egypt": "EG", "cairo": "EG",
     "nigéria": "NG", "nigeria": "NG",
 }
 
@@ -437,9 +522,14 @@ def enrich_event(raw_event: dict) -> dict | None:
 
     keywords = extract_keywords(full_text)
     entities = extract_entities(full_text)
+    sentiment = analyze_sentiment(full_text)
+    
+    # Novas classificações de investimento
+    sector = infer_sector(full_text)
+    insight = generate_insight(sector, sentiment["label"])
     
     # Classificacao e enriquecimento
-    score = score_event(raw_event, keywords)
+    score = score_event(raw_event, keywords, sentiment)
     impact = classify_impact(raw_event, score)
     urgency = classify_urgency(raw_event, keywords, score)
     region = infer_country(raw_event)
@@ -452,8 +542,14 @@ def enrich_event(raw_event: dict) -> dict | None:
         "description": body,
         "impact": impact,
         "urgency": urgency,
+        "sector": sector, # [NEW]
+        "insight": insight, # [NEW]
         "keywords": keywords,
         "entities": entities,
+        "analytics": {
+            "sentiment": sentiment,
+            "score": score
+        },
         "location": {
             "country": region, # Agora armazena o código do país
             "region": region,  # Mantem compatibilidade retroativa por enquanto

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { createSource, fetchEvents, fetchGeoSummary } from "./api/events.js";
 import { MapVisualization } from "./components/MapVisualization.jsx";
+import ImpactBoard from "./components/ImpactBoard.jsx";
+import EventCard from "./components/EventCard.jsx";
 
 // Mock Data for "Analysis" / KPI Bar
-// Initial Mock Data (replaced by API)
 const INITIAL_MARKET_SIGNALS = [
   {
     id: 1,
@@ -16,46 +17,6 @@ const INITIAL_MARKET_SIGNALS = [
 const IMPACT_OPTIONS = ["all", "high", "medium", "low"];
 const TYPE_OPTIONS = ["all", "financial", "geopolitical", "odds"];
 const SOURCE_TYPE_OPTIONS = ["financial", "geopolitical", "odds"];
-
-function formatTimestamp(value) {
-  if (!value) return "-";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-
-  // Format: "dd/mm HH:MM"
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const hours = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getMinutes().toString().padStart(2, "0");
-
-  return `${day}/${month} ${hours}:${minutes}`;
-}
-
-function timeAgo(value) {
-  if (!value) return "";
-  const date = new Date(value);
-  const now = new Date();
-  const diffMs = now - date;
-  const diffMins = Math.floor(diffMs / 60000);
-
-  if (diffMins < 60) return `${diffMins}m atrás`;
-  const diffHours = Math.floor(diffMins / 60);
-  if (diffHours < 24) return `${diffHours}h atrás`;
-  return formatTimestamp(value);
-}
-
-function impactClass(impact) {
-  if (impact === "high") return "impact-high";
-  if (impact === "medium") return "impact-medium";
-  if (impact === "low") return "impact-low";
-  return "";
-}
-
-function getEventLink(event) {
-  if (event?.link) return event.link;
-  if (event?.source?.url) return event.source.url;
-  return null;
-}
 
 async function fetchTickerData() {
   try {
@@ -96,6 +57,7 @@ async function fetchTickerData() {
 }
 
 export default function App() {
+  const [viewMode, setViewMode] = useState("board"); // 'board' | 'map'
   const [impact, setImpact] = useState("all");
   const [type, setType] = useState("all");
   const [selectedRegion, setSelectedRegion] = useState("all");
@@ -233,15 +195,15 @@ export default function App() {
   };
 
   return (
-    <div className="page">
+    <div className="page h-screen flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="header">
+      <header className="header shrink-0">
         <div className="header-left">
           <div className="logo-container">
             <span className="logo-icon">👁️</span>
             <span className="brand-name">OpenFinance Intel</span>
           </div>
-          <div className="status-bar">
+          <div className="status-bar hidden md:flex">
             {marketSignals.map((signal) => (
               <div key={signal.id} className="status-card">
                 {signal.trend === "down"
@@ -255,9 +217,25 @@ export default function App() {
           </div>
         </div>
 
-        <div className="header-right">
+        <div className="header-right flex items-center">
+          {/* View Switching Toggle */}
+          <div className="bg-slate-800 p-1 rounded-lg flex mr-4 border border-slate-700">
+            <button
+              onClick={() => setViewMode("board")}
+              className={`px-3 py-1 text-xs rounded transition-colors ${viewMode === "board" ? "bg-blue-600 text-white shadow" : "text-slate-400 hover:text-slate-200"}`}
+            >
+              Analista (Board)
+            </button>
+            <button
+              onClick={() => setViewMode("map")}
+              className={`px-3 py-1 text-xs rounded transition-colors ${viewMode === "map" ? "bg-blue-600 text-white shadow" : "text-slate-400 hover:text-slate-200"}`}
+            >
+              Geopolítica (Mapa)
+            </button>
+          </div>
+
           <select
-            className="glass-input"
+            className="glass-input hidden md:block"
             style={{ marginRight: 8, padding: "6px 10px" }}
             value={refreshInterval}
             onChange={(e) => setRefreshInterval(Number(e.target.value))}
@@ -269,8 +247,8 @@ export default function App() {
           </select>
 
           <div
+            className="hidden md:flex"
             style={{
-              display: "flex",
               alignItems: "center",
               marginRight: 15,
               fontSize: "12px",
@@ -278,7 +256,7 @@ export default function App() {
             }}
           >
             <span style={{ marginRight: 5 }}>●</span>
-            Atualizado há: <strong>{timeSinceUpdate}</strong>
+            <strong>{timeSinceUpdate}</strong>
           </div>
 
           <button
@@ -292,8 +270,6 @@ export default function App() {
             title="Force Refresh (Busca Imediata)"
             onClick={() => {
               setStatus("loading");
-              // In a real app, this might trigger a backend scrape job too.
-              // For now, it reloads data fresh from DB and Ticker.
               loadEvents();
               loadGeoData();
               fetchTickerData().then((data) => setMarketSignals(data));
@@ -304,170 +280,54 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Layout */}
-      <div className="main-container">
-        {/* Left Panel: Event Stream */}
-        <div className="event-stream">
-          <div className="stream-header">
-            <div className="stream-controls">
-              <select
-                className="glass-input"
-                value={impact}
-                onChange={(e) => setImpact(e.target.value)}
-              >
-                <option value="all">Impacto: Todos</option>
-                <option value="high">Alto</option>
-                <option value="medium">Médio</option>
-                <option value="low">Baixo</option>
-              </select>
-              <select
-                className="glass-input"
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-              >
-                <option value="all">Tipo: Todos</option>
-                <option value="financial">Financeiro</option>
-                <option value="geopolitical">Geopolítico</option>
-                <option value="odds">Odds</option>
-              </select>
-            </div>
-            <div className="stream-controls">
-              <button
-                className={`btn ${sortBy === "timestamp" ? "primary" : ""}`}
-                onClick={() => setSortBy("timestamp")}
-              >
-                Recentes
-              </button>
-              <button
-                className={`btn ${sortBy === "urgency" ? "primary" : ""}`}
-                onClick={() => setSortBy("urgency")}
-              >
-                Urgentes
-              </button>
-            </div>
-          </div>
-
-          <div className="stream-scroll">
+      {/* Main Layout Area */}
+      <main className="flex-1 relative overflow-hidden bg-slate-900">
+        {/* VIEW: IMPACT BOARD */}
+        {viewMode === "board" && (
+          <div className="h-full w-full">
             {status === "loading" && (
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: 20,
-                  color: "var(--text-secondary)",
-                }}
-              >
-                Carregando...
+              <div className="text-center p-10 text-slate-500">
+                Carregando Board...
               </div>
             )}
-            {status === "error" && (
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: 20,
-                  color: "var(--status-urgent)",
-                }}
-              >
-                {error}
-              </div>
-            )}
+            {status === "ready" && <ImpactBoard events={events} />}
+          </div>
+        )}
 
-            {status === "ready" && events.length === 0 && (
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: 40,
-                  color: "var(--text-tertiary)",
-                }}
-              >
-                📭 Nenhum evento encontrado
-              </div>
-            )}
-
-            {events.map((event) => (
-              <div
-                key={event.id || Math.random()}
-                className={`event-card ${impactClass(event.impact)}`}
-              >
-                <div className="card-header">
-                  <div className="badges">
-                    {event.urgency === "urgent" && (
-                      <span className="badge urgent">URGENTE</span>
-                    )}
-                    {event.impact && (
-                      <span className={`badge impact-${event.impact}`}>
-                        {event.impact}
-                      </span>
-                    )}
-                    <span className="badge normal">{event.type}</span>
-                  </div>
-                  <span className="time-ago">{timeAgo(event.timestamp)}</span>
-                </div>
-
-                <h3 className="card-title">{event.title}</h3>
-                {event.description && (
-                  <p className="card-desc">{event.description}</p>
+        {/* VIEW: GEO MAP */}
+        {viewMode === "map" && (
+          <div className="h-full w-full relative">
+            <div className="absolute top-4 left-4 z-[500]">
+              <div className="bg-slate-800/90 p-4 rounded border border-slate-700 shadow-xl backdrop-blur">
+                <h3 className="font-bold text-slate-200 mb-1">
+                  Filtro Geográfico
+                </h3>
+                <p className="text-xs text-slate-400 mb-2">
+                  {selectedRegion === "all"
+                    ? "Exibindo Todo o Mundo"
+                    : `Filtrando por: ${selectedRegion}`}
+                </p>
+                {selectedRegion !== "all" && (
+                  <button
+                    className="btn primary w-full text-xs"
+                    onClick={() => setSelectedRegion("all")}
+                  >
+                    Limpar Filtro
+                  </button>
                 )}
-
-                <div className="card-footer">
-                  <div className="badges">
-                    {event.location?.country !== "GLOBAL" && (
-                      <span className="badge normal">
-                        📍 {event.location?.country}
-                      </span>
-                    )}
-                    {event.location?.country === "GLOBAL" && (
-                      <span className="badge normal">🌍 Global</span>
-                    )}
-                  </div>
-
-                  {getEventLink(event) && (
-                    <a
-                      href={getEventLink(event)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn"
-                      style={{ fontSize: "11px", padding: "4px 8px" }}
-                    >
-                      Ler Fonte ↗
-                    </a>
-                  )}
-                </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right Panel: Map */}
-        <div className="map-view">
-          <div className="map-overlay">
-            <div className="overlay-card">
-              <h3>Filtro Geográfico</h3>
-              <p style={{ fontSize: "13px", margin: 0 }}>
-                {selectedRegion === "all"
-                  ? "Exibindo Todo o Mundo"
-                  : `Filtrando por: ${selectedRegion}`}
-              </p>
-              {selectedRegion !== "all" && (
-                <button
-                  className="btn primary"
-                  style={{ marginTop: 8, width: "100%" }}
-                  onClick={() => setSelectedRegion("all")}
-                >
-                  Limpar Filtro
-                </button>
-              )}
             </div>
-          </div>
 
-          <MapVisualization
-            geoData={geoData}
-            selectedRegion={selectedRegion}
-            onRegionClick={(uf) =>
-              setSelectedRegion(uf === selectedRegion ? "all" : uf)
-            }
-          />
-        </div>
-      </div>
+            <MapVisualization
+              geoData={geoData}
+              selectedRegion={selectedRegion}
+              onRegionClick={(uf) =>
+                setSelectedRegion(uf === selectedRegion ? "all" : uf)
+              }
+            />
+          </div>
+        )}
+      </main>
 
       {/* Add Source Modal */}
       {showSourceModal && (
