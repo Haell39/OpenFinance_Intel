@@ -1,91 +1,66 @@
-# SentinelWatch
+# OpenFinance Intel 🌍⚡
 
-SentinelWatch is an event-driven intelligence platform focused on the Brazilian market. It ingests sources, collects raw events, analyzes impact and urgency, and emits alerts through a simple pipeline.
+**Plataforma de Inteligência Financeira Global** impulsionada por eventos em tempo real e IA.
 
-## Architecture
+O OpenFinance Intel monitora o ecossistema financeiro mundial, coletando notícias, sinais de mercado e eventos geopolíticos. Utilizando **NLP (Processamento de Linguagem Natural)** avançado, ele detecta autonomamente países relevantes, classifica o impacto e visualiza dados em um mapa global em tempo real.
 
-Flow:
+---
 
-Source -> API Gateway -> Redis (tasks_queue)
-Collector -> Redis (events_queue)
-Analysis -> MongoDB + Redis (alerts_queue)
-Notifier -> logs
+## 🚀 Funcionalidades Principais
 
-Services:
+- **🌍 Inteligência Global**: Detecta automaticamente países em notícias (ex: "Wall Street" → 🇺🇸 EUA, "B3" → 🇧🇷 BR) usando **spaCy NER**.
+- **⚡ Ticker em Tempo Real**: Dados de mercado ao vivo (USD, EUR, BTC) e atualizações de eventos com latência sub-segundo.
+- **🛡️ Filtro de Ruído**: Filtragem baseada em IA bloqueia esportes, fofocas e ruídos irrelevantes.
+- **📊 UI Profissional**: Dashboard em modo escuro inspirado em Terminais Bloomberg.
+- **🔍 Fontes Inteligentes**: Integra CNBC, Reuters, Google News (Geopolítica) e feeds oficiais de Bancos Centrais.
 
-- API Gateway (FastAPI): registers sources and enqueues tasks
-- Collector: consumes tasks and publishes raw events
-- Analysis: classifies impact and urgency and stores enriched events
-- Notifier: consumes alerts and prints a message
+---
 
-## Quick start
+## 🏗️ Arquitetura
 
-Start the stack:
+O sistema é construído sobre uma arquitetura de **Microserviços**:
+
+1.  **Collector**: Faz scraping de feeds RSS/HTML (IDs determinísticos para desduplicação).
+2.  **Analysis**: O "Cérebro". Usa **spaCy (EN/PT)** para Reconhecimento de Entidade Nomeada (NER) para inferir localização e impacto.
+3.  **API Gateway**: Serviço FastAPI gerenciando fontes e recuperação de dados.
+4.  **Dashboard**: Frontend React + Leaflet + Vite.
+5.  **Infraestrutura**: Docker Compose, Redis (Filas), MongoDB (Persistência).
+
+---
+
+## ⚡ Início Rápido
+
+### Pré-requisitos
+
+- Docker & Docker Compose
+
+### Executar a Plataforma
 
 ```bash
 docker compose up --build
 ```
 
-Register a source (PowerShell - Windows):
+Acesse o dashboard em: **http://localhost:5173**
 
-```powershell
-# Exemplo com feed RSS real de notícias financeiras (recomendado)
-Invoke-RestMethod -Method Post -Uri "http://localhost:8000/sources" -ContentType "application/json" -Body '{"url":"http://g1.globo.com/dynamo/economia/rss2.xml","event_type":"financial"}'
+---
 
-# Ou use um exemplo genérico
-Invoke-RestMethod -Method Post -Uri "http://localhost:8000/sources" -ContentType "application/json" -Body '{"url":"https://example.com/feed.xml","event_type":"financial"}'
-```
+## 🛠️ Tech Stack
 
-Register a source (macOS/Linux):
+- **Backend**: Python 3.11, FastAPI, spaCy (NLP)
+- **Frontend**: React 18, Leaflet (Mapas), Chart.js
+- **Dados**: MongoDB, Redis
+- **DevOps**: Docker, Nginx (proxy opcional)
 
-```bash
-# Exemplo com feed RSS real de notícias financeiras (recomendado)
-curl -X POST "http://localhost:8000/sources" \
-  -H "Content-Type: application/json" \
-  -d '{"url":"http://g1.globo.com/dynamo/economia/rss2.xml","event_type":"financial"}'
+---
 
-# Ou use um exemplo genérico
-curl -X POST "http://localhost:8000/sources" \
-  -H "Content-Type: application/json" \
-  -d '{"url":"https://example.com/feed.xml","event_type":"financial"}'
-```
+## 🤝 Contribuição
 
-**Fontes RSS recomendadas:**
+1.  Faça um Fork do repositório
+2.  Crie uma branch para sua feature (`git checkout -b feature/RecursoIncrivel`)
+3.  Commit suas mudanças (`git commit -m 'Adiciona algum RecursoIncrivel'`)
+4.  Push para a branch (`git push origin feature/RecursoIncrivel`)
+5.  Abra um Pull Request
 
-- G1 Economia (mais estável): `http://g1.globo.com/dynamo/economia/rss2.xml`
-- InfoMoney: `https://www.infomoney.com.br/feed/` (pode bloquear requests de containers)
-- Valor Econômico (se disponível público)
+---
 
-You should see logs in the collector, analysis, and notifier containers showing the event flowing through the pipeline.
-
-Fetch analyzed events for the UI:
-
-```bash
-curl "http://localhost:8000/events?impact=high&type=geopolitical"
-```
-
-**Rodar o Dashboard (Frontend):**
-
-```bash
-cd dashboard
-npm install
-npm run dev
-```
-
-Acesse `http://localhost:5173` para ver a interface.
-
-## Configuration
-
-Each service reads environment variables in docker-compose.yml:
-
-- MONGO_URI, MONGO_DB
-- REDIS_HOST, REDIS_PORT
-- TASKS_QUEUE, EVENTS_QUEUE, ALERTS_QUEUE
-
-## Next steps
-
-- Implementar visualização de mapa do Brasil
-- Expandir scraping para páginas HTML além de RSS
-- Adicionar NLP scoring avançado no analysis service
-- Integrar canais de alerta (Telegram, email)
-- Adicionar sistema de cache de eventos já processados
+_OpenFinance Intel - Transformando Ruído em Sinal._

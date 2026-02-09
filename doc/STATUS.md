@@ -1,48 +1,46 @@
-# Status do Projeto - OpenFinance Intel
+# Status do Projeto - OpenFinance Intel 🌍
 
-## Visao geral
+**Versão Atual**: v5.0 (Global Intelligence Release)
 
-O **OpenFinance Intel** (antigo SentinelWatch) é uma plataforma de inteligência financeira premium, orientada a eventos. O sistema monitora, analisa e alerta sobre acontecimentos que impactam o mercado brasileiro. Recentemente passou por um **overhaul visual completo** (Dark Theme) e melhorias de estabilidade (deduplicação).
+## ✅ Visão Geral
 
-## Arquitetura atual
+O **OpenFinance Intel** evoluiu de um monitor regional para uma **Plataforma Global de Inteligência Financeira**. O sistema agora monitora as principais economias do mundo (G20), utilizando Inteligência Artificial (NLP) para entender o contexto geográfico e econômico de cada evento em tempo real.
 
-**Fluxo de dados**
+## 🚀 Funcionalidades Entregues
 
-Fonte -> API Gateway -> Redis (tasks_queue)
-Collector -> RSS -> Redis (events_queue)
-Analysis -> NLP + Geo -> MongoDB + Redis (alerts_queue)
-Notifier -> logs
-UI (React) -> GET /events + GET /events/geo-summary
+### 1. Inteligência & AI
 
-**Microservicos**
+- **[NOVO] NLP com spaCy**: Substituição de regex simples por modelos neurais (`en_core_web_sm` e `pt_core_news_sm`) para detecção de entidades (Países, Cidades, Organizações).
+- **Infrência Geográfica Global**: O sistema entende que "Fed" se refere aos EUA e "OPEP" à Arábia Saudita.
+- **Filtro de Ruído**: Bloqueio ativo de conteúdo irrelevante (esportes, entretenimento).
 
-- **API Gateway**: Expose endpoints REST e gerencia fontes.
-- **Collector**: Scraper inteligente com **IDs determinísticos** para prevenir duplicatas.
-- **Analysis**: Classificação NLP + Upsert no MongoDB (Idempotência).
-- **Notifier**: Consumidor de alertas.
-- **UI (Dashboard)**: Interface Premium Dark Theme com mapa fullscreen e ticker de mercado.
+### 2. Visualização & UI
 
-## Estado atual (V4 - Premium UI + Stability)
+- **Mapa Mundi Interativo**: Visualização global com marcadores dinâmicos nos principais centros financeiros.
+- **Real-Time Ticker**: Cotações de moedas e cripto (USD, EUR, BTC) atualizadas ao vivo.
+- **Timer & Force Refresh**: Controle total sobre a atualização dos dados.
 
-- **Identidade Visual**: Novo nome "OpenFinance Intel" e tema "Navy & Slate".
-- **UX Premium**: Status bar com sinais de mercado, cards com glassmorphism, mapa com markers neon.
-- **Estabilidade**:
-  - ✅ **Deduplicação de Eventos**: IDs gerados via hash do conteúdo (MD5).
-  - ✅ **Upsert no Banco**: Previne inserções repetidas de notícias.
-- **Funcionalidades Principais**:
-  - Pipeline end-to-end (RSS -> UI).
-  - Geolocalização automática (NER) por estado (UF).
-  - Filtros de Impacto e Urgência.
+### 3. Engenharia de Dados
 
-## Infraestrutura
+- **Agendador Inteligente**: Coleta automática de fontes a cada 5 minutos.
+- **Deduplicação Robusta**: Hashs determinísticos garantem que a mesma notícia não seja processada duas vezes.
+- **Fontes Globais**: Integração nativa com CNBC, MarketWatch, Google News Geopolitics.
 
-- Redis (Filas)
-- MongoDB (Persistência)
-- Docker Compose (Orquestração)
+---
 
-## Próximos passos sugeridos
+## 🏗️ Estado da Arquitetura
 
-- Integração com Telegram/WhatsApp para alertas push.
-- Adicionar dados reais de mercado (API de ações/moedas) no ticker.
-- Implementar login/autenticação de usuários.
-- Testes automatizados (E2E e Unitários).
+| Serviço       | Status     | Tecnologia   | Obs                                         |
+| ------------- | ---------- | ------------ | ------------------------------------------- |
+| **Collector** | 🟢 Estável | Python/RSS   | Scraper universal + Twitter Bridge          |
+| **Analysis**  | 🟢 Estável | Python/spaCy | "Cérebro" do sistema. Processa NER e Scores |
+| **API**       | 🟢 Estável | FastAPI      | Cache e Gestão de Fontes                    |
+| **Dashboard** | 🟢 Estável | React/Vite   | Dark Mode, Leaflet Map                      |
+
+---
+
+## 🔮 Próximos Passos (Roadmap)
+
+1.  **Análise de Sentimento (Sentiment Analysis)**: Classificar notícias como _Bullish_ (Otimista) ou _Bearish_ (Pessimista) para o mercado.
+2.  **Alertas Push**: Integração com Telegram Bot ou E-mail para alertas urgentes ("Breaking News").
+3.  **Gráficos Históricos**: Visualizar a tendência de volume de notícias por país ao longo do tempo.

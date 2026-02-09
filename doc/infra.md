@@ -1,155 +1,70 @@
-# SentinelWatch — Financial & Geopolitical Event Intelligence Platform
+# OpenFinance Intel — Global Infrastructure 🏗️
 
-## 🎯 Ideia do Projeto
+## 🎯 Conceito
 
-O **SentinelWatch** é uma plataforma de inteligência financeira orientada a eventos, projetada para **monitorar, analisar e alertar sobre acontecimentos que impactam mercados**, como notícias financeiras, eventos geopolíticos e sinais de mercado derivados de variações de odds esportivas. O sistema coleta dados públicos de múltiplas fontes, classifica automaticamente cada evento por **tipo, impacto e urgência**, associa esses eventos a uma **localização geográfica (Brasil, inicialmente)** e entrega essa informação de forma acionável por meio de **alertas em tempo real** e **visualização em mapa interativo**.
-
-Este projeto é a evolução direta do **OpenFinance Map**, avançando de uma plataforma reativa de visualização para um sistema **proativo e autônomo de inteligência**, capaz de detectar eventos relevantes sem intervenção humana e apoiar decisões informadas no contexto financeiro e econômico.
+Plataforma **Event-Driven** para inteligência financeira global. O sistema ingere o caos da web (RSS, News) e o transforma em sinais estruturados, geolocalizados e classificados para investidores.
 
 ---
 
-## 🧠 Conceito Central
+## 🧱 Arquitetura de Microserviços
 
-Tudo no SentinelWatch é tratado como um **Evento**.
+O sistema opera em containers Docker orquestrados, comunicando-se via **Redis** (Pub/Sub e Filas).
 
-Um evento pode ser:
+### 1. 🕷️ Collector Service
 
-- Uma notícia financeira relevante
-- Um acontecimento geopolítico com impacto econômico
-- Uma decisão política ou regulatória
-- Uma variação significativa de odds esportivas (como sinal de mercado)
+_O "Braço" do sistema._
 
-Independentemente da origem, todo evento passa pelo mesmo pipeline de processamento, garantindo simplicidade, coesão e escalabilidade.
+- **Responsabilidade**: Ir até a internet e buscar dados.
+- **Fontes**: Suporta RSS, Atom e scraping direto.
+- **Deduplicação**: Gera um ID único (`md5(url+title)`) para cada evento antes mesmo de entrar na fila, economizando processamento.
 
----
+### 2. 🧠 Analysis Service (AI Core)
 
-## 🧱 Arquitetura Geral (Microserviços Orientados a Eventos)
+_O "Cérebro" do sistema._
 
-O sistema utiliza uma **arquitetura distribuída e event-driven**, onde microserviços independentes se comunicam exclusivamente por meio de filas (Redis). Cada serviço possui uma responsabilidade bem definida, mantendo baixo acoplamento e facilitando evolução futura.
+- **Responsabilidade**: Ler, entender e enriquecer o evento.
+- **NLP (Natural Language Processing)**:
+  - Utiliza **spaCy** com modelos `en_core_web_sm` (Inglês) e `pt_core_news_sm` (Português).
+  - **NER (Named Entity Recognition)**: Identifica Países (GPE), Organizações (ORG) e Pessoas (PERSON).
+  - **Country Mapping**: Converte entidades ("United States", "EUA") em códigos ISO (`US`, `BR`), permitindo plotagem precisa no mapa.
+- **Scoring**: Calcula pontuação de **Impacto** (0-10) e **Urgência**.
 
-### 🔹 Microserviços
+### 3. 🌐 API Gateway
 
-#### 1. API Gateway (FastAPI)
+_A "Porta de Entrada"._
 
-- Cadastro de fontes monitoradas (notícias, feeds, eventos esportivos)
-- Definição do tipo de evento (`financial`, `geopolitical`, `odds`)
-- Exposição de endpoints REST
-- Persistência de configurações e histórico no MongoDB
-- Publicação de tarefas de coleta no Redis
+- **Responsabilidade**: Servir dados para o Frontend e gerenciar configurações.
+- **Scheduler**: Possui um loop assíncrono que re-agenda a verificação de todas as fontes a cada 5 minutos.
+- **Endpoints**: `/events` (com filtros globais), `/sources` (gestão de feeds).
 
-#### 2. Collector Service (Scraper Genérico)
+### 4. 🖥️ Dashboard (Frontend)
 
-- Coleta dados de fontes públicas:
-  - Sites e feeds de notícias financeiras
-  - Portais econômicos e políticos
-  - Páginas públicas de odds esportivas
-- **Auto-discovery de RSS**: detecta feeds em páginas HTML via `<link rel="alternate">`
-- Segue redirecionamentos e acepta múltiplos content-types
-- Normaliza os dados brutos
-- Publica eventos iniciais na fila (`events_queue`)
+_A "Face" do sistema._
 
-#### 3. Analysis Service (NLP + Regras + NER)
-
-- Consome eventos brutos
-- Aplica NLP e regras contextuais para:
-  - Classificar impacto (alto / médio / baixo)
-  - Definir urgência
-  - Extrair palavras-chave
-  - **NER contextual para localização** (detecta "governo de", "prefeitura de", "assembleia legislativa de", etc.)
-  - Mapear cidades → estados (todas capitais + 60+ cidades)
-  - Associar localização geográfica ao Brasil em UF normalizada (SP, RJ, MG, etc.)
-- Para odds:
-  - Compara valores entre fontes
-  - Detecta variações relevantes
-- Publica eventos enriquecidos e prontos para ação
-
-#### 4. Notifier Service
-
-- Consome eventos analisados
-- Filtra por tipo, impacto e urgência
-- Envia alertas automáticos via:
-  - Telegram
-  - E-mail (SMTP)
-- Gera mensagens claras e acionáveis
-
-#### 5. Map & Dashboard (Frontend)
-
-- **Mapa interativo fullscreen** do Brasil exibindo eventos por estado
-- **Badges de eventos por UF** clicáveis para filtrar regionalmente
-- **Sidebar dinâmica** que aparece ao selecionar estado
-- **Cards de eventos** com:
-  - Barra lateral colorida por impacto (vermelho/laranja/verde)
-  - Link para fonte original
-  - Selo de localização (Nacional/UF/Localidade não especificada)
-  - Ordenação por: Mais recentes, Mais urgentes, Mais impactantes
-- **Modal para cadastro de fontes** com 10 fontes brasileiras pré-configuradas:
-  - InfoMoney, Valor Econômico, G1 Economia, Banco Central do Brasil
-  - Tesouro Nacional, Agência Brasil, Estadão Economia, Folha Mercado
-  - IBGE, B3
-- Histórico e filtros por tipo de evento e impacto
+- **Tecnologia**: React + Vite + Leaflet.
+- **Mapa Global**: Renderiza marcadores em coordenadas de países (Lat/Lng).
+- **Auto-Refresh**: Polling inteligente que verifica atualizações sem recarregar a página.
 
 ---
 
-## 🔄 Fluxo de Processamento
+## 🔄 Fluxo de Dados (Pipeline V5)
 
-```
-Fonte (Notícia / Evento / Odds)
-        ↓
-Collector Service
-        ↓
-Redis (events_queue)
-        ↓
-Analysis Service
-        ├─ Classifica tipo, impacto e urgência
-        ├─ Associa localização
-        ↓
-Redis (alerts_queue)
-        ↓
-Notifier Service
-        ↓
-Alertas (Telegram / E-mail)
-        ↓
-Mapa e Dashboard
-```
+1.  **Ingestão**: API agenda tarefa -> Redis `tasks_queue`.
+2.  **Coleta**: Collector baixa o HTML/XML -> Extrai Título/Corpo -> Redis `events_queue`.
+3.  **Inteligência**: Analysis carrega modelos NLP -> Detecta Idioma -> Extrai País -> Calcula Score -> Salva no **MongoDB**.
+4.  **Consumo**: Frontend solicita `/events` -> API consulta Mongo -> Usuário vê "Breaking News" na China.
 
 ---
 
-## 🗄️ Infraestrutura
+## 🗄️ Stack de Dados
 
-- **Redis** → Fila de eventos e comunicação entre serviços
-- **MongoDB** → Persistência de eventos, fontes e histórico
-- **Docker** → Containerização dos microserviços
-- **Docker Compose** → Orquestração local
-- **Railway** → Deploy em produção
+- **MongoDB**: Schema flexível para eventos. Documentos incluem `location: { country: "US" }`, `analytics: { score: 8 }`.
+- **Redis**: Broker de mensagens de baixa latência. Essencial para desacoplar a coleta (lenta) da análise (cpu-intensive).
 
 ---
 
-## 🧪 Princípios de Engenharia Aplicados
+## ⚠️ Segurança & Ética
 
-- Microserviços
-- Event-driven architecture
-- Separation of concerns
-- Loose coupling
-- Automação orientada a dados
-- Escalabilidade desde o design
-
----
-
-## ⚠️ Nota Ética
-
-O projeto utiliza apenas dados públicos, possui caráter educacional e informativo, não realiza recomendações financeiras nem incentiva apostas ou investimentos.
-
----
-
-## 🚀 Objetivo do Projeto
-
-Demonstrar, em um sistema real e publicado, competências práticas em:
-
-- Arquitetura distribuída
-- Processamento de eventos em tempo real
-- NLP aplicado a finanças
-- Scraping de dados públicos
-- Visualização geoespacial
-- Automação e alertas inteligentes
-
-Um projeto de portfólio desenhado para impressionar tecnicamente, mantendo simplicidade e clareza para um desenvolvedor iniciante.
+- O sistema utiliza apenas dados públicos.
+- Respeita `robots.txt` e headers de User-Agent.
+- Focado em análise de tendências, não recomendação de investimento.
