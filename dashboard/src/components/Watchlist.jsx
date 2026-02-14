@@ -23,7 +23,7 @@ const Watchlist = ({ watchlist, toggleWatchlist, isDark, language }) => {
   const strings = language === "pt" ? t.pt : t.en;
 
   return (
-    <div className="h-full overflow-y-auto p-4 md:p-6 bg-zinc-50 dark:bg-slate-900 scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-gray-800 transition-colors duration-300">
+    <div className="h-full overflow-y-auto p-4 md:p-6 bg-zinc-200 dark:bg-slate-900 scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-gray-800 transition-colors duration-300">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6 flex items-center justify-between">
           <div>
@@ -52,6 +52,7 @@ const Watchlist = ({ watchlist, toggleWatchlist, isDark, language }) => {
                   compact={false}
                   toggleWatchlist={() => toggleWatchlist(event)}
                   isWatchlisted={true}
+                  isDark={isDark}
                 />
               </div>
             ))}

@@ -106,7 +106,14 @@ const IntelligenceFeed = ({
 
   const isSaved = (item) => {
     if (!item) return false;
-    return watchlist.some((w) => w.id === item.id || w._id === item._id);
+    // Strict ID check to avoid matching undefined/null keys
+    const itemId = item.id || item._id;
+    if (!itemId) return false;
+
+    return watchlist.some((w) => {
+      const wId = w.id || w._id;
+      return wId && String(wId) === String(itemId);
+    });
   };
 
   // Helper to adapt Narrative to EventCard format for Watchlist
@@ -115,6 +122,8 @@ const IntelligenceFeed = ({
     const adapted = {
       id: n.id,
       title: n.title,
+      // Use the first event's link as the primary link for the narrative
+      link: n.events[0]?.link || n.events[0]?.source?.url,
       timestamp: n.events[0]?.timestamp || new Date().toISOString(), // Use latest event
       description: `${n.event_count} ${strings.newsCount} - ${n.sector}`,
       source: { name: "Narrative Engine" },
@@ -152,15 +161,15 @@ const IntelligenceFeed = ({
   }
 
   return (
-    <div className="flex h-full w-full overflow-hidden bg-zinc-50 dark:bg-slate-950 transition-colors duration-300">
+    <div className="flex h-full w-full overflow-hidden bg-zinc-200 dark:bg-slate-950 transition-colors duration-300">
       {/* LEFT COLUMN: MASTER LIST */}
-      <div className="w-[30%] min-w-[300px] h-full overflow-y-auto border-r border-zinc-200 dark:border-slate-800 bg-white dark:bg-slate-900/50">
-        <div className="p-4 border-b border-zinc-200 dark:border-slate-800 sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur z-10 flex justify-between items-center">
-          <h2 className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-2">
+      <div className="w-[30%] min-w-[300px] h-full overflow-y-auto border-r border-zinc-300 dark:border-slate-800 bg-zinc-50 dark:bg-slate-900/50">
+        <div className="p-4 border-b border-zinc-300 dark:border-slate-800 sticky top-0 bg-zinc-50/95 dark:bg-slate-900/95 backdrop-blur z-10 flex justify-between items-center">
+          <h2 className="text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider flex items-center gap-2">
             <Newspaper size={14} /> {strings.activeNarratives}
           </h2>
           <div className="flex items-center gap-2">
-            <span className="text-[10px] text-slate-400 font-mono hidden md:block">
+            <span className="text-[10px] text-slate-500 font-mono hidden md:block">
               {lastUpdated.toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -168,7 +177,7 @@ const IntelligenceFeed = ({
             </span>
             <button
               onClick={loadNarratives}
-              className="text-slate-400 hover:text-blue-500 transition-colors"
+              className="text-slate-500 hover:text-blue-600 transition-colors"
             >
               <RefreshCw size={12} />
             </button>
@@ -179,7 +188,7 @@ const IntelligenceFeed = ({
           {narratives.map((narrative) => {
             const isSelected = selectedNarrative?.id === narrative.id;
             // Tailwind dynamic classes need full strings typically
-            let borderClass = "border-l-4 border-gray-300 dark:border-gray-700";
+            let borderClass = "border-l-4 border-zinc-300 dark:border-gray-700";
             if (narrative.overall_sentiment === "Bullish")
               borderClass = "border-l-4 border-green-500";
             if (narrative.overall_sentiment === "Bearish")
@@ -190,35 +199,35 @@ const IntelligenceFeed = ({
                 key={narrative.id}
                 onClick={() => setSelectedNarrative(narrative)}
                 className={`
-                            group cursor-pointer p-4 border-b border-zinc-100 dark:border-slate-800/50 
-                            transition-all duration-200 hover:bg-zinc-50 dark:hover:bg-slate-800/50
-                            ${isSelected ? "bg-zinc-100 dark:bg-slate-800" : ""}
+                            group cursor-pointer p-4 border-b border-zinc-200 dark:border-slate-800/50 
+                            transition-all duration-200 hover:bg-zinc-100 dark:hover:bg-slate-800/50
+                            ${isSelected ? "bg-zinc-200 dark:bg-slate-800" : ""}
                             ${borderClass}
                         `}
               >
                 <div className="flex justify-between items-start mb-1">
-                  <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
+                  <span className="text-[10px] font-bold uppercase text-slate-500 tracking-wider">
                     {narrative.sector}
                   </span>
-                  <span className="text-[10px] text-slate-400 font-mono">
+                  <span className="text-[10px] text-slate-500 font-mono">
                     {narrative.event_count} {strings.newsCount}
                   </span>
                 </div>
                 <h3
-                  className={`text-sm font-bold leading-tight mb-2 ${isSelected ? "text-blue-600 dark:text-blue-400" : "text-slate-700 dark:text-slate-200"}`}
+                  className={`text-sm font-bold leading-tight mb-2 ${isSelected ? "text-blue-700 dark:text-blue-400" : "text-slate-700 dark:text-slate-200"}`}
                 >
                   {narrative.title}
                 </h3>
 
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium bg-zinc-100 dark:bg-slate-900 px-2 py-0.5 rounded-full">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 font-medium bg-zinc-200 dark:bg-slate-900 px-2 py-0.5 rounded-full">
                     {getSentimentIcon(narrative.overall_sentiment)}
                     <span>
                       {translateSentiment(narrative.overall_sentiment)}
                     </span>
                   </div>
                   {isSelected && (
-                    <ChevronRight size={14} className="text-blue-500" />
+                    <ChevronRight size={14} className="text-blue-600" />
                   )}
                 </div>
               </div>
@@ -228,7 +237,7 @@ const IntelligenceFeed = ({
       </div>
 
       {/* RIGHT COLUMN: DETAIL TIMELINE */}
-      <div className="w-[70%] h-full overflow-y-auto bg-zinc-50 dark:bg-slate-950 p-6 relative">
+      <div className="w-[70%] h-full overflow-y-auto bg-zinc-100 dark:bg-slate-950 p-6 relative">
         {!selectedNarrative ? (
           <div className="h-full flex flex-col items-center justify-center text-slate-400 opacity-60">
             <div className="w-20 h-20 border-2 border-slate-300 dark:border-slate-700 rounded-full flex items-center justify-center mb-4 border-dashed">
@@ -251,7 +260,10 @@ const IntelligenceFeed = ({
                 {/* Watchlist Star for Narrative */}
                 {toggleWatchlist && (
                   <button
-                    onClick={() => saveNarrative(selectedNarrative)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      saveNarrative(selectedNarrative);
+                    }}
                     className={`hover:scale-110 transition-transform ${isSaved(selectedNarrative) ? "text-yellow-400" : "text-slate-300 hover:text-yellow-400"}`}
                     title="Watchlist Narrative"
                   >

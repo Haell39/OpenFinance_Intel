@@ -159,9 +159,17 @@ def list_events(
         # Supports both "BR", "US", "GLOBAL", etc.
         filters["location.country"] = region
 
+    # Fetch events including _id (don't suppress it)
     events = list(
-        mongo_db.events.find(filters, {"_id": 0}).sort("timestamp", -1).limit(100)
+        mongo_db.events.find(filters).sort("timestamp", -1).limit(100)
     )
+    
+    # Convert ObjectId to string id
+    for event in events:
+        if "_id" in event:
+            event["id"] = str(event["_id"])
+            del event["_id"]
+            
     return events
 
 
@@ -238,7 +246,8 @@ def get_narratives() -> list[dict]:
             for evt in events:
                 # Fix ObjectId serialization
                 if "_id" in evt:
-                    evt["_id"] = str(evt["_id"])
+                    evt["id"] = str(evt["_id"])
+                    del evt["_id"]
 
                 # Coleta keywords
                 if "keywords" in evt:
@@ -301,8 +310,8 @@ def generate_mock_narratives() -> list[dict]:
             "overall_sentiment": "Bullish",
             "event_count": 5,
             "events": [
-                {"title": "BlackRock aumenta posição em Bitcoin", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bullish"}}},
-                {"title": "Ethereum atinge nova máxima histórica", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "medium", "analytics": {"sentiment": {"label": "Bullish"}}},
+                {"id": "mock-evt-1", "title": "BlackRock aumenta posição em Bitcoin", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bullish"}}},
+                {"id": "mock-evt-2", "title": "Ethereum atinge nova máxima histórica", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "medium", "analytics": {"sentiment": {"label": "Bullish"}}},
             ]
         },
         {
@@ -312,8 +321,8 @@ def generate_mock_narratives() -> list[dict]:
             "overall_sentiment": "Bearish",
             "event_count": 8,
             "events": [
-                {"title": "Fed sinaliza manutenção das taxas", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bearish"}}},
-                {"title": "Inflação nos EUA sobe acima do esperado", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bearish"}}},
+                {"id": "mock-evt-3", "title": "Fed sinaliza manutenção das taxas", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bearish"}}},
+                {"id": "mock-evt-4", "title": "Inflação nos EUA sobe acima do esperado", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bearish"}}},
             ]
         },
         {
@@ -323,7 +332,7 @@ def generate_mock_narratives() -> list[dict]:
             "overall_sentiment": "Bullish",
             "event_count": 6,
             "events": [
-                {"title": "Nvidia revela novo chip Blackwell", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bullish"}}},
+                {"id": "mock-evt-5", "title": "Nvidia revela novo chip Blackwell", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bullish"}}},
             ]
         }
     ]

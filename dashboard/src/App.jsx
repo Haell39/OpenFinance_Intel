@@ -105,8 +105,17 @@ export default function App() {
 
   // Watchlist Logic
   const [watchlist, setWatchlist] = useState(() => {
-    const saved = localStorage.getItem("watchlist");
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem("watchlist");
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      // Clean up legacy/invalid items without IDs
+      const valid = parsed.filter((i) => i.id || i._id);
+      return valid;
+    } catch (e) {
+      console.error("Failed to parse watchlist", e);
+      return [];
+    }
   });
 
   useEffect(() => {
@@ -114,11 +123,32 @@ export default function App() {
   }, [watchlist]);
 
   const toggleWatchlist = (event) => {
+    // Front-end Guard: Prevent saving items without valid ID
+    const evtId = event?.id || event?._id;
+    if (!evtId) {
+      console.warn(
+        "Attempted to toggle watchlist item without valid ID:",
+        event,
+      );
+      return;
+    }
+
     setWatchlist((prev) => {
-      const exists = prev.find((i) => i.id === event.id || i._id === event._id);
+      // Check existence using strict String comparison to handle int/string mismatches
+      const exists = prev.find((i) => {
+        const iId = i.id || i._id;
+        return String(iId) === String(evtId);
+      });
+
       if (exists) {
-        return prev.filter((i) => (i.id || i._id) !== (event.id || event._id));
+        // Remove item
+        return prev.filter((i) => {
+          const iId = i.id || i._id;
+          return String(iId) !== String(evtId);
+        });
       }
+
+      // Add item
       return [event, ...prev];
     });
   };
@@ -243,7 +273,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-zinc-100 dark:bg-gray-950 text-slate-900 dark:text-slate-200 transition-colors duration-300">
+    <div className="flex h-screen w-screen overflow-hidden bg-zinc-300 dark:bg-gray-950 text-slate-900 dark:text-slate-200 transition-colors duration-300">
       {/* 1. LEFT SIDEBAR (Fixed) */}
       <Sidebar
         activeTab={activeTab}
@@ -254,9 +284,9 @@ export default function App() {
       />
 
       {/* 2. MAIN CONTENT AREA (Flexible) */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden bg-zinc-50 dark:bg-slate-900 relative transition-colors duration-300">
+      <div className="flex-1 flex flex-col h-full overflow-hidden bg-zinc-200 dark:bg-slate-900 relative transition-colors duration-300">
         {/* HEADER / TICKER */}
-        <header className="header shrink-0 border-b border-zinc-200 dark:border-gray-800 bg-white/70 dark:bg-gray-950/50 backdrop-blur-md z-50 px-4 h-14 flex items-center justify-between transition-colors duration-300">
+        <header className="header shrink-0 border-b border-zinc-300 dark:border-gray-800 bg-zinc-100/90 dark:bg-gray-950/50 backdrop-blur-md z-50 px-4 h-14 flex items-center justify-between transition-colors duration-300">
           {/* Left: Ticker */}
           <div className="header-left flex items-center gap-6 overflow-hidden">
             <div className="status-bar hidden md:flex gap-6 overflow-x-auto no-scrollbar">
@@ -266,16 +296,16 @@ export default function App() {
                   className="status-card flex items-center gap-3 shrink-0"
                 >
                   <div className="flex flex-col">
-                    <span className="text-[9px] text-slate-500 font-bold tracking-wider leading-none">
+                    <span className="text-[9px] text-slate-600 dark:text-slate-500 font-bold tracking-wider leading-none">
                       {(signal.id || "").toString().toUpperCase()}
                     </span>
                     <span
                       className={`font-mono text-sm font-bold leading-tight ${
                         signal.trend === "up"
-                          ? "text-green-600 dark:text-green-400"
+                          ? "text-green-700 dark:text-green-400"
                           : signal.trend === "down"
-                            ? "text-red-600 dark:text-red-400"
-                            : "text-slate-700 dark:text-slate-200"
+                            ? "text-red-700 dark:text-red-400"
+                            : "text-slate-800 dark:text-slate-200"
                       }`}
                     >
                       {signal.title.split(": ")[1] || signal.title}
@@ -290,12 +320,12 @@ export default function App() {
                           signal.trend === "up"
                             ? isDark
                               ? "#22c55e"
-                              : "#16a34a"
+                              : "#15803d"
                             : signal.trend === "down"
                               ? isDark
                                 ? "#ef4444"
-                                : "#dc2626"
-                              : "#94a3b8"
+                                : "#b91c1c"
+                              : "#64748b"
                         }
                       />
                     </div>
@@ -309,13 +339,13 @@ export default function App() {
           <div className="header-right flex items-center gap-4">
             <button
               onClick={toggleLanguage}
-              className="bg-zinc-100 dark:bg-gray-900 border border-zinc-300 dark:border-gray-700 text-xs font-bold rounded text-slate-600 dark:text-slate-400 px-2 py-1 transition-colors hover:text-blue-500"
+              className="bg-zinc-200 dark:bg-gray-900 border border-zinc-400 dark:border-gray-700 text-xs font-bold rounded text-slate-700 dark:text-slate-400 px-2 py-1 transition-colors hover:text-blue-600 hover:border-blue-400"
             >
               {language === "pt" ? "🇧🇷 PT" : "🇺🇸 EN"}
             </button>
 
             <select
-              className="bg-zinc-100 dark:bg-gray-900 border border-zinc-300 dark:border-gray-700 text-xs rounded text-slate-600 dark:text-slate-400 px-2 py-1 outline-none focus:border-blue-500 transition-colors"
+              className="bg-zinc-200 dark:bg-gray-900 border border-zinc-400 dark:border-gray-700 text-xs rounded text-slate-700 dark:text-slate-400 px-2 py-1 outline-none focus:border-blue-500 transition-colors"
               value={refreshInterval}
               onChange={(e) => setRefreshInterval(Number(e.target.value))}
             >
@@ -326,19 +356,19 @@ export default function App() {
               <option value={300000}>5m</option>
             </select>
 
-            <div className="hidden md:flex items-center text-[10px] text-slate-500 gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500/50 animate-pulse"></span>
+            <div className="hidden md:flex items-center text-[10px] text-slate-600 dark:text-slate-500 gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-500/50 animate-pulse"></span>
               <strong>{timeSinceUpdate}</strong>
             </div>
 
             <button
-              className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors shadow-lg shadow-blue-500/20"
+              className="bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors shadow-lg shadow-blue-500/20"
               onClick={() => setShowSourceModal(true)}
             >
               + Fonte
             </button>
             <button
-              className="text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
+              className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
               title="Force Refresh"
               onClick={() => {
                 setStatus("loading");
@@ -352,7 +382,7 @@ export default function App() {
         </header>
 
         {/* CONTENT TABS */}
-        <main className="flex-1 relative overflow-hidden flex bg-zinc-50 dark:bg-slate-900 transition-colors duration-300">
+        <main className="flex-1 relative overflow-hidden flex bg-zinc-200 dark:bg-slate-900 transition-colors duration-300">
           {/* TAB: MARKET OVERVIEW (Bento Grid) */}
           {activeTab === "overview" && (
             <div className="w-full h-full">

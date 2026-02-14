@@ -34,7 +34,7 @@ const Sidebar = ({
   ];
 
   return (
-    <div className="h-screen w-16 md:w-64 bg-white dark:bg-gray-950 border-r border-zinc-200 dark:border-gray-800 flex flex-col shrink-0 transition-all duration-300 shadow-sm z-20">
+    <div className="h-screen w-16 md:w-64 bg-zinc-100 dark:bg-gray-950 border-r border-zinc-300 dark:border-gray-800 flex flex-col shrink-0 transition-all duration-300 shadow-sm z-20">
       {/* Brand / Logo Area */}
       <div className="h-16 flex items-center justify-center md:justify-start md:px-6 border-b border-zinc-200 dark:border-gray-800">
         <span className="text-2xl">👁️</span>

@@ -58,7 +58,7 @@ const MarketOverview = ({
 
   // Theme Helpers
   const cardClass =
-    "bg-white dark:bg-gray-950 border border-zinc-200 dark:border-gray-800 rounded-lg shadow-sm transition-colors duration-300";
+    "bg-zinc-50 dark:bg-gray-950 border border-zinc-300 dark:border-gray-800 rounded-lg shadow-sm transition-colors duration-300";
   const textHead = "text-slate-800 dark:text-slate-200";
   const textBody = "text-slate-600 dark:text-slate-300";
 
@@ -66,7 +66,7 @@ const MarketOverview = ({
     watchlist.some((w) => w.id === event.id || w._id === event._id);
 
   return (
-    <div className="h-full overflow-y-auto p-4 md:p-6 bg-zinc-50 dark:bg-slate-900 scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-gray-800 transition-colors duration-300">
+    <div className="h-full overflow-y-auto p-4 md:p-6 bg-zinc-200 dark:bg-slate-900 scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-gray-800 transition-colors duration-300">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-7xl mx-auto">
         {/* WIDGET 1: AI MARKET PULSE (Full Width) */}
         <div className={`${cardClass} md:col-span-3 p-4`}>
@@ -134,21 +134,6 @@ const MarketOverview = ({
                       <span className="text-[9px] font-mono bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 px-1 rounded">
                         SCORE: {event.impact === "high" ? "HI" : "MD"}
                       </span>
-                      {toggleWatchlist && (
-                        <button
-                          onClick={() => toggleWatchlist(event)}
-                          className={`${
-                            isSaved(event)
-                              ? "text-yellow-400"
-                              : "text-slate-300 dark:text-slate-700 opacity-0 group-hover:opacity-100 hover:text-yellow-400"
-                          } transition-all`}
-                        >
-                          <Star
-                            size={10}
-                            fill={isSaved(event) ? "currentColor" : "none"}
-                          />
-                        </button>
-                      )}
                     </div>
                   </div>
                   <a
@@ -193,21 +178,6 @@ const MarketOverview = ({
                       <span className="text-[9px] font-mono bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400 px-1 rounded">
                         SCORE: {event.impact === "high" ? "HI" : "MD"}
                       </span>
-                      {toggleWatchlist && (
-                        <button
-                          onClick={() => toggleWatchlist(event)}
-                          className={`${
-                            isSaved(event)
-                              ? "text-yellow-400"
-                              : "text-slate-300 dark:text-slate-700 opacity-0 group-hover:opacity-100 hover:text-yellow-400"
-                          } transition-all`}
-                        >
-                          <Star
-                            size={10}
-                            fill={isSaved(event) ? "currentColor" : "none"}
-                          />
-                        </button>
-                      )}
                     </div>
                   </div>
                   <a
