@@ -79,18 +79,31 @@ async function fetchTickerData() {
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("overview");
-  // Theme State: Default 'light' (Silver)
-  const [isDark, setIsDark] = useState(false);
-  // Language State: Default 'pt'
-  const [language, setLanguage] = useState("pt");
+
+  // Theme State: Default 'light' (Silver), persist in localStorage
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    return saved === "dark";
+  });
+
+  // Language State: Default 'pt', persist in localStorage
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem("language") || "pt";
+  });
 
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
   }, [isDark]);
+
+  useEffect(() => {
+    localStorage.setItem("language", language);
+  }, [language]);
 
   const toggleTheme = () => setIsDark(!isDark);
   const toggleLanguage = () =>

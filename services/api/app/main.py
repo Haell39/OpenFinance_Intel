@@ -281,7 +281,8 @@ def get_narratives() -> list[dict]:
                 sentiment_label = "Bearish"
 
             narrative = {
-                "id": f"narrative-{sector.lower()}-{int(datetime.utcnow().timestamp())}",
+                # Deterministic ID for persistence (Watchlist)
+                "id": f"narrative-{sector.lower()}",
                 "title": f"{metrics_title} em {sector}",
                 "sector": sector,
                 "overall_sentiment": sentiment_label,
