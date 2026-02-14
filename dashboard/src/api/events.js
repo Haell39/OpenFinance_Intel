@@ -45,3 +45,11 @@ export async function createSource({ url, eventType, sourceType }) {
 
   return response.json();
 }
+
+export async function fetchNarratives() {
+  const response = await fetch("/narratives");
+  if (!response.ok) {
+    throw new Error("Failed to load narratives");
+  }
+  return response.json();
+}

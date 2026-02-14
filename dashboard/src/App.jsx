@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createSource, fetchEvents } from "./api/events.js";
 import MarketOverview from "./components/MarketOverview.jsx";
+import IntelligenceFeed from "./components/IntelligenceFeed.jsx";
 import Sparkline from "./components/Sparkline.jsx";
 import Sidebar from "./components/Sidebar.jsx";
 
@@ -334,18 +335,10 @@ export default function App() {
             </div>
           )}
 
-          {/* TAB: FEED (Placeholder) */}
+          {/* TAB: FEED (Narrative Engine) */}
           {activeTab === "feed" && (
-            <div className="flex-1 flex flex-col items-center justify-center text-slate-400 dark:text-slate-500">
-              <div className="w-16 h-16 bg-zinc-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
-                <span className="text-2xl">📰</span>
-              </div>
-              <h3 className="text-lg font-bold text-slate-700 dark:text-slate-300">
-                Intelligence Feed
-              </h3>
-              <p className="text-sm font-mono mt-2">
-                Connecting to global sources...
-              </p>
+            <div className="w-full h-full">
+              <IntelligenceFeed isDark={isDark} />
             </div>
           )}
 

@@ -7,6 +7,7 @@ export default defineConfig({
     proxy: {
       "/events": "http://localhost:8000",
       "/sources": "http://localhost:8000",
+      "/narratives": "http://localhost:8000",
     },
   },
 });
