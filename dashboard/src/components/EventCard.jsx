@@ -1,4 +1,5 @@
 import React from "react";
+import { Star } from "lucide-react";
 
 function timeAgo(value) {
   if (!value) return "";
@@ -22,7 +23,12 @@ function getEventLink(event) {
   return null;
 }
 
-const EventCard = ({ event, compact = false }) => {
+const EventCard = ({
+  event,
+  compact = false,
+  toggleWatchlist,
+  isWatchlisted,
+}) => {
   const sentiment = event.analytics?.sentiment?.label || "Neutral";
 
   // Terminal Colors
@@ -42,7 +48,7 @@ const EventCard = ({ event, compact = false }) => {
     <div
       className={`bg-gray-950 border ${borderColors[sentiment]} rounded-sm p-2 transition-all duration-200 group relative hover:bg-gray-900`}
     >
-      {/* Header Line: ID | Location | Time */}
+      {/* Header Line: ID | Location | Time | Star */}
       <div className="flex justify-between items-center mb-1 text-[10px] font-mono text-slate-500 border-b border-gray-800 pb-1">
         <div className="flex gap-2 items-center">
           <span className={sentimentColor[sentiment]}>●</span>
@@ -55,7 +61,20 @@ const EventCard = ({ event, compact = false }) => {
             {event.source?.name || "RSS"}
           </span>
         </div>
-        <div>{timeAgo(event.timestamp)}</div>
+        <div className="flex items-center gap-2">
+          <span>{timeAgo(event.timestamp)}</span>
+          {toggleWatchlist && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleWatchlist(event);
+              }}
+              className={`hover:scale-110 transition-transform ${isWatchlisted ? "text-yellow-400" : "text-slate-600 hover:text-yellow-400"}`}
+            >
+              <Star size={12} fill={isWatchlisted ? "currentColor" : "none"} />
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Title */}

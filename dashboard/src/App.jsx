@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createSource, fetchEvents } from "./api/events.js";
 import MarketOverview from "./components/MarketOverview.jsx";
 import IntelligenceFeed from "./components/IntelligenceFeed.jsx";
+import Watchlist from "./components/Watchlist.jsx";
 import Sparkline from "./components/Sparkline.jsx";
 import Sidebar from "./components/Sidebar.jsx";
 
@@ -80,6 +81,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("overview");
   // Theme State: Default 'light' (Silver)
   const [isDark, setIsDark] = useState(false);
+  // Language State: Default 'pt'
+  const [language, setLanguage] = useState("pt");
 
   useEffect(() => {
     if (isDark) {
@@ -90,6 +93,8 @@ export default function App() {
   }, [isDark]);
 
   const toggleTheme = () => setIsDark(!isDark);
+  const toggleLanguage = () =>
+    setLanguage((prev) => (prev === "pt" ? "en" : "pt"));
 
   const [impact, setImpact] = useState("all");
   const [type, setType] = useState("all");
@@ -97,6 +102,26 @@ export default function App() {
   const [events, setEvents] = useState([]);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
+
+  // Watchlist Logic
+  const [watchlist, setWatchlist] = useState(() => {
+    const saved = localStorage.getItem("watchlist");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("watchlist", JSON.stringify(watchlist));
+  }, [watchlist]);
+
+  const toggleWatchlist = (event) => {
+    setWatchlist((prev) => {
+      const exists = prev.find((i) => i.id === event.id || i._id === event._id);
+      if (exists) {
+        return prev.filter((i) => (i.id || i._id) !== (event.id || event._id));
+      }
+      return [event, ...prev];
+    });
+  };
 
   // Real-time & Ticker State
   const [marketSignals, setMarketSignals] = useState(INITIAL_MARKET_SIGNALS);
@@ -225,6 +250,7 @@ export default function App() {
         setActiveTab={setActiveTab}
         isDark={isDark}
         toggleTheme={toggleTheme}
+        language={language}
       />
 
       {/* 2. MAIN CONTENT AREA (Flexible) */}
@@ -281,12 +307,21 @@ export default function App() {
 
           {/* Right: Controls */}
           <div className="header-right flex items-center gap-4">
+            <button
+              onClick={toggleLanguage}
+              className="bg-zinc-100 dark:bg-gray-900 border border-zinc-300 dark:border-gray-700 text-xs font-bold rounded text-slate-600 dark:text-slate-400 px-2 py-1 transition-colors hover:text-blue-500"
+            >
+              {language === "pt" ? "🇧🇷 PT" : "🇺🇸 EN"}
+            </button>
+
             <select
               className="bg-zinc-100 dark:bg-gray-900 border border-zinc-300 dark:border-gray-700 text-xs rounded text-slate-600 dark:text-slate-400 px-2 py-1 outline-none focus:border-blue-500 transition-colors"
               value={refreshInterval}
               onChange={(e) => setRefreshInterval(Number(e.target.value))}
             >
-              <option value={0}>Auto: Off</option>
+              <option value={0}>
+                {language === "pt" ? "Auto: Off" : "Auto: Off"}
+              </option>
               <option value={60000}>1m</option>
               <option value={300000}>5m</option>
             </select>
@@ -330,7 +365,13 @@ export default function App() {
                 </div>
               )}
               {status === "ready" && (
-                <MarketOverview events={events} isDark={isDark} />
+                <MarketOverview
+                  events={events}
+                  isDark={isDark}
+                  language={language}
+                  watchlist={watchlist}
+                  toggleWatchlist={toggleWatchlist}
+                />
               )}
             </div>
           )}
@@ -338,22 +379,24 @@ export default function App() {
           {/* TAB: FEED (Narrative Engine) */}
           {activeTab === "feed" && (
             <div className="w-full h-full">
-              <IntelligenceFeed isDark={isDark} />
+              <IntelligenceFeed
+                isDark={isDark}
+                language={language}
+                watchlist={watchlist}
+                toggleWatchlist={toggleWatchlist}
+              />
             </div>
           )}
 
-          {/* TAB: WATCHLIST (Placeholder) */}
+          {/* TAB: WATCHLIST (Real) */}
           {activeTab === "watchlist" && (
-            <div className="flex-1 flex flex-col items-center justify-center text-slate-400 dark:text-slate-500">
-              <div className="w-16 h-16 bg-zinc-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
-                <span className="text-2xl">💼</span>
-              </div>
-              <h3 className="text-lg font-bold text-slate-700 dark:text-slate-300">
-                My Watchlist
-              </h3>
-              <p className="text-sm font-mono mt-2">
-                Track your portfolio risks here.
-              </p>
+            <div className="w-full h-full">
+              <Watchlist
+                watchlist={watchlist}
+                toggleWatchlist={toggleWatchlist}
+                isDark={isDark}
+                language={language}
+              />
             </div>
           )}
         </main>

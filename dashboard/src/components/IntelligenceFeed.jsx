@@ -9,30 +9,82 @@ import {
   ChevronRight,
   Loader,
   AlertTriangle,
+  Star,
+  RefreshCw,
 } from "lucide-react";
 
-const IntelligenceFeed = ({ isDark }) => {
+const IntelligenceFeed = ({
+  isDark,
+  language,
+  watchlist = [],
+  toggleWatchlist,
+}) => {
+  const t = {
+    pt: {
+      activeNarratives: "Narrativas Ativas",
+      newsCount: "notícias",
+      decoding: "Decodificando Narrativas...",
+      error: "Falha ao carregar inteligência.",
+      retry: "Tentar Novamente",
+      selectPrompt: "Selecione uma narrativa para visualizar a linha do tempo",
+      marketConsensus: "Consenso de Mercado",
+      bullish: "Otimista",
+      bearish: "Pessimista",
+      neutral: "Neutro",
+    },
+    en: {
+      activeNarratives: "Active Narratives",
+      newsCount: "news",
+      decoding: "Decoding Narratives...",
+      error: "Failed to load intelligence feed.",
+      retry: "Try Again",
+      selectPrompt: "Select a narrative to view the timeline",
+      marketConsensus: "Market Consensus",
+      bullish: "Bullish",
+      bearish: "Bearish",
+      neutral: "Neutral",
+    },
+  };
+  const strings = language === "pt" ? t.pt : t.en;
+
+  const translateSentiment = (sentiment) => {
+    if (!sentiment) return strings.neutral;
+    if (sentiment === "Bullish") return strings.bullish;
+    if (sentiment === "Bearish") return strings.bearish;
+    return strings.neutral;
+  };
+
   const [narratives, setNarratives] = useState([]);
   const [selectedNarrative, setSelectedNarrative] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
 
+  // Auto-Refresh Logic (60s)
   useEffect(() => {
     loadNarratives();
+    const interval = setInterval(loadNarratives, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   const loadNarratives = async () => {
     try {
-      setLoading(true);
+      // Don't set loading to true on background refresh if we have data
+      if (narratives.length === 0) setLoading(true);
+
       const data = await fetchNarratives();
       setNarratives(data);
-      if (data.length > 0) {
-        // Optional: Auto-select first one on load?
-        // Let's keep it empty state as requested by user.
+      setLastUpdated(new Date());
+
+      // Update selected narrative if it exists (to get new events)
+      if (selectedNarrative) {
+        const updated = data.find((n) => n.id === selectedNarrative.id);
+        if (updated) setSelectedNarrative(updated);
       }
     } catch (err) {
-      setError("Failed to load intelligence feed.");
       console.error(err);
+      if (narratives.length === 0)
+        setError("Failed to load intelligence feed.");
     } finally {
       setLoading(false);
     }
@@ -52,11 +104,34 @@ const IntelligenceFeed = ({ isDark }) => {
     return <Minus size={16} className="text-gray-400" />;
   };
 
-  if (loading) {
+  const isSaved = (item) => {
+    if (!item) return false;
+    return watchlist.some((w) => w.id === item.id || w._id === item._id);
+  };
+
+  // Helper to adapt Narrative to EventCard format for Watchlist
+  const saveNarrative = (n) => {
+    if (!toggleWatchlist) return;
+    const adapted = {
+      id: n.id,
+      title: n.title,
+      timestamp: n.events[0]?.timestamp || new Date().toISOString(), // Use latest event
+      description: `${n.event_count} ${strings.newsCount} - ${n.sector}`,
+      source: { name: "Narrative Engine" },
+      analytics: {
+        sentiment: { label: n.overall_sentiment },
+      },
+      location: { country: "INTL" }, // Default
+      isNarrative: true,
+    };
+    toggleWatchlist(adapted);
+  };
+
+  if (loading && narratives.length === 0) {
     return (
       <div className="h-full flex flex-col items-center justify-center space-y-4 text-slate-500 dark:text-slate-400">
         <Loader className="animate-spin" size={32} />
-        <span className="font-mono text-sm">Decodificando Narrativas...</span>
+        <span className="font-mono text-sm">{strings.decoding}</span>
       </div>
     );
   }
@@ -65,12 +140,12 @@ const IntelligenceFeed = ({ isDark }) => {
     return (
       <div className="h-full flex flex-col items-center justify-center space-y-4 text-red-500">
         <AlertTriangle size={32} />
-        <span className="font-mono text-sm">{error}</span>
+        <span className="font-mono text-sm">{strings.error}</span>
         <button
           onClick={loadNarratives}
           className="px-4 py-2 bg-slate-200 dark:bg-slate-800 rounded hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors text-xs font-bold"
         >
-          Tentar Novamente
+          {strings.retry}
         </button>
       </div>
     );
@@ -80,21 +155,30 @@ const IntelligenceFeed = ({ isDark }) => {
     <div className="flex h-full w-full overflow-hidden bg-zinc-50 dark:bg-slate-950 transition-colors duration-300">
       {/* LEFT COLUMN: MASTER LIST */}
       <div className="w-[30%] min-w-[300px] h-full overflow-y-auto border-r border-zinc-200 dark:border-slate-800 bg-white dark:bg-slate-900/50">
-        <div className="p-4 border-b border-zinc-200 dark:border-slate-800 sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur z-10">
+        <div className="p-4 border-b border-zinc-200 dark:border-slate-800 sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur z-10 flex justify-between items-center">
           <h2 className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-2">
-            <Newspaper size={14} /> Narrativas Ativas
+            <Newspaper size={14} /> {strings.activeNarratives}
           </h2>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-slate-400 font-mono hidden md:block">
+              {lastUpdated.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
+            <button
+              onClick={loadNarratives}
+              className="text-slate-400 hover:text-blue-500 transition-colors"
+            >
+              <RefreshCw size={12} />
+            </button>
+          </div>
         </div>
 
         <div className="flex flex-col">
           {narratives.map((narrative) => {
             const isSelected = selectedNarrative?.id === narrative.id;
-            const sentimentColor = getSentimentColor(
-              narrative.overall_sentiment,
-            );
-
-            // Tailwind dynamic classes need full strings typically, but standard colors work fine in interpolation for simple cases or use style.
-            // Using border classes explicitly for safety
+            // Tailwind dynamic classes need full strings typically
             let borderClass = "border-l-4 border-gray-300 dark:border-gray-700";
             if (narrative.overall_sentiment === "Bullish")
               borderClass = "border-l-4 border-green-500";
@@ -117,7 +201,7 @@ const IntelligenceFeed = ({ isDark }) => {
                     {narrative.sector}
                   </span>
                   <span className="text-[10px] text-slate-400 font-mono">
-                    {narrative.event_count} news
+                    {narrative.event_count} {strings.newsCount}
                   </span>
                 </div>
                 <h3
@@ -129,7 +213,9 @@ const IntelligenceFeed = ({ isDark }) => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium bg-zinc-100 dark:bg-slate-900 px-2 py-0.5 rounded-full">
                     {getSentimentIcon(narrative.overall_sentiment)}
-                    <span>{narrative.overall_sentiment}</span>
+                    <span>
+                      {translateSentiment(narrative.overall_sentiment)}
+                    </span>
                   </div>
                   {isSelected && (
                     <ChevronRight size={14} className="text-blue-500" />
@@ -148,9 +234,7 @@ const IntelligenceFeed = ({ isDark }) => {
             <div className="w-20 h-20 border-2 border-slate-300 dark:border-slate-700 rounded-full flex items-center justify-center mb-4 border-dashed">
               <Newspaper size={32} />
             </div>
-            <p className="text-lg font-light">
-              Selecione uma narrativa para visualizar a linha do tempo
-            </p>
+            <p className="text-lg font-light">{strings.selectPrompt}</p>
           </div>
         ) : (
           <div className="max-w-3xl mx-auto">
@@ -163,6 +247,22 @@ const IntelligenceFeed = ({ isDark }) => {
                 <span className="text-xs text-slate-400 font-mono">
                   ID: {selectedNarrative.id.split("-").pop()}
                 </span>
+                <div className="flex-1"></div>
+                {/* Watchlist Star for Narrative */}
+                {toggleWatchlist && (
+                  <button
+                    onClick={() => saveNarrative(selectedNarrative)}
+                    className={`hover:scale-110 transition-transform ${isSaved(selectedNarrative) ? "text-yellow-400" : "text-slate-300 hover:text-yellow-400"}`}
+                    title="Watchlist Narrative"
+                  >
+                    <Star
+                      size={20}
+                      fill={
+                        isSaved(selectedNarrative) ? "currentColor" : "none"
+                      }
+                    />
+                  </button>
+                )}
               </div>
               <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-4 tracking-tight">
                 {selectedNarrative.title}
@@ -178,11 +278,11 @@ const IntelligenceFeed = ({ isDark }) => {
                         ? "bg-red-500"
                         : "bg-slate-400"
                   }`}
-                  style={{ width: "100%" }} // Simple full bar for MVP, could use logic for intensity
+                  style={{ width: "100%" }}
                 />
               </div>
               <p className="text-xs text-slate-500 mt-2 font-mono">
-                Consenso de Mercado:{" "}
+                {strings.marketConsensus}:{" "}
                 <strong
                   className={
                     selectedNarrative.overall_sentiment === "Bullish"
@@ -192,7 +292,7 @@ const IntelligenceFeed = ({ isDark }) => {
                         : "text-slate-500"
                   }
                 >
-                  {selectedNarrative.overall_sentiment}
+                  {translateSentiment(selectedNarrative.overall_sentiment)}
                 </strong>
               </p>
             </div>
@@ -216,23 +316,37 @@ const IntelligenceFeed = ({ isDark }) => {
                 if (eventSentiment === "Bearish") dotColor = "bg-red-500";
 
                 return (
-                  <div key={index} className="pl-6 relative">
+                  <div key={index} className="pl-6 relative group">
                     {/* Timeline Dot */}
                     <div
                       className={`absolute -left-[9px] top-1.5 w-4 h-4 rounded-full border-4 border-zinc-50 dark:border-slate-950 ${dotColor} shadow-sm`}
                     />
 
-                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 mb-1">
+                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 mb-1 justify-between">
                       <div className="flex items-center gap-2 text-xs font-mono text-slate-400 shrink-0">
                         <Clock size={12} />
                         <span>
                           {date} {time}
                         </span>
                       </div>
-                      <h4 className="text-base font-semibold text-slate-700 dark:text-slate-200 leading-snug">
-                        {event.title}
-                      </h4>
+
+                      {/* Watchlist Star for Event */}
+                      {toggleWatchlist && (
+                        <button
+                          onClick={() => toggleWatchlist(event)}
+                          className={`opacity-0 group-hover:opacity-100 transition-opacity ${isSaved(event) ? "opacity-100 text-yellow-400" : "text-slate-300 hover:text-yellow-400"}`}
+                        >
+                          <Star
+                            size={14}
+                            fill={isSaved(event) ? "currentColor" : "none"}
+                          />
+                        </button>
+                      )}
                     </div>
+
+                    <h4 className="text-base font-semibold text-slate-700 dark:text-slate-200 leading-snug">
+                      {event.title}
+                    </h4>
 
                     {event.description && (
                       <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mt-1 bg-white dark:bg-slate-900/50 p-3 rounded border border-zinc-100 dark:border-slate-800/50 shadow-sm">

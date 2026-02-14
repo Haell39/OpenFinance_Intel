@@ -31,7 +31,8 @@ _O "Cérebro" do sistema._
       - **Classificação**: `Bullish` (>0.1), `Bearish` (<-0.1) ou `Neutral`.
   4.  **Classificação Geográfica**: Divide eventos em **Brasil** (com base em termos locais/URL) ou **Internacional**.
   5.  **Scoring**: Calcula pontuação de **Impacto** (0-10) baseada em palavras-chave de crise e intensidade do sentimento.
-  6.  **Insight**: Gera uma frase de ação (ex: "Atenção à volatilidade cambial").
+  6.  **Agrupamento de Narrativas**: Identifica cluster de eventos similares nas últimas 48h (mesmo setor + entidades sobrepostas) para criar uma "História" coesa.
+  7.  **Insight**: Gera uma frase de ação (ex: "Atenção à volatilidade cambial").
 
 ### 3. 🌐 API Gateway
 

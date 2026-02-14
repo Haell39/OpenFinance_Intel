@@ -8,11 +8,29 @@ import {
   Moon,
 } from "lucide-react";
 
-const Sidebar = ({ activeTab, setActiveTab, isDark, toggleTheme }) => {
+const Sidebar = ({
+  activeTab,
+  setActiveTab,
+  isDark,
+  toggleTheme,
+  language,
+}) => {
   const menuItems = [
-    { id: "overview", label: "Market Overview", icon: LayoutDashboard },
-    { id: "feed", label: "Intelligence Feed", icon: Newspaper },
-    { id: "watchlist", label: "My Watchlist", icon: Briefcase },
+    {
+      id: "overview",
+      label: language === "pt" ? "Visão de Mercado" : "Market Overview",
+      icon: LayoutDashboard,
+    },
+    {
+      id: "feed",
+      label: language === "pt" ? "Feed Inteligente" : "Intelligence Feed",
+      icon: Newspaper,
+    },
+    {
+      id: "watchlist",
+      label: language === "pt" ? "Minha Carteira" : "My Watchlist",
+      icon: Briefcase,
+    },
   ];
 
   return (
