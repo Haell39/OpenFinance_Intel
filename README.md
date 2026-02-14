@@ -48,12 +48,15 @@ Acesse o dashboard em: **http://localhost:5173**
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack & Highlights
 
-- **Backend**: Python 3.11, FastAPI, spaCy (NLP), TextBlob (Sentiment)
-- **Frontend**: React 18, Tailwind CSS, Vite
-- **Dados**: MongoDB, Redis
-- **DevOps**: Docker, Nginx
+- **Backend Architecture**: Python 3.11, FastAPI, Microservices (Collector, Analysis, API), Docker Containerization
+- **AI & NLP**: spaCy (Entity Recognition), TextBlob (Sentiment Analysis), Custom Narrative Engine
+- **Frontend Engineering**: React 18, Vite, Tailwind CSS, Recharts, LocalStorage Persistence
+- **Data & Infrastructure**: MongoDB (NoSQL), Redis (Task Queue), Nginx (Reverse Proxy)
+- **DevOps**: Docker Compose, Hot Module Replacement (HMR), Environment Variables Management
+
+_Project designed to mimic institutional-grade financial terminals._
 
 ---
 
