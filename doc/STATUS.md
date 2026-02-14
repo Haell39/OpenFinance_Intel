@@ -1,25 +1,26 @@
 # Status do Projeto - OpenFinance Intel 🌍
 
-**Versão Atual**: v6.0 (Investment Impact Release)
+**Versão Atual**: v6.2 (Premium Silver & Bento Grid Release)
 
 ## ✅ Visão Geral
 
-O **OpenFinance Intel** realizou um pivô estratégico para se tornar uma **Plataforma de Decisão de Investimentos**. O foco mudou de visualização geográfica para **Análise de Impacto e Sentimento**. O sistema agora classifica automaticamente eventos como _Bullish_ ou _Bearish_ e sugere ações baseadas no setor afetado.
+O **OpenFinance Intel** evoluiu para um **Terminal Financeiro Profissional**. O sistema agora apresenta um visual "Silver Metal" de alta fidelidade, layout modular estilo Bento Grid e ferramentas avançadas de análise de risco, mantendo o motor de IA e Sentimento no core.
 
 ## 🚀 Funcionalidades Entregues
 
 ### 1. Inteligência & AI (Backend)
 
-- **[NOVO] Análise de Sentimento**: Classificação automática de otimismo/pessimismo do mercado (TextBlob).
-- **[NOVO] Detecção de Setores**: Classificação automática em **Crypto, Tech, Energy, Forex, Macro** e **Global**.
-- **[NOVO] Geração de Insights**: Regras de negócio que transformam dados brutos em sugestões (ex: "Risco de Recessão -> Defensivos").
-- **NLP com spaCy**: NER (Reconhecimento de Entidade Nomeada) para contexto geográfico e organizacional.
+- **[NOVO] Matriz de Risco**: Visualização gráfica (Scatter Plot) correlacionando Volatilidade e Sentimento.
+- **Análise de Sentimento**: Classificação automática de otimismo/pessimismo do mercado (TextBlob).
+- **Detecção de Setores**: Classificação automática em **Crypto, Tech, Energy, Forex, Macro**.
+- **NLP com spaCy**: NER (Reconhecimento de Entidade Nomeada) para contexto geográfico.
 
 ### 2. Visualização & UI (Frontend)
 
-- **[NOVO] Impact Board**: Substituição do Mapa Mundi por um Kanban Board setorizado.
-- **[NOVO] Sentiment UX**: Bordas coloridas (Verde/Vermelho) para indicação imediata de tendência.
-- **[NOVO] Scrollbar Personalizada**: Estilização premium alinhada ao tema Dark.
+- **[NOVO] Premium Silver Theme**: Interface "Laminada" (Zinc-50/White) como padrão, com sombras sutis e alta legibilidade.
+- **[NOVO] Dark Mode Toggle**: Suporte completo a tema escuro com persistência de estado.
+- **[NOVO] Market Overview**: Layout Bento Grid substituindo o antigo Kanban, com cards modulares (Market Pulse, Risk Matrix, Top Signals).
+- **[NOVO] Sidebar Navigation**: Navegação lateral expansível/colapsável com ícones (Lucide React).
 - **Real-Time Ticker**: Cotações ao vivo de USD, EUR e BTC.
 
 ### 3. Engenharia de Dados
@@ -43,6 +44,6 @@ O **OpenFinance Intel** realizou um pivô estratégico para se tornar uma **Plat
 
 ## 🔮 Próximos Passos (Roadmap)
 
-1.  **Integração com Portfólio**: Permitir que o usuário cadastre seus ativos para receber notícias personalizadas.
-2.  **Alertas via WhatsApp/Telegram**: Notificar imediatamente quando um evento "High Impact" ocorrer.
+1.  **Intelligence Feed Live**: Implementar o consumo real dos feeds na aba de Inteligência.
+2.  **Watchlist do Usuário**: Permitir salvar/favoritar ativos e eventos específicos.
 3.  **Backtesting de Sentimento**: Cruzar o sentimento histórico das notícias com a variação de preços dos ativos.

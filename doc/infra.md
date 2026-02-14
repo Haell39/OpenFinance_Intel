@@ -29,8 +29,9 @@ _O "Cérebro" do sistema._
   3.  **Análise de Sentimento (TextBlob)**:
       - **Polaridade**: Calcula score de -1.0 a +1.0.
       - **Classificação**: `Bullish` (>0.1), `Bearish` (<-0.1) ou `Neutral`.
-  4.  **Scoring**: Calcula pontuação de **Impacto** (0-10) baseada em palavras-chave de crise e intensidade do sentimento.
-  5.  **Insight**: Gera uma frase de ação (ex: "Atenção à volatilidade cambial").
+  4.  **Classificação Geográfica**: Divide eventos em **Brasil** (com base em termos locais/URL) ou **Internacional**.
+  5.  **Scoring**: Calcula pontuação de **Impacto** (0-10) baseada em palavras-chave de crise e intensidade do sentimento.
+  6.  **Insight**: Gera uma frase de ação (ex: "Atenção à volatilidade cambial").
 
 ### 3. 🌐 API Gateway
 
@@ -44,10 +45,11 @@ _A "Porta de Entrada"._
 
 _A "Face" do sistema._
 
-- **Tecnologia**: React + Vite + Tailwind CSS.
-- **Impact Board**: Visualização estilo Kanban organizada por setores.
-- **UX Financeira**: Cores semânticas (Verde/Vermelho) para rápida leitura de mercado ("5-second rule").
-- **Auto-Refresh**: Polling inteligente que atualiza o board sem recarregar a página.
+- **Tecnologia**: React + Vite + Tailwind CSS + Recharts + Lucide.
+- **Market Overview**: Layout **Bento Grid** modular (Pulse, Matrix, Signals).
+- **Dual Theme Engine**: Sistema de temas (Light/Dark) class-based com persistência.
+- **UX Financeira**: Foco em densidade de dados, tipografia mono para números e feedbacks visuais rápidos.
+- **Auto-Refresh**: Polling inteligente que atualiza os widgets sem recarregar a página.
 
 ---
 

@@ -9,10 +9,10 @@ O OpenFinance Intel monitora o ecossistema financeiro global, transformando o ca
 ## 🚀 Funcionalidades Principais
 
 - **🧠 Análise de Sentimento**: Classifica notícias em **Bullish** 🟢, **Bearish** 🔴 ou **Neutral** ⚪ usando TextBlob.
-- **📊 Impact Board**: Visualização Kanban profissional focada em setores de investimento (**Crypto, Tech, Energy, Forex, Macro**).
-- **💡 Insights Acionáveis**: A IA gera insights rápidos baseados no contexto (ex: "Setor Forex Bearish -> Monitorar Dólar").
+- **🖥️ Market Overview Terminal**: Dashboard estilo "Bento Grid" modulado para alta densidade de dados.
+- **🎨 Premium UI**: Design "Silver Metal" laminado como padrão, com **Dark Mode** opcional e UX financeira de ponta.
+- **📊 Matriz de Risco**: Gráfico de dispersão (Impacto vs Sentimento) para identificar anomalias de mercado.
 - **⚡ Ticker em Tempo Real**: Cotações ao vivo (USD, EUR, BTC) e atualizações de eventos com latência sub-segundo.
-- **🛡️ Filtro de Ruído**: Bloqueio ativo de esportes, fofocas e conteúdo irrelevante para o mercado.
 - **🔍 Fontes Globais**: Integração com Bloomberg, Reuters, CNBC, Google News e feeds oficiais de Bancos Centrais.
 
 ---

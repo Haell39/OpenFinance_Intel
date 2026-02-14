@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { createSource, fetchEvents } from "./api/events.js";
-import ImpactBoard from "./components/ImpactBoard.jsx";
-import EventCard from "./components/EventCard.jsx";
+import MarketOverview from "./components/MarketOverview.jsx";
+import Sparkline from "./components/Sparkline.jsx";
+import Sidebar from "./components/Sidebar.jsx";
 
 // Mock Data for "Analysis" / KPI Bar
 const INITIAL_MARKET_SIGNALS = [
   {
-    id: 1,
+    id: "loading",
     title: "Carregando Mercado...",
     type: "financial",
     trend: "neutral",
+    data: [10, 10, 10, 10, 10, 10, 10], // Mock initial
   },
 ];
 
@@ -21,30 +23,50 @@ async function fetchTickerData() {
       "https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL",
     );
     const data = await res.json();
+
+    // Helper to generate mock sparkline data
+    const mockSpark = (trend) => {
+      const base = 10;
+      const volatility = 0.5;
+      const points = [];
+      let current = base;
+      for (let i = 0; i < 10; i++) {
+        const change = (Math.random() - 0.5) * volatility;
+        const trendBias = trend === "up" ? 0.2 : trend === "down" ? -0.2 : 0;
+        current += change + trendBias;
+        points.push(current);
+      }
+      return points;
+    };
+
     return [
       {
         id: "usd",
         title: `Dólar: R$ ${parseFloat(data.USDBRL.bid).toFixed(2)}`,
         type: "financial",
         trend: parseFloat(data.USDBRL.pctChange) > 0 ? "up" : "down",
+        data: mockSpark(parseFloat(data.USDBRL.pctChange) > 0 ? "up" : "down"),
       },
       {
         id: "eur",
         title: `Euro: R$ ${parseFloat(data.EURBRL.bid).toFixed(2)}`,
         type: "financial",
         trend: parseFloat(data.EURBRL.pctChange) > 0 ? "up" : "down",
+        data: mockSpark(parseFloat(data.EURBRL.pctChange) > 0 ? "up" : "down"),
       },
       {
         id: "btc",
         title: `Bitcoin: R$ ${(parseFloat(data.BTCBRL.bid) / 1000).toFixed(1)}k`,
         type: "financial",
         trend: parseFloat(data.BTCBRL.pctChange) > 0 ? "up" : "down",
+        data: mockSpark(parseFloat(data.BTCBRL.pctChange) > 0 ? "up" : "down"),
       },
       {
         id: "selic",
         title: "Selic Meta: 11.25%",
         type: "financial",
         trend: "neutral",
+        data: [11.25, 11.25, 11.25, 11.25, 11.25, 11.25, 11.25],
       },
     ];
   } catch (e) {
@@ -54,6 +76,20 @@ async function fetchTickerData() {
 }
 
 export default function App() {
+  const [activeTab, setActiveTab] = useState("overview");
+  // Theme State: Default 'light' (Silver)
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDark]);
+
+  const toggleTheme = () => setIsDark(!isDark);
+
   const [impact, setImpact] = useState("all");
   const [type, setType] = useState("all");
   const [sortBy, setSortBy] = useState("timestamp");
@@ -73,7 +109,7 @@ export default function App() {
   const [sourceStatus, setSourceStatus] = useState("idle");
   const [sourceError, setSourceError] = useState("");
   const [showSourceModal, setShowSourceModal] = useState(false);
-  const [activeTab, setActiveTab] = useState("recommended"); // recommended, rss, twitter
+  const [activeTabSource, setActiveTabSource] = useState("recommended"); // recommended, rss, twitter
 
   const loadEvents = () => {
     setStatus("loading");
@@ -151,7 +187,7 @@ export default function App() {
     let finalSourceType = sourceType;
 
     // Twitter/X Logic
-    if (activeTab === "twitter") {
+    if (activeTabSource === "twitter") {
       finalSourceType = "social_media";
       // Remove @ or # if present
       const cleanInput = finalUrl.replace(/^[@#]/, "");
@@ -159,7 +195,7 @@ export default function App() {
     }
 
     // Google News Logic
-    if (activeTab === "google") {
+    if (activeTabSource === "google") {
       finalSourceType = "news";
       const query = encodeURIComponent(finalUrl);
       finalUrl = `https://news.google.com/rss/search?q=${query}+when:1d&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
@@ -181,253 +217,320 @@ export default function App() {
   };
 
   return (
-    <div className="page h-screen flex flex-col overflow-hidden">
-      {/* Header */}
-      <header className="header shrink-0">
-        <div className="header-left">
-          <div className="logo-container">
-            <span className="logo-icon">👁️</span>
-            <span className="brand-name">OpenFinance Intel</span>
+    <div className="flex h-screen w-screen overflow-hidden bg-zinc-100 dark:bg-gray-950 text-slate-900 dark:text-slate-200 transition-colors duration-300">
+      {/* 1. LEFT SIDEBAR (Fixed) */}
+      <Sidebar
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        isDark={isDark}
+        toggleTheme={toggleTheme}
+      />
+
+      {/* 2. MAIN CONTENT AREA (Flexible) */}
+      <div className="flex-1 flex flex-col h-full overflow-hidden bg-zinc-50 dark:bg-slate-900 relative transition-colors duration-300">
+        {/* HEADER / TICKER */}
+        <header className="header shrink-0 border-b border-zinc-200 dark:border-gray-800 bg-white/70 dark:bg-gray-950/50 backdrop-blur-md z-50 px-4 h-14 flex items-center justify-between transition-colors duration-300">
+          {/* Left: Ticker */}
+          <div className="header-left flex items-center gap-6 overflow-hidden">
+            <div className="status-bar hidden md:flex gap-6 overflow-x-auto no-scrollbar">
+              {marketSignals.map((signal) => (
+                <div
+                  key={signal.id}
+                  className="status-card flex items-center gap-3 shrink-0"
+                >
+                  <div className="flex flex-col">
+                    <span className="text-[9px] text-slate-500 font-bold tracking-wider leading-none">
+                      {(signal.id || "").toString().toUpperCase()}
+                    </span>
+                    <span
+                      className={`font-mono text-sm font-bold leading-tight ${
+                        signal.trend === "up"
+                          ? "text-green-600 dark:text-green-400"
+                          : signal.trend === "down"
+                            ? "text-red-600 dark:text-red-400"
+                            : "text-slate-700 dark:text-slate-200"
+                      }`}
+                    >
+                      {signal.title.split(": ")[1] || signal.title}
+                    </span>
+                  </div>
+                  {/* Sparkline */}
+                  {signal.data && (
+                    <div className="opacity-80 hover:opacity-100 transition-opacity">
+                      <Sparkline
+                        data={signal.data}
+                        color={
+                          signal.trend === "up"
+                            ? isDark
+                              ? "#22c55e"
+                              : "#16a34a"
+                            : signal.trend === "down"
+                              ? isDark
+                                ? "#ef4444"
+                                : "#dc2626"
+                              : "#94a3b8"
+                        }
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="status-bar hidden md:flex">
-            {marketSignals.map((signal) => (
-              <div key={signal.id} className="status-card">
-                {signal.trend === "down"
-                  ? "📉"
-                  : signal.trend === "up"
-                    ? "📈"
-                    : "⚖️"}
-                {signal.title}
-              </div>
-            ))}
+
+          {/* Right: Controls */}
+          <div className="header-right flex items-center gap-4">
+            <select
+              className="bg-zinc-100 dark:bg-gray-900 border border-zinc-300 dark:border-gray-700 text-xs rounded text-slate-600 dark:text-slate-400 px-2 py-1 outline-none focus:border-blue-500 transition-colors"
+              value={refreshInterval}
+              onChange={(e) => setRefreshInterval(Number(e.target.value))}
+            >
+              <option value={0}>Auto: Off</option>
+              <option value={60000}>1m</option>
+              <option value={300000}>5m</option>
+            </select>
+
+            <div className="hidden md:flex items-center text-[10px] text-slate-500 gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500/50 animate-pulse"></span>
+              <strong>{timeSinceUpdate}</strong>
+            </div>
+
+            <button
+              className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors shadow-lg shadow-blue-500/20"
+              onClick={() => setShowSourceModal(true)}
+            >
+              + Fonte
+            </button>
+            <button
+              className="text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
+              title="Force Refresh"
+              onClick={() => {
+                setStatus("loading");
+                loadEvents();
+                fetchTickerData().then((data) => setMarketSignals(data));
+              }}
+            >
+              ⚡
+            </button>
           </div>
-        </div>
+        </header>
 
-        <div className="header-right flex items-center">
-          <select
-            className="glass-input hidden md:block"
-            style={{ marginRight: 8, padding: "6px 10px" }}
-            value={refreshInterval}
-            onChange={(e) => setRefreshInterval(Number(e.target.value))}
-          >
-            <option value={0}>Auto: Off</option>
-            <option value={60000}>1 min</option>
-            <option value={300000}>5 min</option>
-            <option value={600000}>10 min</option>
-          </select>
-
-          <div
-            className="hidden md:flex"
-            style={{
-              alignItems: "center",
-              marginRight: 15,
-              fontSize: "12px",
-              color: "var(--text-secondary)",
-            }}
-          >
-            <span style={{ marginRight: 5 }}>●</span>
-            <strong>{timeSinceUpdate}</strong>
-          </div>
-
-          <button
-            className="btn primary"
-            onClick={() => setShowSourceModal(true)}
-          >
-            + Novo Evento
-          </button>
-          <button
-            className="btn-icon"
-            title="Force Refresh (Busca Imediata)"
-            onClick={() => {
-              setStatus("loading");
-              loadEvents();
-              fetchTickerData().then((data) => setMarketSignals(data));
-            }}
-          >
-            ⚡
-          </button>
-        </div>
-      </header>
-
-      {/* Main Layout Area */}
-      <main className="flex-1 relative overflow-hidden bg-slate-900">
-        {/* VIEW: IMPACT BOARD (ALWAYS ON) */}
-        <div className="h-full w-full">
-          {status === "loading" && (
-            <div className="text-center p-10 text-slate-500">
-              Carregando Board...
+        {/* CONTENT TABS */}
+        <main className="flex-1 relative overflow-hidden flex bg-zinc-50 dark:bg-slate-900 transition-colors duration-300">
+          {/* TAB: MARKET OVERVIEW (Bento Grid) */}
+          {activeTab === "overview" && (
+            <div className="w-full h-full">
+              {status === "loading" && (
+                <div className="h-full flex flex-col items-center justify-center space-y-4">
+                  <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="text-slate-500 font-mono text-sm animate-pulse">
+                    Carregando Terminal...
+                  </div>
+                </div>
+              )}
+              {status === "ready" && (
+                <MarketOverview events={events} isDark={isDark} />
+              )}
             </div>
           )}
-          {status === "ready" && <ImpactBoard events={events} />}
-        </div>
-      </main>
+
+          {/* TAB: FEED (Placeholder) */}
+          {activeTab === "feed" && (
+            <div className="flex-1 flex flex-col items-center justify-center text-slate-400 dark:text-slate-500">
+              <div className="w-16 h-16 bg-zinc-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                <span className="text-2xl">📰</span>
+              </div>
+              <h3 className="text-lg font-bold text-slate-700 dark:text-slate-300">
+                Intelligence Feed
+              </h3>
+              <p className="text-sm font-mono mt-2">
+                Connecting to global sources...
+              </p>
+            </div>
+          )}
+
+          {/* TAB: WATCHLIST (Placeholder) */}
+          {activeTab === "watchlist" && (
+            <div className="flex-1 flex flex-col items-center justify-center text-slate-400 dark:text-slate-500">
+              <div className="w-16 h-16 bg-zinc-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                <span className="text-2xl">💼</span>
+              </div>
+              <h3 className="text-lg font-bold text-slate-700 dark:text-slate-300">
+                My Watchlist
+              </h3>
+              <p className="text-sm font-mono mt-2">
+                Track your portfolio risks here.
+              </p>
+            </div>
+          )}
+        </main>
+      </div>
 
       {/* Add Source Modal */}
       {showSourceModal && (
         <div
-          className="modal-overlay"
+          className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setShowSourceModal(false)}
         >
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2 style={{ margin: 0 }}>Adicionar Fonte</h2>
+          <div
+            className="bg-slate-900 border border-slate-700 w-full max-w-md rounded-lg shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center p-4 border-b border-slate-800">
+              <h2 className="text-lg font-bold text-slate-100">
+                Adicionar Fonte
+              </h2>
               <button
-                className="modal-close"
+                className="text-slate-400 hover:text-white"
                 onClick={() => setShowSourceModal(false)}
               >
                 ✕
               </button>
             </div>
 
-            <div className="modal-tabs">
+            <div className="flex border-b border-slate-800">
               <button
-                className={`tab-btn ${activeTab === "recommended" ? "active" : ""}`}
-                onClick={() => setActiveTab("recommended")}
+                className={`flex-1 py-2 text-sm font-medium transition-colors ${activeTabSource === "recommended" ? "text-blue-400 border-b-2 border-blue-500 bg-slate-800/50" : "text-slate-500 hover:text-slate-300"}`}
+                onClick={() => setActiveTabSource("recommended")}
               >
                 ⭐ Sugestões
               </button>
               <button
-                className={`tab-btn ${activeTab === "rss" ? "active" : ""}`}
-                onClick={() => setActiveTab("rss")}
+                className={`flex-1 py-2 text-sm font-medium transition-colors ${activeTabSource === "rss" ? "text-blue-400 border-b-2 border-blue-500 bg-slate-800/50" : "text-slate-500 hover:text-slate-300"}`}
+                onClick={() => setActiveTabSource("rss")}
               >
                 🔗 RSS
               </button>
               <button
-                className={`tab-btn ${activeTab === "twitter" ? "active" : ""}`}
-                onClick={() => setActiveTab("twitter")}
+                className={`flex-1 py-2 text-sm font-medium transition-colors ${activeTabSource === "twitter" ? "text-blue-400 border-b-2 border-blue-500 bg-slate-800/50" : "text-slate-500 hover:text-slate-300"}`}
+                onClick={() => setActiveTabSource("twitter")}
               >
-                🐦 Twitter/X
+                🐦 Twitter
               </button>
               <button
-                className={`tab-btn ${activeTab === "google" ? "active" : ""}`}
-                onClick={() => setActiveTab("google")}
+                className={`flex-1 py-2 text-sm font-medium transition-colors ${activeTabSource === "google" ? "text-blue-400 border-b-2 border-blue-500 bg-slate-800/50" : "text-slate-500 hover:text-slate-300"}`}
+                onClick={() => setActiveTabSource("google")}
               >
-                🌍 Google News
+                🌍 Google
               </button>
             </div>
 
-            {activeTab === "recommended" && (
-              <div className="sources-grid">
-                {[
-                  {
-                    name: "InfoMoney",
-                    url: "https://www.infomoney.com.br/feed/",
-                    desc: "Mercados",
-                    type: "financial",
-                  },
-                  {
-                    name: "Valor Econômico",
-                    url: "https://valor.globo.com/rss",
-                    desc: "Macro",
-                    type: "financial",
-                  },
-                  {
-                    name: "G1 Economia",
-                    url: "https://g1.globo.com/rss/g1/economia/",
-                    desc: "Geral",
-                    type: "financial",
-                  },
-                  {
-                    name: "Banco Central",
-                    url: "https://www.bcb.gov.br/rss/ultimasnoticias",
-                    desc: "Oficial",
-                    type: "financial",
-                  },
-                ].map((src, i) => (
-                  <div
-                    key={i}
-                    className="source-item"
-                    onClick={() => {
-                      setSourceUrl(src.url);
-                      setSourceType(src.type);
-                      setActiveTab("rss"); // Switch to input view
-                    }}
-                  >
-                    <div className="source-name">{src.name}</div>
-                    <div className="source-desc">{src.desc}</div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {(activeTab === "rss" ||
-              activeTab === "twitter" ||
-              activeTab === "google") && (
-              <form onSubmit={handleCreateSource} style={{ marginTop: 16 }}>
-                <input
-                  type={activeTab === "rss" ? "url" : "text"}
-                  className="glass-input"
-                  style={{ width: "100%", marginBottom: 12 }}
-                  placeholder={
-                    activeTab === "twitter"
-                      ? "Usuário (@elonmusk) ou Hashtag (#Bitcoin)"
-                      : activeTab === "google"
-                        ? "Tópico (ex: Fusão de Empresas, Petróleo)"
-                        : "URL do Feed RSS (ex: https://site.com/rss)"
-                  }
-                  value={sourceUrl}
-                  onChange={(e) => setSourceUrl(e.target.value)}
-                  required
-                />
-
-                <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-                  <select
-                    className="glass-input"
-                    style={{ flex: 1 }}
-                    value={sourceType}
-                    onChange={(e) => setSourceType(e.target.value)}
-                  >
-                    {SOURCE_TYPE_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt === "financial"
-                          ? "Financeiro"
-                          : opt === "geopolitical"
-                            ? "Geopolítico"
-                            : "Odds/Outros"}
-                      </option>
-                    ))}
-                  </select>
+            <div className="p-4">
+              {activeTabSource === "recommended" && (
+                <div className="space-y-2">
+                  {[
+                    {
+                      name: "InfoMoney",
+                      url: "https://www.infomoney.com.br/feed/",
+                      desc: "Mercados",
+                      type: "financial",
+                    },
+                    {
+                      name: "Valor Econômico",
+                      url: "https://valor.globo.com/rss",
+                      desc: "Macro",
+                      type: "financial",
+                    },
+                    {
+                      name: "G1 Economia",
+                      url: "https://g1.globo.com/rss/g1/economia/",
+                      desc: "Geral",
+                      type: "financial",
+                    },
+                    {
+                      name: "Banco Central",
+                      url: "https://www.bcb.gov.br/rss/ultimasnoticias",
+                      desc: "Oficial",
+                      type: "financial",
+                    },
+                  ].map((src, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-between items-center p-3 bg-slate-800/50 rounded hover:bg-slate-800 cursor-pointer transition-colors border border-transparent hover:border-slate-600"
+                      onClick={() => {
+                        setSourceUrl(src.url);
+                        setSourceType(src.type);
+                        setActiveTabSource("rss"); // Switch to input view
+                      }}
+                    >
+                      <div>
+                        <div className="text-sm font-bold text-slate-200">
+                          {src.name}
+                        </div>
+                        <div className="text-xs text-slate-500">{src.desc}</div>
+                      </div>
+                      <span className="text-blue-400 text-xs">
+                        Selecionar →
+                      </span>
+                    </div>
+                  ))}
                 </div>
+              )}
 
-                <button
-                  type="submit"
-                  className="btn primary"
-                  style={{ width: "100%" }}
-                  disabled={sourceStatus === "loading"}
-                >
-                  {sourceStatus === "loading"
-                    ? "Adicionando..."
-                    : activeTab === "twitter"
-                      ? "Monitorar Twitter"
-                      : activeTab === "google"
-                        ? "Monitorar Tópico no Google"
-                        : "Adicionar Fonte RSS"}
-                </button>
+              {(activeTabSource === "rss" ||
+                activeTabSource === "twitter" ||
+                activeTabSource === "google") && (
+                <form onSubmit={handleCreateSource}>
+                  <input
+                    type={activeTabSource === "rss" ? "url" : "text"}
+                    className="w-full bg-slate-950 border border-slate-700 rounded p-2 text-sm text-white mb-3 focus:border-blue-500 outline-none"
+                    placeholder={
+                      activeTabSource === "twitter"
+                        ? "Usuário (@elonmusk) ou Hashtag (#Bitcoin)"
+                        : activeTabSource === "google"
+                          ? "Tópico (ex: Fusão de Empresas, Petróleo)"
+                          : "URL do Feed RSS (ex: https://site.com/rss)"
+                    }
+                    value={sourceUrl}
+                    onChange={(e) => setSourceUrl(e.target.value)}
+                    required
+                  />
 
-                {sourceStatus === "success" && (
-                  <p
-                    style={{
-                      color: "var(--status-low)",
-                      fontSize: 13,
-                      marginTop: 8,
-                    }}
+                  <div className="flex gap-2 mb-3">
+                    <select
+                      className="flex-1 bg-slate-950 border border-slate-700 rounded p-2 text-sm text-slate-300 outline-none"
+                      value={sourceType}
+                      onChange={(e) => setSourceType(e.target.value)}
+                    >
+                      {SOURCE_TYPE_OPTIONS.map((opt) => (
+                        <option key={opt} value={opt}>
+                          {opt === "financial"
+                            ? "Financeiro"
+                            : opt === "geopolitical"
+                              ? "Geopolítico"
+                              : "Odds/Outros"}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded text-sm transition-colors"
+                    disabled={sourceStatus === "loading"}
                   >
-                    ✅ Fonte adicionada com sucesso!
-                  </p>
-                )}
-                {sourceStatus === "error" && (
-                  <p
-                    style={{
-                      color: "var(--status-urgent)",
-                      fontSize: 13,
-                      marginTop: 8,
-                    }}
-                  >
-                    ❌ {sourceError}
-                  </p>
-                )}
-              </form>
-            )}
+                    {sourceStatus === "loading"
+                      ? "Adicionando..."
+                      : activeTabSource === "twitter"
+                        ? "Monitorar Twitter"
+                        : activeTabSource === "google"
+                          ? "Monitorar Tópico no Google"
+                          : "Adicionar Fonte RSS"}
+                  </button>
+
+                  {sourceStatus === "success" && (
+                    <p className="text-green-400 text-xs mt-2 text-center">
+                      ✅ Fonte adicionada com sucesso!
+                    </p>
+                  )}
+                  {sourceStatus === "error" && (
+                    <p className="text-red-400 text-xs mt-2 text-center">
+                      ❌ {sourceError}
+                    </p>
+                  )}
+                </form>
+              )}
+            </div>
           </div>
         </div>
       )}
