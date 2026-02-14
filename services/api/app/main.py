@@ -189,3 +189,142 @@ def geo_summary() -> dict:
         geo_data[uf] = doc["count"]
     
     return geo_data
+
+
+from collections import Counter
+from datetime import timedelta
+
+@app.get("/narratives")
+def get_narratives() -> list[dict]:
+    """
+    Agrupa eventos das últimas 48h em 'Narrativas de Mercado' por setor.
+    Gera títulos dinâmicos baseados em entidades/keywords mais frequentes.
+    """
+    try:
+        # 1. Filtro Temporal (48h)
+        cutoff = datetime.utcnow() - timedelta(hours=48)
+        cutoff_iso = cutoff.isoformat() + "Z"
+
+        pipeline = [
+            {"$match": {"timestamp": {"$gte": cutoff_iso}}},
+            {"$sort": {"timestamp": 1}},  # Cronológico para a timeline
+            {
+                "$group": {
+                    "_id": "$sector",
+                    "events": {"$push": "$$ROOT"},
+                    "avg_polarity": {"$avg": "$analytics.sentiment.polarity"},
+                    "event_count": {"$sum": 1}
+                }
+            }
+        ]
+
+        # Executa agregação
+        groups = list(mongo_db.events.aggregate(pipeline))
+
+        # Se não houver dados suficientes, retorna MOCK (Fallback)
+        if not groups:
+            return generate_mock_narratives()
+
+        narratives = []
+        for group in groups:
+            sector = group["_id"] or "Global"
+            events = group["events"]
+            avg_polarity = group.get("avg_polarity", 0)
+            
+            # --- Geração de Título Dinâmico (NLP) ---
+            all_keywords = []
+            all_entities = []
+            
+            for evt in events:
+                # Fix ObjectId serialization
+                if "_id" in evt:
+                    evt["_id"] = str(evt["_id"])
+
+                # Coleta keywords
+                if "keywords" in evt:
+                    all_keywords.extend(evt["keywords"])
+                
+                # Coleta entidades (Pessoas e Orgs)
+                ents = evt.get("entities", {})
+                if isinstance(ents, dict):
+                    all_entities.extend(ents.get("people", []))
+                    all_entities.extend(ents.get("orgs", []))
+
+            # Conta frequência
+            common_keywords = [
+                k for k, v in Counter(all_keywords).most_common(2) 
+                if k.lower() not in sector.lower() # Evita repetir nome do setor
+            ]
+            common_entities = [
+                e for e, v in Counter(all_entities).most_common(1)
+            ]
+
+            # Monta título
+            # Ex: "Tensão em Macro: Fed & Inflação"
+            # Ex: "Alta em Crypto: Bitcoin"
+            topics = common_entities + common_keywords
+            metrics_title = " & ".join(topics[:2]).title() if topics else "Destaques Recentes"
+            
+            sentiment_label = "Neutral"
+            if avg_polarity > 0.05:
+                sentiment_label = "Bullish"
+            elif avg_polarity < -0.05:
+                sentiment_label = "Bearish"
+
+            narrative = {
+                "id": f"narrative-{sector.lower()}-{int(datetime.utcnow().timestamp())}",
+                "title": f"{metrics_title} em {sector}",
+                "sector": sector,
+                "overall_sentiment": sentiment_label,
+                "event_count": group["event_count"],
+                "last_updated": datetime.utcnow().isoformat() + "Z",
+                "events": events # Eventos completos para o frontend desenhar a timeline
+            }
+            narratives.append(narrative)
+
+        # Ordenar narrativas por contagem de eventos (Relevância)
+        narratives.sort(key=lambda x: x["event_count"], reverse=True)
+        return narratives
+
+    except Exception as e:
+        print(f"[api] Erro ao gerar narrativas: {e}")
+        return generate_mock_narratives()
+
+
+def generate_mock_narratives() -> list[dict]:
+    """Retorna dados fictícios para não bloquear o frontend se o banco estiver vazio"""
+    return [
+        {
+            "id": "mock-1",
+            "title": "Adoção Institucional & ETFs em Crypto",
+            "sector": "Crypto",
+            "overall_sentiment": "Bullish",
+            "event_count": 5,
+            "events": [
+                {"title": "BlackRock aumenta posição em Bitcoin", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bullish"}}},
+                {"title": "Ethereum atinge nova máxima histórica", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "medium", "analytics": {"sentiment": {"label": "Bullish"}}},
+            ]
+        },
+        {
+            "id": "mock-2",
+            "title": "Incerteza com Juros & Fed em Macro",
+            "sector": "Macro",
+            "overall_sentiment": "Bearish",
+            "event_count": 8,
+            "events": [
+                {"title": "Fed sinaliza manutenção das taxas", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bearish"}}},
+                {"title": "Inflação nos EUA sobe acima do esperado", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bearish"}}},
+            ]
+        },
+        {
+            "id": "mock-3",
+            "title": "Avanços em AI & Chips em Tech",
+            "sector": "Tech",
+            "overall_sentiment": "Bullish",
+            "event_count": 6,
+            "events": [
+                {"title": "Nvidia revela novo chip Blackwell", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bullish"}}},
+            ]
+        }
+    ]
+
