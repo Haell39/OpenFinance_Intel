@@ -23,6 +23,8 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - TASKS_QUEUE=tasks_queue
+    env_file:
+      - ./services/.env
     depends_on:
       - redis
       - mongo

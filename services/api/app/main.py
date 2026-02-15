@@ -1,12 +1,13 @@
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Literal
 
 from fastapi import FastAPI, Query
 from pydantic import BaseModel, AnyHttpUrl
 from pymongo import MongoClient
 from redis import Redis
+import google.generativeai as genai
 
 app = FastAPI(title="SentinelWatch API")
 
@@ -63,6 +64,7 @@ import asyncio
 @app.on_event("startup")
 async def startup_event():
     """Start background tasks"""
+    print(f"[api] Google GenAI Version: {genai.__version__}")
     # Seed Defaults
     seed_defaults()
     
@@ -199,14 +201,14 @@ def geo_summary() -> dict:
     return geo_data
 
 
-from collections import Counter
-from datetime import timedelta
+from .llm_service import generate_narrative_title
+import asyncio
 
 @app.get("/narratives")
-def get_narratives() -> list[dict]:
+async def get_narratives() -> list[dict]:
     """
     Agrupa eventos das últimas 48h em 'Narrativas de Mercado' por setor.
-    Gera títulos dinâmicos baseados em entidades/keywords mais frequentes.
+    Gera títulos via LLM (OpenAI) ou Fallback seguro.
     """
     try:
         # 1. Filtro Temporal (48h)
@@ -226,54 +228,35 @@ def get_narratives() -> list[dict]:
             }
         ]
 
-        # Executa agregação
+        # Executa agregação (Sync wrapper for PyMongo)
         groups = list(mongo_db.events.aggregate(pipeline))
 
         # Se não houver dados suficientes, retorna MOCK (Fallback)
         if not groups:
             return generate_mock_narratives()
 
-        narratives = []
+        # Preparar tasks para geração de títulos em paralelo
+        tasks = []
         for group in groups:
+            sector = group["_id"] or "Global"
+            events = group["events"]
+            tasks.append(generate_narrative_title(events, sector))
+        
+        # Executar chamadas LLM e aguardar
+        titles = await asyncio.gather(*tasks)
+
+        narratives = []
+        for i, group in enumerate(groups):
             sector = group["_id"] or "Global"
             events = group["events"]
             avg_polarity = group.get("avg_polarity", 0)
             
-            # --- Geração de Título Dinâmico (NLP) ---
-            all_keywords = []
-            all_entities = []
-            
+            # Fix IDs in events
             for evt in events:
-                # Fix ObjectId serialization
                 if "_id" in evt:
                     evt["id"] = str(evt["_id"])
                     del evt["_id"]
 
-                # Coleta keywords
-                if "keywords" in evt:
-                    all_keywords.extend(evt["keywords"])
-                
-                # Coleta entidades (Pessoas e Orgs)
-                ents = evt.get("entities", {})
-                if isinstance(ents, dict):
-                    all_entities.extend(ents.get("people", []))
-                    all_entities.extend(ents.get("orgs", []))
-
-            # Conta frequência
-            common_keywords = [
-                k for k, v in Counter(all_keywords).most_common(2) 
-                if k.lower() not in sector.lower() # Evita repetir nome do setor
-            ]
-            common_entities = [
-                e for e, v in Counter(all_entities).most_common(1)
-            ]
-
-            # Monta título
-            # Ex: "Tensão em Macro: Fed & Inflação"
-            # Ex: "Alta em Crypto: Bitcoin"
-            topics = common_entities + common_keywords
-            metrics_title = " & ".join(topics[:2]).title() if topics else "Destaques Recentes"
-            
             sentiment_label = "Neutral"
             if avg_polarity > 0.05:
                 sentiment_label = "Bullish"
@@ -283,12 +266,12 @@ def get_narratives() -> list[dict]:
             narrative = {
                 # Deterministic ID for persistence (Watchlist)
                 "id": f"narrative-{sector.lower()}",
-                "title": f"{metrics_title} em {sector}",
+                "title": titles[i], # Título gerado via LLM
                 "sector": sector,
                 "overall_sentiment": sentiment_label,
                 "event_count": group["event_count"],
                 "last_updated": datetime.utcnow().isoformat() + "Z",
-                "events": events # Eventos completos para o frontend desenhar a timeline
+                "events": events
             }
             narratives.append(narrative)
 
@@ -299,6 +282,8 @@ def get_narratives() -> list[dict]:
     except Exception as e:
         print(f"[api] Erro ao gerar narrativas: {e}")
         return generate_mock_narratives()
+
+
 
 
 def generate_mock_narratives() -> list[dict]:
@@ -328,12 +313,23 @@ def generate_mock_narratives() -> list[dict]:
         },
         {
             "id": "mock-3",
-            "title": "Avanços em AI & Chips em Tech",
-            "sector": "Tech",
+            "title": "Rali do Petróleo & OPEP em Commodities",
+            "sector": "Commodities",
             "overall_sentiment": "Bullish",
             "event_count": 6,
             "events": [
-                {"id": "mock-evt-5", "title": "Nvidia revela novo chip Blackwell", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bullish"}}},
+                {"id": "mock-evt-5", "title": "OPEP anuncia cortes na produção", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bullish"}}},
+            ]
+        },
+        {
+            "id": "mock-4",
+            "title": "Resultados Corporativos & B3 em Market",
+            "sector": "Market",
+            "overall_sentiment": "Neutral",
+            "event_count": 4,
+            "events": [
+                {"id": "mock-evt-6", "title": "Bancos anunciam lucros recordes no trimestre", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "medium", "analytics": {"sentiment": {"label": "Bullish"}}},
+                {"id": "mock-evt-7", "title": "Varejo sofre com juros altos", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "medium", "analytics": {"sentiment": {"label": "Bearish"}}},
             ]
         }
     ]

@@ -1,0 +1,836 @@
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | INFO:     172.18.0.1:53864 - "GET /narratives HTTP/1.1" 200 OK
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | INFO:     172.18.0.1:53880 - "GET /narratives HTTP/1.1" 200 OK
+mongo-1      | {"t":{"$date":"2026-02-15T03:46:58.271+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1771127218,"ts_usec":271720,"thread":"1:0x7c0a69c19640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 114, snapshot max: 114 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 31"}}}
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | INFO:     172.18.0.1:47712 - "GET /narratives HTTP/1.1" 200 OK
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+api-1        | INFO:     172.18.0.1:47716 - "GET /narratives HTTP/1.1" 200 OK
+mongo-1      | {"t":{"$date":"2026-02-15T03:47:58.299+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1771127278,"ts_usec":299162,"thread":"1:0x7c0a69c19640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 115, snapshot max: 115 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 31"}}}
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | INFO:     172.18.0.1:44354 - "GET /narratives HTTP/1.1" 200 OK
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | INFO:     172.18.0.1:44360 - "GET /narratives HTTP/1.1" 200 OK
+mongo-1      | {"t":{"$date":"2026-02-15T03:48:58.311+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"Checkpointer","msg":"WiredTiger message","attr":{"message":{"ts_sec":1771127338,"ts_usec":311938,"thread":"1:0x7c0a69c19640","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 116, snapshot max: 116 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 31"}}}
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | [llm_service] Error generating title with Gemini: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.               
+api-1        | Traceback (most recent call last):
+api-1        |   File "/app/app/llm_service.py", line 36, in generate_narrative_title                                                
+api-1        |     response = await model.generate_content_async(prompt)                                                             
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/generativeai/generative_models.py", line 385, in generate_content_async                                                                                                                             
+api-1        |     response = await self._async_client.generate_content(
+api-1        |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/ai/generativelanguage_v1beta/services/generative_service/async_client.py", line 406, in generate_content                                                                                            
+api-1        |     response = await rpc(
+api-1        |                ^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 231, in retry_wrapped_func                                                                                                                               
+api-1        |     return await retry_target(
+api-1        |            ^^^^^^^^^^^^^^^^^^^                                                                                        
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 163, in retry_target
+api-1        |     next_sleep = _retry_error_helper(                                                                                 
+api-1        |                  ^^^^^^^^^^^^^^^^^^^^                                                                                 
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_base.py", line 214, in _retry_error_helper
+api-1        |     raise final_exc from source_exc                                                                                   
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/retry/retry_unary_async.py", line 158, in retry_target
+api-1        |     return await target()                                                                                             
+api-1        |            ^^^^^^^^^^^^^^                                                                                             
+api-1        |   File "/usr/local/lib/python3.11/site-packages/google/api_core/grpc_helpers_async.py", line 89, in __await__         
+api-1        |     raise exceptions.from_grpc_error(rpc_error) from rpc_error                                                        
+api-1        | google.api_core.exceptions.NotFound: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.                            
+api-1        | INFO:     172.18.0.1:52552 - "GET /narratives HTTP/1.1" 200 OK

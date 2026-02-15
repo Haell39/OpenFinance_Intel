@@ -31,6 +31,11 @@ const IntelligenceFeed = ({
       bullish: "Otimista",
       bearish: "Pessimista",
       neutral: "Neutro",
+      macro: "Macroeconomia",
+      market: "Mercado & Ações",
+      tech: "Tech & IA",
+      crypto: "Cripto",
+      commodities: "Commodities",
     },
     en: {
       activeNarratives: "Active Narratives",
@@ -43,6 +48,11 @@ const IntelligenceFeed = ({
       bullish: "Bullish",
       bearish: "Bearish",
       neutral: "Neutral",
+      macro: "Macroeconomics",
+      market: "Stocks & Market",
+      tech: "Tech & AI",
+      crypto: "Crypto",
+      commodities: "Commodities",
     },
   };
   const strings = language === "pt" ? t.pt : t.en;
@@ -52,6 +62,18 @@ const IntelligenceFeed = ({
     if (sentiment === "Bullish") return strings.bullish;
     if (sentiment === "Bearish") return strings.bearish;
     return strings.neutral;
+  };
+
+  const translateSector = (sector) => {
+    if (!sector) return "";
+    const map = {
+      Macro: strings.macro,
+      Market: strings.market,
+      Tech: strings.tech,
+      Crypto: strings.crypto,
+      Commodities: strings.commodities,
+    };
+    return map[sector] || sector;
   };
 
   const [narratives, setNarratives] = useState([]);
@@ -207,7 +229,7 @@ const IntelligenceFeed = ({
               >
                 <div className="flex justify-between items-start mb-1">
                   <span className="text-[10px] font-bold uppercase text-slate-500 tracking-wider">
-                    {narrative.sector}
+                    {translateSector(narrative.sector)}
                   </span>
                   <span className="text-[10px] text-slate-500 font-mono">
                     {narrative.event_count} {strings.newsCount}
@@ -251,30 +273,12 @@ const IntelligenceFeed = ({
             <div className="mb-8 pb-6 border-b border-zinc-200 dark:border-slate-800">
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 uppercase tracking-widest">
-                  {selectedNarrative.sector}
+                  {translateSector(selectedNarrative.sector)}
                 </span>
                 <span className="text-xs text-slate-400 font-mono">
                   ID: {selectedNarrative.id.split("-").pop()}
                 </span>
                 <div className="flex-1"></div>
-                {/* Watchlist Star for Narrative */}
-                {toggleWatchlist && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      saveNarrative(selectedNarrative);
-                    }}
-                    className={`hover:scale-110 transition-transform ${isSaved(selectedNarrative) ? "text-yellow-400" : "text-slate-300 hover:text-yellow-400"}`}
-                    title="Watchlist Narrative"
-                  >
-                    <Star
-                      size={20}
-                      fill={
-                        isSaved(selectedNarrative) ? "currentColor" : "none"
-                      }
-                    />
-                  </button>
-                )}
               </div>
               <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-4 tracking-tight">
                 {selectedNarrative.title}
@@ -357,7 +361,14 @@ const IntelligenceFeed = ({
                     </div>
 
                     <h4 className="text-base font-semibold text-slate-700 dark:text-slate-200 leading-snug">
-                      {event.title}
+                      <a
+                        href={event.link || event.source?.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                      >
+                        {event.title}
+                      </a>
                     </h4>
 
                     {event.description && (

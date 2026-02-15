@@ -95,15 +95,25 @@ def analyze_sentiment(text: str) -> dict:
 
 
 def infer_sector(text: str) -> str:
-    """Classifica o evento em um setor de investimento"""
+    """Classifica o evento em um setor de investimento (Taxonomia v3 - 5 Pillars)"""
     text_lower = text.lower()
     
     sectors = {
-        "Crypto": ["bitcoin", "btc", "ethereum", "eth", "crypto", "blockchain", "coinbase", "binance", "solana"],
-        "Tech": ["ai", "artificial intelligence", "nvidia", "nvda", "apple", "aapl", "microsoft", "google", "meta", "tech", "nasdaq", "software", "chip"],
-        "Energy": ["oil", "petrol", "brent", "wti", "petrobras", "pbr", "shell", "bp", "energy", "opec", "opep", "gas"],
-        "Forex": ["usd", "eur", "jpy", "gbp", "dollar", "dólar", "euro", "yen", "cambio", "exchange rate", "forex", "fx"],
-        "Macro": ["inflation", "ipca", "cpi", "gdp", "pib", "recession", "economy", "fed", "fomc", "central bank", "juros", "taxa", "interest rate", "payroll", "job"]
+        "Crypto": ["bitcoin", "btc", "ethereum", "blockchain", "sec", "etf", "binance", "crypto", "solana", "coinbase"],
+        "Tech": ["inteligência artificial", "ai", "apple", "google", "nvidia", "software", "big tech", "microsoft", "meta", "nasdaq", "chip", "cybersecurity"],
+        "Commodities": ["petróleo", "brent", "opep", "minério", "ouro", "agro", "soja", "energia", "oil", "gold", "vale", "petrobras", "commodities"],
+        
+        # Macro: O "Clima" Econômico (Juros, Governo, Geopolítica)
+        "Macro": [
+            "juros", "inflação", "fed", "fomc", "copom", "selic", "ipca", "pib", "gdp", "recessão", "taxa", "tesouro",
+            "geopolítica", "guerra", "eleições", "governo", "congresso", "senado", "biden", "trump", "china", "eua", "europa", "crise"
+        ],
+        
+        # Market: O "Motor" Corporativo (Ações, Resultados, Bancos, Varejo)
+        "Market": [
+            "bolsa", "b3", "ibovespa", "wall street", "ações", "stocks", "mercado", "fechamento", "bancos", "itaú", "bradesco", "nubank",
+            "dividendos", "lucro", "prejuízo", "balanço", "trimestre", "earnings", "ipo", "m&a", "fusão", "varejo", "magalu"
+        ]
     }
     
     # 1. Busca por palavras-chave
@@ -112,39 +122,37 @@ def infer_sector(text: str) -> str:
             if f" {kw} " in f" {text_lower} " or kw in text_lower.split():
                 return sector
                 
-    # 2. Fallback
-    return "Global"
+    # 2. Fallback (Macro é o contexto geral padrão)
+    return "Macro"
 
 
 def generate_insight(sector: str, sentiment_label: str) -> str:
     """Gera um insight acionável rápido baseado em setor e sentimento"""
     
-    if sector == "Global":
-        return "Monitorar impacto nos índices globais."
-
+    # Insights Genéricos por Setor/Sentimento
     insights = {
-        ("Crypto", "Bullish"): "Momentum positivo. Monitorar resistência do BTC.",
-        ("Crypto", "Bearish"): "Risco de liquidação. Atenção a suportes chaves.",
-        ("Crypto", "Neutral"): "Acumulação lateral. Aguardar definição.",
+        ("Crypto", "Bullish"): "Forte fluxo institucional. Monitorar máximas.",
+        ("Crypto", "Bearish"): "Correção em andamento. Risco de suporte quebrar.",
+        ("Crypto", "Neutral"): "Consolidação lateral. Aguardar breakout.",
         
-        ("Tech", "Bullish"): "Fluxo comprador em Growth. Bom para Nasdaq.",
-        ("Tech", "Bearish"): "Rotação de capital. Cuidado com valuations altos.",
-        ("Tech", "Neutral"): "Monitorar earnings e guidance.",
+        ("Tech", "Bullish"): "Rali em AI e Big Tech impulsiona índices.",
+        ("Tech", "Bearish"): "Rotação de capital defensiva. Cuidado com valuations.",
+        ("Tech", "Neutral"): "Aguardando earnings para direção clara.",
 
-        ("Energy", "Bullish"): "Pressão inflacionária possível. Bom para Oil & Gas.",
-        ("Energy", "Bearish"): "Alívio na inflação global. Oportunidade em Airline/Transport.",
-        ("Energy", "Neutral"): "Estabilidade na oferta/demanda.",
+        ("Commodities", "Bullish"): "Choque de oferta ou demanda aquecida. Bom para exportadoras.",
+        ("Commodities", "Bearish"): "Desaceleração global pressiona preços. Atenção a custos.",
+        ("Commodities", "Neutral"): "Mercado equilibrado. Foco em eficiência.",
 
-        ("Forex", "Bullish"): "Moeda forte. Atenção a exportadores.", # Contexto genérico, assumindo USD bullish
-        ("Forex", "Bearish"): "Desvalorização cambial. Oportunidade em hedge.",
-        ("Forex", "Neutral"): "Paridade estável. Carry trade favorecido.",
+        ("Macro", "Bullish"): "Dados fortes sugerem 'Soft Landing'. Apetite ao risco.",
+        ("Macro", "Bearish"): "Risco fiscal ou recessivo. Busca por proteção (Dólar/Ouro).",
+        ("Macro", "Neutral"): "Cenário 'Data Dependent'. Monitorar próximos dados.",
 
-        ("Macro", "Bullish"): "Dados econômicos fortes. Bom para Equities.",
-        ("Macro", "Bearish"): "Risco de recessão/inflação. Defensivos favorecidos.",
-        ("Macro", "Neutral"): "Cenário aguardando novos dados (Data Dependent).",
+        ("Market", "Bullish"): "Resultados corporativos superam expectativas. Compras em Blue Chips.",
+        ("Market", "Bearish"): "Aversão a risco pressiona índices. Venda em cíclicos.",
+        ("Market", "Neutral"): "Mercado de lado. Stock picking é essencial.",
     }
     
-    return insights.get((sector, sentiment_label), f"Acompanhar volatilidade em {sector}.")
+    return insights.get((sector, sentiment_label), f"Monitorar impacto em {sector}.")
 
 
 def score_event(event: dict, keywords: list[str], sentiment: dict) -> int:
