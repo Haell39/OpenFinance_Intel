@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
-import RiskMatrix from "./RiskMatrix";
+import MarketMoodGauge from "./MarketMoodGauge";
+import SectorHeatBar from "./SectorHeatBar";
 import { Star } from "lucide-react";
 
 const MarketOverview = ({
@@ -16,8 +17,6 @@ const MarketOverview = ({
         "Mercados operam com cautela aguardando dados de inflação nos EUA. Setor de Energia mostra resiliência com alta do petróleo, enquanto Tech sofre leve correção. No Brasil, atenção voltada para declarações fiscais e movimento do Dólar.",
       updated: "Atualizado há",
       confidence: "Confiança IA",
-      riskTitle: "Matriz de Risco & Oportunidade",
-      axis: "X: Sentimento | Y: Impacto",
       topBullish: "Top Otimista",
       topBearish: "Top Pessimista",
       noBullish: "Sem sinais de alta",
@@ -29,8 +28,6 @@ const MarketOverview = ({
         "Markets cautious ahead of US inflation data. Energy sector shows resilience with oil rally, while Tech sees mild correction. In Brazil, eyes on fiscal statements and Dollar movement.",
       updated: "Updated",
       confidence: "AI Confidence",
-      riskTitle: "Risk & Opportunity Matrix",
-      axis: "X: Sentiment | Y: Impact",
       topBullish: "Top Bullish",
       topBearish: "Top Bearish",
       noBullish: "No bullish signals",
@@ -86,20 +83,16 @@ const MarketOverview = ({
           </p>
         </div>
 
-        {/* WIDGET 2: RISK MATRIX (2 Cols) */}
-        <div
-          className={`${cardClass} md:col-span-2 p-1 flex flex-col h-[400px]`}
-        >
-          <div className="p-3 border-b border-zinc-100 dark:border-gray-900 flex justify-between items-center">
-            <h3 className={`text-xs font-bold ${textHead} uppercase`}>
-              {strings.riskTitle}
-            </h3>
-            <span className="text-[10px] font-mono text-slate-400 dark:text-slate-600">
-              {strings.axis}
-            </span>
+        {/* WIDGET 2: VISUALS (Gauge & HeatBar) */}
+        <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 h-[400px]">
+          {/* Component 1: Market Mood */}
+          <div className="bg-white dark:bg-gray-900 border border-zinc-200 dark:border-gray-800 rounded-lg p-3 shadow-sm">
+            <MarketMoodGauge isDark={isDark} />
           </div>
-          <div className="flex-1 w-full overflow-hidden">
-            <RiskMatrix events={events} isDark={isDark} />
+
+          {/* Component 2: Sector X-Ray */}
+          <div className="bg-white dark:bg-gray-900 border border-zinc-200 dark:border-gray-800 rounded-lg p-3 shadow-sm">
+            <SectorHeatBar isDark={isDark} />
           </div>
         </div>
 
