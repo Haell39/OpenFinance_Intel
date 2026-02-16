@@ -23,7 +23,15 @@ DEFAULT_SOURCES = [
     {"url": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664", "event_type": "financial", "source_type": "news"}, # CNBC Finance
     {"url": "https://feeds.content.dowjones.io/public/rss/mw_topstories", "event_type": "financial", "source_type": "news"}, # MarketWatch
     {"url": "https://cointelegraph.com/rss", "event_type": "financial", "source_type": "news"}, # Crypto
+    {"url": "https://decrypt.co/feed", "event_type": "financial", "source_type": "news"}, # Decrypt
+    {"url": "https://techcrunch.com/feed/", "event_type": "financial", "source_type": "news"}, # TechCrunch
+    {"url": "https://www.theverge.com/rss/index.xml", "event_type": "financial", "source_type": "news"}, # The Verge
     
+    # Social / Sentiment (Reddit RSS - Strict Social)
+    {"url": "https://www.reddit.com/r/wallstreetbets/top/.rss?t=day", "event_type": "financial", "source_type": "social_media"},
+    {"url": "https://www.reddit.com/r/investing/top/.rss?t=day", "event_type": "financial", "source_type": "social_media"},
+    {"url": "https://www.reddit.com/r/CryptoCurrency/top/.rss?t=day", "event_type": "financial", "source_type": "social_media"},
+
     # Geopolitics (Google News)
     {"url": "https://news.google.com/rss/search?q=Geopolitics+War+Crisis&hl=en-US&gl=US&ceid=US:en", "event_type": "geopolitical", "source_type": "news"},
     {"url": "https://news.google.com/rss/search?q=Global+Economy&hl=en-US&gl=US&ceid=US:en", "event_type": "financial", "source_type": "news"},
@@ -31,6 +39,8 @@ DEFAULT_SOURCES = [
     # Brazil (Manter alguns relevantes)
     {"url": "https://www.infomoney.com.br/feed/", "event_type": "financial", "source_type": "financial"},
     {"url": "https://valor.globo.com/rss", "event_type": "financial", "source_type": "financial"},
+    {"url": "https://pt.investing.com/rss/news.rss", "event_type": "financial", "source_type": "financial"}, # Investing BR
+    {"url": "https://www.cnnbrasil.com.br/feed/", "event_type": "financial", "source_type": "news"}, # CNN Brasil
     
     # Official
     {"url": "https://www.federalreserve.gov/feeds/press_all.xml", "event_type": "financial", "source_type": "official"}, # FED
@@ -257,6 +267,21 @@ async def get_narratives() -> list[dict]:
                 if "_id" in evt:
                     evt["id"] = str(evt["_id"])
                     del evt["_id"]
+
+            # STRICT FILTER: Social Sector contains ONLY Reddit/Twitter
+            if sector == "Social":
+                # Filter events to only allow Reddit/Twitter domains (Case Insensitive)
+                events = [
+                    e for e in events 
+                    if "reddit.com" in e.get("url", "").lower() or 
+                       "twitter.com" in e.get("url", "").lower() or 
+                       "x.com" in e.get("url", "").lower()
+                ]
+                # Update event count after filtering
+                group["event_count"] = len(events)
+            
+            # If Social became empty but had events, maybe title is now wrong? 
+            # It's fine, we just want to suppress non-social noise.
 
             sentiment_label = "Neutral"
             if avg_polarity > 0.05:

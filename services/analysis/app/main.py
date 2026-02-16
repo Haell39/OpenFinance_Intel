@@ -116,10 +116,17 @@ def infer_sector(text: str) -> str:
             "futures", "pontos", "points", "gain", "loss", "markets"
         ],
 
+        # Social Trend Radar (Strictly Twitter/Reddit/Viral as requested)
+        "Social": [
+            "twitter", "x.com", "tweet", "retweet", "thread", "bluesky", 
+            "reddit", "subreddit", "r/", "u/", "wallstreetbets", "wsb", 
+            "viral", "trending topic", "hype", "fomo", "fud", "community_notes"
+        ],
+
         # Macro: O "Clima" Econômico (Juros, Governo, Geopolítica)
         "Macro": [
             "juros", "inflação", "fed", "fomc", "copom", "selic", "ipca", "pib", "gdp", "recessão", "taxa", "tesouro", "treasury", "bonds",
-            "geopolítica", "guerra", "eleições", "governo", "congresso", "senado", "biden", "trump", "china", "eua", "europa", "crise", "fiscal"
+            "geopolítica", "guerra", "eleições", "governo", "congresso", "senado", "biden", "china", "eua", "europa", "crise", "fiscal"
         ]
     }
     

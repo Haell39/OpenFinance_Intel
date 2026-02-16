@@ -10,10 +10,12 @@ import Sidebar from "./components/Sidebar.jsx";
 const INITIAL_MARKET_SIGNALS = [
   {
     id: "loading",
-    title: "Carregando Mercado...",
+    label: "Carregando",
+    value: "...",
+    flag: "⏳",
     type: "financial",
     trend: "neutral",
-    data: [10, 10, 10, 10, 10, 10, 10], // Mock initial
+    data: [10, 10, 10, 10, 10, 10, 10],
   },
 ];
 
@@ -26,7 +28,7 @@ async function fetchTickerData() {
     );
     const data = await res.json();
 
-    // Helper to generate mock sparkline data
+    // Helper: Mock sparkline
     const mockSpark = (trend) => {
       const base = 10;
       const volatility = 0.5;
@@ -44,31 +46,48 @@ async function fetchTickerData() {
     return [
       {
         id: "usd",
-        title: `Dólar: R$ ${parseFloat(data.USDBRL.bid).toFixed(2)}`,
-        type: "financial",
+        label: "USD/BRL",
+        value: `R$ ${parseFloat(data.USDBRL.bid).toFixed(3)}`,
+        flag: "🇺🇸",
         trend: parseFloat(data.USDBRL.pctChange) > 0 ? "up" : "down",
+        change: `${data.USDBRL.pctChange}%`,
         data: mockSpark(parseFloat(data.USDBRL.pctChange) > 0 ? "up" : "down"),
       },
       {
         id: "eur",
-        title: `Euro: R$ ${parseFloat(data.EURBRL.bid).toFixed(2)}`,
-        type: "financial",
+        label: "EUR/BRL",
+        value: `R$ ${parseFloat(data.EURBRL.bid).toFixed(3)}`,
+        flag: "🇪🇺",
         trend: parseFloat(data.EURBRL.pctChange) > 0 ? "up" : "down",
+        change: `${data.EURBRL.pctChange}%`,
         data: mockSpark(parseFloat(data.EURBRL.pctChange) > 0 ? "up" : "down"),
       },
       {
         id: "btc",
-        title: `Bitcoin: R$ ${(parseFloat(data.BTCBRL.bid) / 1000).toFixed(1)}k`,
-        type: "financial",
+        label: "BTC/BRL",
+        value: `R$ ${(parseFloat(data.BTCBRL.bid) / 1000).toFixed(1)}k`,
+        flag: "₿",
         trend: parseFloat(data.BTCBRL.pctChange) > 0 ? "up" : "down",
+        change: `${data.BTCBRL.pctChange}%`,
         data: mockSpark(parseFloat(data.BTCBRL.pctChange) > 0 ? "up" : "down"),
       },
       {
         id: "selic",
-        title: "Selic Meta: 11.25%",
-        type: "financial",
+        label: "SELIC",
+        value: "11.25%",
+        flag: "🇧🇷",
         trend: "neutral",
+        change: "0.00%",
         data: [11.25, 11.25, 11.25, 11.25, 11.25, 11.25, 11.25],
+      },
+      {
+        id: "vix",
+        label: "VIX",
+        value: "13.45",
+        flag: "📊",
+        trend: "down",
+        change: "-2.10%",
+        data: [14.2, 14.1, 13.9, 13.8, 13.6, 13.5, 13.45],
       },
     ];
   } catch (e) {
@@ -300,52 +319,48 @@ export default function App() {
       <div className="flex-1 flex flex-col h-full overflow-hidden bg-zinc-200 dark:bg-slate-900 relative transition-colors duration-300">
         {/* HEADER / TICKER */}
         <header className="header shrink-0 border-b border-zinc-300 dark:border-gray-800 bg-zinc-100/90 dark:bg-gray-950/50 backdrop-blur-md z-50 px-4 h-14 flex items-center justify-between transition-colors duration-300">
-          {/* Left: Ticker */}
-          <div className="header-left flex items-center gap-6 overflow-hidden">
-            <div className="status-bar hidden md:flex gap-6 overflow-x-auto no-scrollbar">
-              {marketSignals.map((signal) => (
-                <div
-                  key={signal.id}
-                  className="status-card flex items-center gap-3 shrink-0"
+          {/* Left: Ticker - PILL DESIGN */}
+          <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide h-full py-2">
+            {marketSignals.map((item) => (
+              <div
+                key={item.id}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-full border select-none whitespace-nowrap transition-colors ${
+                  isDark
+                    ? "bg-slate-800/80 border-slate-700 hover:border-slate-500"
+                    : "bg-white/90 border-zinc-300 hover:border-zinc-400"
+                }`}
+              >
+                <span className="text-sm">{item.flag}</span>
+                <span
+                  className={`text-[10px] font-bold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}
                 >
-                  <div className="flex flex-col">
-                    <span className="text-[9px] text-slate-600 dark:text-slate-500 font-bold tracking-wider leading-none">
-                      {(signal.id || "").toString().toUpperCase()}
-                    </span>
-                    <span
-                      className={`font-mono text-sm font-bold leading-tight ${
-                        signal.trend === "up"
-                          ? "text-green-700 dark:text-green-400"
-                          : signal.trend === "down"
-                            ? "text-red-700 dark:text-red-400"
-                            : "text-slate-800 dark:text-slate-200"
-                      }`}
-                    >
-                      {signal.title.split(": ")[1] || signal.title}
-                    </span>
-                  </div>
-                  {/* Sparkline */}
-                  {signal.data && (
-                    <div className="opacity-80 hover:opacity-100 transition-opacity">
-                      <Sparkline
-                        data={signal.data}
-                        color={
-                          signal.trend === "up"
-                            ? isDark
-                              ? "#22c55e"
-                              : "#15803d"
-                            : signal.trend === "down"
-                              ? isDark
-                                ? "#ef4444"
-                                : "#b91c1c"
-                              : "#64748b"
-                        }
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+                  {item.label}
+                </span>
+                <span
+                  className={`text-xs font-mono font-bold ${isDark ? "text-slate-100" : "text-slate-800"}`}
+                >
+                  {item.value}
+                </span>
+                {item.change && (
+                  <span
+                    className={`text-[10px] font-bold ${
+                      item.trend === "up"
+                        ? "text-green-500"
+                        : item.trend === "down"
+                          ? "text-red-500"
+                          : "text-slate-500"
+                    }`}
+                  >
+                    {item.trend === "up"
+                      ? "▲"
+                      : item.trend === "down"
+                        ? "▼"
+                        : "●"}{" "}
+                    {item.change}
+                  </span>
+                )}
+              </div>
+            ))}
           </div>
 
           {/* Right: Controls */}
