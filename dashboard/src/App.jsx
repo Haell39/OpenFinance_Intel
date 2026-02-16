@@ -457,7 +457,7 @@ export default function App() {
           >
             <div className="flex justify-between items-center p-4 border-b border-slate-800">
               <h2 className="text-lg font-bold text-slate-100">
-                Adicionar Fonte
+                {language === "pt" ? "Adicionar Fonte" : "Add Source"}
               </h2>
               <button
                 className="text-slate-400 hover:text-white"
@@ -472,7 +472,7 @@ export default function App() {
                 className={`flex-1 py-2 text-sm font-medium transition-colors ${activeTabSource === "recommended" ? "text-blue-400 border-b-2 border-blue-500 bg-slate-800/50" : "text-slate-500 hover:text-slate-300"}`}
                 onClick={() => setActiveTabSource("recommended")}
               >
-                ⭐ Sugestões
+                {language === "pt" ? "⭐ Sugestões" : "⭐ Suggestions"}
               </button>
               <button
                 className={`flex-1 py-2 text-sm font-medium transition-colors ${activeTabSource === "rss" ? "text-blue-400 border-b-2 border-blue-500 bg-slate-800/50" : "text-slate-500 hover:text-slate-300"}`}
@@ -501,7 +501,7 @@ export default function App() {
                     {
                       name: "InfoMoney",
                       url: "https://www.infomoney.com.br/feed/",
-                      desc: "Mercados",
+                      desc: language === "pt" ? "Mercados" : "Markets",
                       type: "financial",
                     },
                     {
@@ -513,13 +513,13 @@ export default function App() {
                     {
                       name: "G1 Economia",
                       url: "https://g1.globo.com/rss/g1/economia/",
-                      desc: "Geral",
+                      desc: language === "pt" ? "Geral" : "General",
                       type: "financial",
                     },
                     {
                       name: "Banco Central",
                       url: "https://www.bcb.gov.br/rss/ultimasnoticias",
-                      desc: "Oficial",
+                      desc: language === "pt" ? "Oficial" : "Official",
                       type: "financial",
                     },
                   ].map((src, i) => (
@@ -539,7 +539,7 @@ export default function App() {
                         <div className="text-xs text-slate-500">{src.desc}</div>
                       </div>
                       <span className="text-blue-400 text-xs">
-                        Selecionar →
+                        {language === "pt" ? "Selecionar →" : "Select →"}
                       </span>
                     </div>
                   ))}
@@ -555,10 +555,16 @@ export default function App() {
                     className="w-full bg-slate-950 border border-slate-700 rounded p-2 text-sm text-white mb-3 focus:border-blue-500 outline-none"
                     placeholder={
                       activeTabSource === "twitter"
-                        ? "Usuário (@elonmusk) ou Hashtag (#Bitcoin)"
+                        ? language === "pt"
+                          ? "Usuário (@elonmusk) ou Hashtag (#Bitcoin)"
+                          : "User (@elonmusk) or Hashtag (#Bitcoin)"
                         : activeTabSource === "google"
-                          ? "Tópico (ex: Fusão de Empresas, Petróleo)"
-                          : "URL do Feed RSS (ex: https://site.com/rss)"
+                          ? language === "pt"
+                            ? "Tópico (ex: Fusão de Empresas, Petróleo)"
+                            : "Topic (e.g. M&A, Oil)"
+                          : language === "pt"
+                            ? "URL do Feed RSS (ex: https://site.com/rss)"
+                            : "RSS Feed URL (e.g. https://site.com/rss)"
                     }
                     value={sourceUrl}
                     onChange={(e) => setSourceUrl(e.target.value)}
@@ -574,10 +580,16 @@ export default function App() {
                       {SOURCE_TYPE_OPTIONS.map((opt) => (
                         <option key={opt} value={opt}>
                           {opt === "financial"
-                            ? "Financeiro"
+                            ? language === "pt"
+                              ? "Financeiro"
+                              : "Financial"
                             : opt === "geopolitical"
-                              ? "Geopolítico"
-                              : "Odds/Outros"}
+                              ? language === "pt"
+                                ? "Geopolítico"
+                                : "Geopolitical"
+                              : language === "pt"
+                                ? "Odds/Outros"
+                                : "Odds/Other"}
                         </option>
                       ))}
                     </select>
@@ -589,17 +601,27 @@ export default function App() {
                     disabled={sourceStatus === "loading"}
                   >
                     {sourceStatus === "loading"
-                      ? "Adicionando..."
+                      ? language === "pt"
+                        ? "Adicionando..."
+                        : "Adding..."
                       : activeTabSource === "twitter"
-                        ? "Monitorar Twitter"
+                        ? language === "pt"
+                          ? "Monitorar Twitter"
+                          : "Monitor Twitter"
                         : activeTabSource === "google"
-                          ? "Monitorar Tópico no Google"
-                          : "Adicionar Fonte RSS"}
+                          ? language === "pt"
+                            ? "Monitorar Tópico no Google"
+                            : "Monitor Google Topic"
+                          : language === "pt"
+                            ? "Adicionar Fonte RSS"
+                            : "Add RSS Feed"}
                   </button>
 
                   {sourceStatus === "success" && (
                     <p className="text-green-400 text-xs mt-2 text-center">
-                      ✅ Fonte adicionada com sucesso!
+                      {language === "pt"
+                        ? "✅ Fonte adicionada com sucesso!"
+                        : "✅ Source added successfully!"}
                     </p>
                   )}
                   {sourceStatus === "error" && (

@@ -5,7 +5,7 @@ import { Briefcase } from "lucide-react";
 const Watchlist = ({ watchlist, toggleWatchlist, isDark, language }) => {
   const t = {
     pt: {
-      title: "Minha Watchlist",
+      title: "Minha Carteira",
       subtitle: "Eventos e narrativas salvos",
       empty: "Sua lista está vazia.",
       emptyDesc: "Marque eventos com a estrela ⭐ para acompanhá-los aqui.",

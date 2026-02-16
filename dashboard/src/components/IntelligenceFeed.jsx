@@ -242,7 +242,31 @@ const IntelligenceFeed = ({
                 <h3
                   className={`text-sm font-bold leading-tight mb-2 ${isSelected ? "text-blue-700 dark:text-blue-400" : "text-slate-700 dark:text-slate-200"}`}
                 >
-                  {narrative.title}
+                  {language === "en"
+                    ? narrative.title
+                        .replace("Movimentação em", "Activity in")
+                        .replace(
+                          "Sem movimentação relevante em",
+                          "No relevant activity in",
+                        )
+                        .replace("Avanços em", "Advances in")
+                        .replace(
+                          "Resultados Corporativos & B3 em",
+                          "Earnings & B3 in",
+                        )
+                        .replace(
+                          "Adoção Institucional & ETFs em",
+                          "Institutional Adoption & ETFs in",
+                        )
+                        .replace(
+                          "Rali do Petróleo & OPEP em",
+                          "Oil Rally & OPEC in",
+                        )
+                        .replace(
+                          "Incerteza com Juros & Fed em",
+                          "Rate Uncertainty & Fed in",
+                        )
+                    : narrative.title}
                 </h3>
 
                 <div className="flex items-center justify-between">
@@ -285,7 +309,31 @@ const IntelligenceFeed = ({
                 <div className="flex-1"></div>
               </div>
               <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-4 tracking-tight">
-                {selectedNarrative.title}
+                {language === "en"
+                  ? selectedNarrative.title
+                      .replace("Movimentação em", "Activity in")
+                      .replace(
+                        "Sem movimentação relevante em",
+                        "No relevant activity in",
+                      )
+                      .replace("Avanços em", "Advances in")
+                      .replace(
+                        "Resultados Corporativos & B3 em",
+                        "Earnings & B3 in",
+                      )
+                      .replace(
+                        "Adoção Institucional & ETFs em",
+                        "Institutional Adoption & ETFs in",
+                      )
+                      .replace(
+                        "Rali do Petróleo & OPEP em",
+                        "Oil Rally & OPEC in",
+                      )
+                      .replace(
+                        "Incerteza com Juros & Fed em",
+                        "Rate Uncertainty & Fed in",
+                      )
+                  : selectedNarrative.title}
               </h1>
 
               {/* SENTIMENT METER */}
