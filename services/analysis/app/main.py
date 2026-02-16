@@ -164,6 +164,10 @@ def generate_insight(sector: str, sentiment_label: str) -> str:
         ("Market", "Bullish"): "Resultados corporativos superam expectativas. Compras em Blue Chips.",
         ("Market", "Bearish"): "Aversão a risco pressiona índices. Venda em cíclicos.",
         ("Market", "Neutral"): "Mercado de lado. Stock picking é essencial.",
+
+        ("Social", "Bullish"): "Sentimento otimista nas redes. Monitorar fluxo institucional confirmando.",
+        ("Social", "Bearish"): "Pânico social crescente. Possível oportunidade contrarian.",
+        ("Social", "Neutral"): "Discussão mista nas redes. Sem consenso forte do varejo.",
     }
     
     return insights.get((sector, sentiment_label), f"Monitorar impacto em {sector}.")
@@ -537,8 +541,14 @@ def enrich_event(raw_event: dict) -> dict | None:
     entities = extract_entities(full_text)
     sentiment = analyze_sentiment(full_text)
     
+    # Force Social sector for social media sources (Reddit, Twitter, Nitter)
+    source_url = (source.get("url", "") or "").lower()
+    link_url = (link or "").lower()
+    social_domains = ["reddit.com", "twitter.com", "x.com", "nitter."]
+    is_social_source = any(domain in source_url or domain in link_url for domain in social_domains)
+    
     # Novas classificações de investimento
-    sector = infer_sector(full_text)
+    sector = "Social" if is_social_source else infer_sector(full_text)
     insight = generate_insight(sector, sentiment["label"])
     
     # Classificacao e enriquecimento

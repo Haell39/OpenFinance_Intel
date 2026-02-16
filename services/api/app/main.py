@@ -27,10 +27,13 @@ DEFAULT_SOURCES = [
     {"url": "https://techcrunch.com/feed/", "event_type": "financial", "source_type": "news"}, # TechCrunch
     {"url": "https://www.theverge.com/rss/index.xml", "event_type": "financial", "source_type": "news"}, # The Verge
     
-    # Social / Sentiment (Reddit RSS - Strict Social)
+    # Social / Sentiment (Reddit RSS - Investment-Focused Communities)
     {"url": "https://www.reddit.com/r/wallstreetbets/top/.rss?t=day", "event_type": "financial", "source_type": "social_media"},
     {"url": "https://www.reddit.com/r/investing/top/.rss?t=day", "event_type": "financial", "source_type": "social_media"},
-    {"url": "https://www.reddit.com/r/CryptoCurrency/top/.rss?t=day", "event_type": "financial", "source_type": "social_media"},
+    {"url": "https://www.reddit.com/r/stocks/top/.rss?t=day", "event_type": "financial", "source_type": "social_media"},
+    {"url": "https://www.reddit.com/r/StockMarket/top/.rss?t=day", "event_type": "financial", "source_type": "social_media"},
+    {"url": "https://www.reddit.com/r/SecurityAnalysis/top/.rss?t=day", "event_type": "financial", "source_type": "social_media"},
+    {"url": "https://www.reddit.com/r/economy/top/.rss?t=day", "event_type": "financial", "source_type": "social_media"},
 
     # Geopolitics (Google News)
     {"url": "https://news.google.com/rss/search?q=Geopolitics+War+Crisis&hl=en-US&gl=US&ceid=US:en", "event_type": "geopolitical", "source_type": "news"},
@@ -270,13 +273,12 @@ async def get_narratives() -> list[dict]:
 
             # STRICT FILTER: Social Sector contains ONLY Reddit/Twitter
             if sector == "Social":
-                # Filter events to only allow Reddit/Twitter domains (Case Insensitive)
-                events = [
-                    e for e in events 
-                    if "reddit.com" in e.get("url", "").lower() or 
-                       "twitter.com" in e.get("url", "").lower() or 
-                       "x.com" in e.get("url", "").lower()
-                ]
+                # Filter events using CORRECT fields: 'link' (article URL) and 'source.url' (feed URL)
+                social_domains = ["reddit.com", "twitter.com", "x.com", "nitter."]
+                def is_social_event(e):
+                    combined = (e.get("link", "") + " " + (e.get("source", {}).get("url", "") or "")).lower()
+                    return any(d in combined for d in social_domains)
+                events = [e for e in events if is_social_event(e)]
                 # Update event count after filtering
                 group["event_count"] = len(events)
             
@@ -289,12 +291,17 @@ async def get_narratives() -> list[dict]:
             elif avg_polarity < -0.05:
                 sentiment_label = "Bearish"
 
+            # Compute most common insight from events
+            event_insights = [e.get("insight", "") for e in events if e.get("insight")]
+            most_common_insight = max(set(event_insights), key=event_insights.count) if event_insights else f"Monitorar impacto em {sector}."
+
             narrative = {
                 # Deterministic ID for persistence (Watchlist)
                 "id": f"narrative-{sector.lower()}",
                 "title": titles[i], # Título gerado via LLM
                 "sector": sector,
                 "overall_sentiment": sentiment_label,
+                "insight": most_common_insight,
                 "event_count": group["event_count"],
                 "last_updated": datetime.utcnow().isoformat() + "Z",
                 "events": events
@@ -302,7 +309,7 @@ async def get_narratives() -> list[dict]:
             narratives.append(narrative)
 
         # Ensure all 5 pillars are present
-        all_sectors = ["Macro", "Market", "Tech", "Crypto", "Commodities"]
+        all_sectors = ["Macro", "Market", "Tech", "Crypto", "Commodities", "Social"]
         present_sectors = {n["sector"] for n in narratives}
         
         for sector in all_sectors:

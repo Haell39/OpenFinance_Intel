@@ -38,6 +38,9 @@ const IntelligenceFeed = ({
       commodities: "Commodities",
       highImpact: "Alto Impacto",
       news: "Notícia",
+      social: "Rede Social",
+      analystInsight: "Insight do Analista",
+      keywords: "Palavras-chave",
     },
     en: {
       activeNarratives: "Active Narratives",
@@ -57,6 +60,9 @@ const IntelligenceFeed = ({
       commodities: "Commodities",
       highImpact: "High Impact",
       news: "News",
+      social: "Social Media",
+      analystInsight: "Analyst Insight",
+      keywords: "Keywords",
     },
   };
   const strings = language === "pt" ? t.pt : t.en;
@@ -76,6 +82,7 @@ const IntelligenceFeed = ({
       Tech: strings.tech,
       Crypto: strings.crypto,
       Commodities: strings.commodities,
+      Social: strings.social,
     };
     return map[sector] || sector;
   };
@@ -280,6 +287,11 @@ const IntelligenceFeed = ({
                     <ChevronRight size={14} className="text-blue-600" />
                   )}
                 </div>
+                {narrative.insight && (
+                  <p className="mt-2 text-[11px] text-slate-500 dark:text-slate-400 italic leading-snug border-t border-zinc-200 dark:border-slate-800 pt-2">
+                    💡 {narrative.insight}
+                  </p>
+                )}
               </div>
             );
           })}
@@ -365,6 +377,18 @@ const IntelligenceFeed = ({
               </p>
             </div>
 
+            {/* ANALYST INSIGHT */}
+            {selectedNarrative.insight && (
+              <div className="mb-8 p-4 rounded-lg border border-amber-200 dark:border-amber-800/40 bg-amber-50 dark:bg-amber-900/10">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 mb-1 flex items-center gap-1.5">
+                  💡 {strings.analystInsight}
+                </h3>
+                <p className="text-sm text-amber-900 dark:text-amber-200 font-medium">
+                  {selectedNarrative.insight}
+                </p>
+              </div>
+            )}
+
             {/* TIMELINE */}
             <div className="relative border-l-2 border-zinc-200 dark:border-slate-800 ml-3 space-y-8 pb-10">
               {selectedNarrative.events.map((event, index) => {
@@ -431,6 +455,20 @@ const IntelligenceFeed = ({
                       </p>
                     )}
 
+                    {/* Keywords */}
+                    {event.keywords && event.keywords.length > 0 && (
+                      <div className="mt-1.5 flex flex-wrap gap-1">
+                        {event.keywords.slice(0, 4).map((kw, ki) => (
+                          <span
+                            key={ki}
+                            className="text-[9px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-mono"
+                          >
+                            {kw}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
                     <div className="mt-2 flex gap-2">
                       {event.impact === "high" && (
                         <span className="text-[10px] bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 px-1.5 py-0.5 rounded font-bold uppercase">
@@ -438,7 +476,22 @@ const IntelligenceFeed = ({
                         </span>
                       )}
                       <span className="text-[10px] text-slate-400 border border-zinc-200 dark:border-slate-700 px-1.5 py-0.5 rounded uppercase">
-                        {event.source?.source_type || "News"}
+                        {(() => {
+                          try {
+                            const url = event.link || event.source?.url || "";
+                            if (!url)
+                              return event.source?.source_type || "News";
+                            const hostname = new URL(url).hostname.replace(
+                              "www.",
+                              "",
+                            );
+                            return hostname.length > 20
+                              ? hostname.substring(0, 17) + "..."
+                              : hostname;
+                          } catch {
+                            return event.source?.source_type || "News";
+                          }
+                        })()}
                       </span>
                     </div>
                   </div>
