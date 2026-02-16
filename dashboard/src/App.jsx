@@ -168,7 +168,7 @@ export default function App() {
 
   // Real-time & Ticker State
   const [marketSignals, setMarketSignals] = useState(INITIAL_MARKET_SIGNALS);
-  const [refreshInterval, setRefreshInterval] = useState(0); // 0 = off
+  const [refreshInterval, setRefreshInterval] = useState(30000); // 0 = off
   const [lastUpdated, setLastUpdated] = useState(new Date()); // New State
   const [timeSinceUpdate, setTimeSinceUpdate] = useState("0s"); // New State
 
@@ -378,7 +378,7 @@ export default function App() {
               className="bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors shadow-lg shadow-blue-500/20"
               onClick={() => setShowSourceModal(true)}
             >
-              + Fonte
+              {language === "pt" ? "+ Fonte" : "+ Source"}
             </button>
             <button
               className="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"

@@ -113,7 +113,8 @@ async def scheduler_loop():
         except Exception as e:
             print(f"[scheduler] Error: {e}")
         
-        await asyncio.sleep(300) # 5 minutes
+        
+        await asyncio.sleep(60) # 1 minute for faster updates
 
 
 @app.get("/health")

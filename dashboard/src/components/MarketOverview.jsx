@@ -87,12 +87,12 @@ const MarketOverview = ({
         <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 h-[400px]">
           {/* Component 1: Market Mood */}
           <div className="bg-white dark:bg-gray-900 border border-zinc-200 dark:border-gray-800 rounded-lg p-3 shadow-sm h-full">
-            <MarketMoodGauge isDark={isDark} />
+            <MarketMoodGauge isDark={isDark} language={language} />
           </div>
 
           {/* Component 2: Sector X-Ray */}
           <div className="bg-white dark:bg-gray-900 border border-zinc-200 dark:border-gray-800 rounded-lg p-3 shadow-sm h-full">
-            <SectorHeatBar isDark={isDark} />
+            <SectorHeatBar isDark={isDark} language={language} />
           </div>
         </div>
 
