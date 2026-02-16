@@ -5,13 +5,14 @@ import traceback
 
 # Initialize client if API key is present
 api_key = os.getenv("GOOGLE_API_KEY")
+ENABLE_LLM = False # User requested to disable external API for cost savings
 
-if api_key:
+if api_key and ENABLE_LLM:
     genai.configure(api_key=api_key)
     # Use Flash for speed/cost efficiency
     model = genai.GenerativeModel('gemini-2.0-flash')
 else:
-    print("[llm_service] WARN: GOOGLE_API_KEY not found. LLM features disabled.")
+    print("[llm_service] LLM features disabled (ENABLE_LLM=False or No Key).")
     model = None
 
 async def generate_narrative_title(events: list, sector: str) -> str:

@@ -275,6 +275,22 @@ async def get_narratives() -> list[dict]:
             }
             narratives.append(narrative)
 
+        # Ensure all 5 pillars are present
+        all_sectors = ["Macro", "Market", "Tech", "Crypto", "Commodities"]
+        present_sectors = {n["sector"] for n in narratives}
+        
+        for sector in all_sectors:
+            if sector not in present_sectors:
+                narratives.append({
+                    "id": f"narrative-{sector.lower()}",
+                    "title": f"Sem movimentação relevante em {sector}", # Título placeholder
+                    "sector": sector,
+                    "overall_sentiment": "Neutral",
+                    "event_count": 0,
+                    "last_updated": datetime.utcnow().isoformat() + "Z",
+                    "events": []
+                })
+
         # Ordenar narrativas por contagem de eventos (Relevância)
         narratives.sort(key=lambda x: x["event_count"], reverse=True)
         return narratives
@@ -323,6 +339,16 @@ def generate_mock_narratives() -> list[dict]:
         },
         {
             "id": "mock-4",
+            "title": "Avanços em IA & Big Tech",
+            "sector": "Tech",
+            "overall_sentiment": "Bullish",
+            "event_count": 5,
+            "events": [
+                {"id": "mock-evt-8", "title": "Nvidia supera expectativas de lucro", "timestamp": datetime.utcnow().isoformat() + "Z", "impact": "high", "analytics": {"sentiment": {"label": "Bullish"}}},
+            ]
+        },
+        {
+            "id": "mock-5",
             "title": "Resultados Corporativos & B3 em Market",
             "sector": "Market",
             "overall_sentiment": "Neutral",

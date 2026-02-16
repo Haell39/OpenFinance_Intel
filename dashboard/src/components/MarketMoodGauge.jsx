@@ -1,11 +1,31 @@
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
-const MarketMoodGauge = ({ isDark }) => {
+const MarketMoodGauge = ({ isDark, language }) => {
+  const t = {
+    pt: {
+      title: "Sentimento do Mercado",
+      bearish: "Pessimista",
+      neutral: "Neutro",
+      bullish: "Otimista",
+      greedLevel: "Nível de Ganância",
+      status: "OTIMISTA",
+    },
+    en: {
+      title: "Market Sentiment",
+      bearish: "Bearish",
+      neutral: "Neutral",
+      bullish: "Bullish",
+      greedLevel: "Greed Level",
+      status: "BULLISH",
+    },
+  };
+  const strings = language === "pt" ? t.pt : t.en;
+
   const data = [
-    { name: "Bearish", value: 33, color: "#ef4444" }, // Red
-    { name: "Neutral", value: 33, color: "#52525b" }, // Zinc-600
-    { name: "Bullish", value: 33, color: "#22c55e" }, // Green
+    { name: strings.bearish, value: 33, color: "#ef4444" }, // Red
+    { name: strings.neutral, value: 33, color: "#52525b" }, // Zinc-600
+    { name: strings.bullish, value: 33, color: "#22c55e" }, // Green
   ];
 
   // needle value (mocked for now, can be dynamic later)
@@ -14,7 +34,7 @@ const MarketMoodGauge = ({ isDark }) => {
   return (
     <div className="flex flex-col items-center justify-center h-full relative">
       <h3 className="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 absolute top-2 left-3">
-        Market Sentimento
+        {strings.title}
       </h3>
 
       <div className="w-full h-[140px] flex items-end justify-center pb-2">
@@ -43,10 +63,10 @@ const MarketMoodGauge = ({ isDark }) => {
         {/* Needle / Text Overlay */}
         <div className="absolute bottom-6 flex flex-col items-center">
           <span className="text-2xl font-black text-slate-800 dark:text-white tracking-tighter">
-            OTIMISTA
+            {strings.status}
           </span>
           <span className="text-[10px] text-slate-400 uppercase tracking-widest">
-            Greed Level
+            {strings.greedLevel}
           </span>
         </div>
       </div>

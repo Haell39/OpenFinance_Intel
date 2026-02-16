@@ -99,20 +99,27 @@ def infer_sector(text: str) -> str:
     text_lower = text.lower()
     
     sectors = {
-        "Crypto": ["bitcoin", "btc", "ethereum", "blockchain", "sec", "etf", "binance", "crypto", "solana", "coinbase"],
-        "Tech": ["inteligência artificial", "ai", "apple", "google", "nvidia", "software", "big tech", "microsoft", "meta", "nasdaq", "chip", "cybersecurity"],
-        "Commodities": ["petróleo", "brent", "opep", "minério", "ouro", "agro", "soja", "energia", "oil", "gold", "vale", "petrobras", "commodities"],
-        
-        # Macro: O "Clima" Econômico (Juros, Governo, Geopolítica)
-        "Macro": [
-            "juros", "inflação", "fed", "fomc", "copom", "selic", "ipca", "pib", "gdp", "recessão", "taxa", "tesouro",
-            "geopolítica", "guerra", "eleições", "governo", "congresso", "senado", "biden", "trump", "china", "eua", "europa", "crise"
-        ],
+        "Crypto": ["bitcoin", "btc", "ethereum", "eth", "blockchain", "sec", "etf", "binance", "crypto", "solana", "coinbase", "defi", "memecoin"],
+        "Tech": ["inteligência artificial", "ai", "apple", "google", "nvidia", "nvda", "software", "big tech", "microsoft", "msft", "meta", "nasdaq", "chip", "cybersecurity", "semicondutores"],
+        "Commodities": ["petróleo", "brent", "wti", "opep", "minério", "ferro", "ouro", "gold", "agro", "soja", "energia", "oil", "vale", "petrobras", "prio", "commodities", "milho", "café"],
         
         # Market: O "Motor" Corporativo (Ações, Resultados, Bancos, Varejo)
+        # PRIORIDADE SOBRE MACRO: Tickers e termos específicos de bolsa devem se sobressair a termos genéricos de governo/país.
         "Market": [
-            "bolsa", "b3", "ibovespa", "wall street", "ações", "stocks", "mercado", "fechamento", "bancos", "itaú", "bradesco", "nubank",
-            "dividendos", "lucro", "prejuízo", "balanço", "trimestre", "earnings", "ipo", "m&a", "fusão", "varejo", "magalu"
+            "bolsa", "b3", "ibovespa", "ibov", "wall street", "ações", "stocks", "mercado", "fechamento", "abertura", "pregão",
+            "bancos", "itaú", "bradesco", "nubank", "santander", "btg", "xp", "corretora",
+            "dividendos", "lucro", "prejuízo", "balanço", "trimestre", "earnings", "resultado", "receita", "margem",
+            "ipo", "m&a", "fusão", "aquisição", 
+            "varejo", "magalu", "via", "americanas", "amazon", "tesla", "tsla", "weg", "embraer", "vale",
+            "s&p 500", "spx", "dow jones", "djia", "russell", "nyse", "rally", "bullish", "bearish", "investidores", "investors",
+            "shares", "equity", "equities", "alta", "baixa", "cotação", "fii", "fiis", "sobe", "cai", "valoriza", "desvaloriza",
+            "futures", "pontos", "points", "gain", "loss", "markets"
+        ],
+
+        # Macro: O "Clima" Econômico (Juros, Governo, Geopolítica)
+        "Macro": [
+            "juros", "inflação", "fed", "fomc", "copom", "selic", "ipca", "pib", "gdp", "recessão", "taxa", "tesouro", "treasury", "bonds",
+            "geopolítica", "guerra", "eleições", "governo", "congresso", "senado", "biden", "trump", "china", "eua", "europa", "crise", "fiscal"
         ]
     }
     

@@ -36,6 +36,8 @@ const IntelligenceFeed = ({
       tech: "Tech & IA",
       crypto: "Cripto",
       commodities: "Commodities",
+      highImpact: "Alto Impacto",
+      news: "Notícia",
     },
     en: {
       activeNarratives: "Active Narratives",
@@ -53,6 +55,8 @@ const IntelligenceFeed = ({
       tech: "Tech & AI",
       crypto: "Crypto",
       commodities: "Commodities",
+      highImpact: "High Impact",
+      news: "News",
     },
   };
   const strings = language === "pt" ? t.pt : t.en;

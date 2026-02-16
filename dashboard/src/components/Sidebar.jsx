@@ -91,13 +91,21 @@ const Sidebar = ({
             <Moon size={20} className="text-indigo-600" />
           )}
           <span className="hidden md:block ml-3 text-sm font-medium">
-            {isDark ? "Light Mode" : "Dark Mode"}
+            {isDark
+              ? language === "pt"
+                ? "Modo Claro"
+                : "Light Mode"
+              : language === "pt"
+                ? "Modo Escuro"
+                : "Dark Mode"}
           </span>
         </button>
 
         <button className="w-full flex items-center justify-center md:justify-start p-2 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors rounded hover:bg-zinc-100 dark:hover:bg-gray-900">
           <Settings size={20} />
-          <span className="hidden md:block ml-3 text-sm">Settings</span>
+          <span className="hidden md:block ml-3 text-sm">
+            {language === "pt" ? "Configurações" : "Settings"}
+          </span>
         </button>
       </div>
     </div>

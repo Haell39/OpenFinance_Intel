@@ -9,7 +9,13 @@ import {
   ReferenceLine,
 } from "recharts";
 
-const SectorHeatBar = ({ isDark }) => {
+const SectorHeatBar = ({ isDark, language }) => {
+  const t = {
+    pt: { title: "Raio-X Setorial" },
+    en: { title: "Sector X-Ray" },
+  };
+  const strings = language === "pt" ? t.pt : t.en;
+
   const data = [
     { name: "Crypto", sentiment: 0.8 },
     { name: "Tech", sentiment: 0.4 },
@@ -21,7 +27,7 @@ const SectorHeatBar = ({ isDark }) => {
   return (
     <div className="w-full h-full flex flex-col relative">
       <h3 className="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 absolute top-2 left-3 z-10">
-        Raio-X Setorial
+        {strings.title}
       </h3>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
