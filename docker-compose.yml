@@ -61,5 +61,12 @@ services:
     depends_on:
       - redis
 
+  dashboard:
+    build: ./dashboard
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+
 volumes:
   mongo_data:
