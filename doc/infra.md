@@ -1,78 +1,168 @@
-# OpenFinance Intel — Global Infrastructure 🏗️
+# OpenFinance Intel — Infraestrutura Global 🏗️
 
 ## 🎯 Conceito
 
-Plataforma **Event-Driven** para inteligência de investimento. O sistema ingere o caos da web (RSS, News) e o transforma em **Sinais de Mercado** estruturados, classificados por sentimento e impacto.
+Plataforma **Event-Driven** de inteligência de investimento. O sistema ingere dados da web (RSS, Reddit, Twitter) e os transforma em **Sinais de Mercado** estruturados, classificados por sentimento, setor, sub-setor e impacto.
 
 ---
 
 ## 🧱 Arquitetura de Microserviços
 
-O sistema opera em containers Docker orquestrados, comunicando-se via **Redis** (Pub/Sub e Filas).
+O sistema opera em **6 containers Docker** orquestrados via Docker Compose, comunicando-se por **Redis** (filas de mensagens) e **MongoDB** (persistência).
+
+```
+Internet (RSS/Reddit/Twitter)
+        │
+        ▼
+┌──────────────┐     tasks_queue      ┌──────────────┐
+│  API Gateway │◄────────────────────►│   Collector   │
+│  (FastAPI)   │     Redis            │  (Scraper)    │
+│  :8000       │                      └──────┬───────┘
+└──────┬───────┘                             │
+       │                              events_queue
+       │ MongoDB                             │
+       │                              ┌──────▼───────┐
+       ├──────────────────────────────►│   Analysis   │
+       │                              │  (NLP Core)  │
+       │                              └──────┬───────┘
+       │                                     │
+       │                              alerts_queue
+       │                                     │
+       │                              ┌──────▼───────┐
+       │                              │   Notifier   │
+       │                              └──────────────┘
+       │
+┌──────▼───────┐
+│  Dashboard   │
+│  (React)     │
+│  :5173       │
+└──────────────┘
+```
+
+---
 
 ### 1. 🕷️ Collector Service
 
 _O "Braço" do sistema._
 
-- **Responsabilidade**: Ir até a internet e buscar dados.
-- **Fontes**: Suporta RSS, Atom, Google News e Twitter/X (via Nitter/RSS).
-- **Deduplicação**: Gera um ID único (`md5(url+title)`) para cada evento, garantindo que a mesma notícia não gere ruído duplicado.
+- **Responsabilidade**: Buscar dados na internet a partir de fontes configuradas
+- **Fontes suportadas**: RSS, Atom, Google News, Reddit RSS, Twitter/X (via Nitter)
+- **Deduplicação**: Hash MD5 determinístico (`md5(url + title)`) — mesma notícia nunca gera duplicata
+- **Feed Discovery**: Tenta descobrir feeds automaticamente a partir de URLs de sites
 
 ### 2. 🧠 Analysis Service (AI Core)
 
 _O "Cérebro" do sistema._
 
-- **Responsabilidade**: Ler, entender, classificar e pontuar o evento.
+- **Responsabilidade**: Ler, entender, classificar e pontuar cada evento
 - **Pipeline de NLP**:
-  1.  **Limpeza**: Remove HTML e caracteres irrelevantes.
-  2.  **Detecção de Setor**: Usa palavras-chave e spaCy para classificar em `Crypto`, `Tech`, `Energy`, `Forex`, `Macro`.
-  3.  **Análise de Sentimento (TextBlob)**:
-      - **Polaridade**: Calcula score de -1.0 a +1.0.
-      - **Classificação**: `Bullish` (>0.1), `Bearish` (<-0.1) ou `Neutral`.
-  4.  **Classificação Geográfica**: Divide eventos em **Brasil** (com base em termos locais/URL) ou **Internacional**.
-  5.  **Scoring**: Calcula pontuação de **Impacto** (0-10) baseada em palavras-chave de crise e intensidade do sentimento.
-  6.  **Agrupamento de Narrativas**: Identifica cluster de eventos similares nas últimas 48h (mesmo setor + entidades sobrepostas) para criar uma "História" coesa.
-  7.  **Insight**: Gera uma frase de ação (ex: "Atenção à volatilidade cambial").
+  1. **Limpeza**: Remove HTML, tags e caracteres irrelevantes
+  2. **Detecção de Setor**: Classifica em **Crypto, Tech, Market, Macro, Commodities, Social** via keywords + spaCy
+  3. **Sub-setor (Macro)**: Classifica eventos Macro em **Política Monetária, Geopolítica, Política Fiscal, Dados Econômicos, Geral**
+  4. **Classificação Social Forçada**: Fontes Reddit/Twitter/Nitter → setor "Social" obrigatório, ignorando keywords
+  5. **Análise de Sentimento (TextBlob)**: Polaridade (-1.0 a +1.0) → `Bullish` (>0.1), `Bearish` (<-0.1), `Neutral`
+  6. **Classificação Geográfica**: Brasil vs. Internacional baseado em termos e URLs
+  7. **Scoring**: Impacto (0-10) baseado em keywords de crise e intensidade de sentimento
+  8. **Insight**: Frase de ação por combinação setor × sentimento (21 combinações pré-definidas)
+  9. **Extração de Keywords & Entidades**: spaCy NER + extração customizada
 
-### 3. 🌐 API Gateway
+### 3. 🌐 API Gateway (FastAPI)
 
 _A "Porta de Entrada"._
 
-- **Responsabilidade**: Servir dados para o Frontend e gerenciar configurações.
-- **Scheduler**: Loop assíncrono que re-agenda a verificação de fontes.
-- **Smart Seeder**: Lógica de Upsert que permite adicionar novas fontes padrão sem resetar o banco de dados.
+- **Responsabilidade**: Servir dados para o frontend e orquestrar coleta
+- **Endpoints principais**:
+  - `GET /events` — Eventos enriquecidos com filtros (tipo, impacto, ordenação)
+  - `GET /narratives` — Narrativas agrupadas por setor com eventos, sentimento e insight
+  - `POST /sources` — Adicionar novas fontes de dados
+  - `GET /sources` — Listar fontes ativas
+- **Scheduler**: Loop assíncrono que re-agenda verificação de fontes periodicamente
+- **Smart Seeder**: Upsert de fontes padrão sem destruir o banco existente
+- **Filtro Social Estrito**: Setor "Social" contém apenas eventos de Reddit/Twitter/Nitter
+- **Setor Garantido**: Todos os 6 setores aparecem na resposta, mesmo sem eventos
 
-### 4. 🖥️ Dashboard (Frontend)
+### 4. 🖥️ Dashboard (React)
 
 _A "Face" do sistema._
 
-- **Tecnologia**: React + Vite + Tailwind CSS + Recharts + Lucide.
-- **Market Overview**: Layout **Bento Grid** modular (Pulse, Matrix, Signals).
-- **Dual Theme Engine**: Sistema de temas (Light/Dark) class-based com persistência.
-- **UX Financeira**: Foco em densidade de dados, tipografia mono para números e feedbacks visuais rápidos.
-- **Auto-Refresh**: Polling inteligente que atualiza os widgets sem recarregar a página.
+- **Tecnologia**: React 18 + Vite + Tailwind CSS + Lucide Icons
+- **4 Abas**:
+  | Aba | Conteúdo |
+  |-----|---------|
+  | **Market Overview** | Bento Grid: Pulso IA, Gauge de Sentimento, Raio-X Setorial, Top Sinais, Radar de Oportunidades, Indicadores Chave (Fear & Greed) |
+  | **Intelligence Feed** | Narrativas por setor → Timeline detalhada com subcategorias Macro, insights, keywords |
+  | **Watchlist** | Eventos/narrativas favoritados com persistência LocalStorage |
+  | **Configurações** | Auto-refresh (Off/1/5/10/20 min), tema, idioma, sobre |
+- **Dual Theme**: Light/Dark com classe CSS e persistência
+- **i18n**: PT-BR / EN-US com tradução completa
+- **Auto-Refresh**: Configurável de Off a 20 min (padrão: 5 min)
+- **Favicon Custom**: Ícone da plataforma no browser tab e sidebar
+
+### 5. 📢 Notifier Service
+
+_O "Alarme" do sistema._
+
+- **Responsabilidade**: Consumir fila `alerts_queue` para notificações
+- **Status**: Estrutura pronta, lógica de alerta não implementada (roadmap)
 
 ---
 
-## 🔄 Fluxo de Dados (Pipeline V6)
+## 🔄 Fluxo de Dados (Pipeline v7)
 
-1.  **Ingestão**: API agenda tarefa -> Redis `tasks_queue`.
-2.  **Coleta**: Collector baixa o conteúdo -> Extrai Título/Corpo -> Redis `events_queue`.
-3.  **Inteligência**: Analysis processa NLP -> Detecta Setor e Sentimento -> Gera Insight -> Salva no **MongoDB**.
-4.  **Consumo**: Frontend solicita `/events` -> API consulta Mongo -> Usuário vê "Bitcoin Bullish" na coluna Crypto.
+```
+1. API agenda tarefa ──────────►  Redis: tasks_queue
+2. Collector busca conteúdo ───►  Extrai título/corpo/link
+3. Collector publica evento ───►  Redis: events_queue
+4. Analysis processa NLP ─────►  Setor + Sub-setor + Sentimento + Insight + Score
+5. Analysis salva ─────────────►  MongoDB (evento enriquecido)
+6. Frontend solicita /narratives ► API agrupa por setor ► JSON com narrativas
+7. Usuário vê sinais organizados ► Filtra, favorita, explora timeline
+```
 
 ---
 
 ## 🗄️ Stack de Dados
 
-- **MongoDB**: Armazena eventos enriquecidos.
-  - Exemplo: `analytics: { sentiment: { label: "Bullish", polarity: 0.8 }, score: 9 }`.
-- **Redis**: Broker de mensagens de baixa latência.
+### MongoDB
+
+- **Database**: `sentinelwatch`
+- **Collections**: `events` (enriquecidos), `sources` (fontes configuradas)
+- Exemplo de evento enriquecido:
+  ```json
+  {
+    "title": "Fed mantém juros estáveis",
+    "sector": "Macro",
+    "sub_sector": "Monetary Policy",
+    "analytics": { "sentiment": { "label": "Neutral", "polarity": 0.02 } },
+    "impact": "high",
+    "insight": "Cenário 'Data Dependent'. Monitorar próximos dados.",
+    "keywords": ["fed", "juros", "rates"]
+  }
+  ```
+
+### Redis
+
+- **Filas**: `tasks_queue`, `events_queue`, `alerts_queue`
+- Broker de baixa latência entre microserviços
+
+---
+
+## 🐳 Docker Compose
+
+| Container | Imagem/Build         | Porta | Dependências |
+| --------- | -------------------- | ----- | ------------ |
+| redis     | redis:7-alpine       | 6379  | —            |
+| mongo     | mongo:7              | 27017 | —            |
+| api       | ./services/api       | 8000  | redis, mongo |
+| collector | ./services/collector | —     | redis        |
+| analysis  | ./services/analysis  | —     | redis, mongo |
+| notifier  | ./services/notifier  | —     | redis        |
 
 ---
 
 ## ⚠️ Segurança & Ética
 
-- O sistema utiliza apenas dados públicos.
-- Respeita `robots.txt` e headers de User-Agent.
-- Ferramenta de apoio à decisão, não recomendação de investimento automatizada.
+- Utiliza apenas **dados públicos** (RSS feeds e páginas públicas)
+- Respeita `robots.txt` e headers de User-Agent
+- **Ferramenta de apoio à decisão**, não recomendação de investimento automatizada
+- Nenhum dado pessoal é coletado ou armazenado
