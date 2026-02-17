@@ -41,6 +41,13 @@ const IntelligenceFeed = ({
       social: "Rede Social",
       analystInsight: "Insight do Analista",
       keywords: "Palavras-chave",
+      allSubSectors: "Todos",
+      monetaryPolicy: "Política Monetária",
+      geopolitics: "Geopolítica",
+      fiscalPolicy: "Política Fiscal",
+      economicData: "Dados Econômicos",
+      general: "Geral",
+      subCategories: "Subcategorias",
     },
     en: {
       activeNarratives: "Active Narratives",
@@ -63,6 +70,13 @@ const IntelligenceFeed = ({
       social: "Social Media",
       analystInsight: "Analyst Insight",
       keywords: "Keywords",
+      allSubSectors: "All",
+      monetaryPolicy: "Monetary Policy",
+      geopolitics: "Geopolitics",
+      fiscalPolicy: "Fiscal Policy",
+      economicData: "Economic Data",
+      general: "General",
+      subCategories: "Sub-categories",
     },
   };
   const strings = language === "pt" ? t.pt : t.en;
@@ -87,8 +101,21 @@ const IntelligenceFeed = ({
     return map[sector] || sector;
   };
 
+  const translateSubSector = (sub) => {
+    if (!sub) return "";
+    const map = {
+      "Monetary Policy": strings.monetaryPolicy,
+      Geopolitics: strings.geopolitics,
+      "Fiscal Policy": strings.fiscalPolicy,
+      "Economic Data": strings.economicData,
+      General: strings.general,
+    };
+    return map[sub] || sub;
+  };
+
   const [narratives, setNarratives] = useState([]);
   const [selectedNarrative, setSelectedNarrative] = useState(null);
+  const [subSectorFilter, setSubSectorFilter] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(new Date());
@@ -96,7 +123,7 @@ const IntelligenceFeed = ({
   // Auto-Refresh Logic (60s)
   useEffect(() => {
     loadNarratives();
-    const interval = setInterval(loadNarratives, 60000);
+    const interval = setInterval(loadNarratives, 300000);
     return () => clearInterval(interval);
   }, []);
 
@@ -230,7 +257,10 @@ const IntelligenceFeed = ({
             return (
               <div
                 key={narrative.id}
-                onClick={() => setSelectedNarrative(narrative)}
+                onClick={() => {
+                  setSelectedNarrative(narrative);
+                  setSubSectorFilter(null);
+                }}
                 className={`
                             group cursor-pointer p-4 border-b border-zinc-200 dark:border-slate-800/50 
                             transition-all duration-200 hover:bg-zinc-100 dark:hover:bg-slate-800/50
@@ -389,114 +419,171 @@ const IntelligenceFeed = ({
               </div>
             )}
 
-            {/* TIMELINE */}
-            <div className="relative border-l-2 border-zinc-200 dark:border-slate-800 ml-3 space-y-8 pb-10">
-              {selectedNarrative.events.map((event, index) => {
-                const time = new Date(event.timestamp).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                });
-                const date = new Date(event.timestamp).toLocaleDateString([], {
-                  day: "2-digit",
-                  month: "short",
-                });
-                const eventSentiment =
-                  event.analytics?.sentiment?.label || "Neutral";
-
-                let dotColor = "bg-slate-300 dark:bg-slate-700";
-                if (eventSentiment === "Bullish") dotColor = "bg-green-500";
-                if (eventSentiment === "Bearish") dotColor = "bg-red-500";
-
+            {/* SUBCATEGORY FILTER (Macro only) */}
+            {selectedNarrative.sector === "Macro" &&
+              (() => {
+                const subSectors = [
+                  ...new Set(
+                    selectedNarrative.events
+                      .map((e) => e.sub_sector)
+                      .filter(Boolean),
+                  ),
+                ];
+                if (subSectors.length <= 1) return null;
                 return (
-                  <div key={index} className="pl-6 relative group">
-                    {/* Timeline Dot */}
-                    <div
-                      className={`absolute -left-[9px] top-1.5 w-4 h-4 rounded-full border-4 border-zinc-50 dark:border-slate-950 ${dotColor} shadow-sm`}
-                    />
-
-                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 mb-1 justify-between">
-                      <div className="flex items-center gap-2 text-xs font-mono text-slate-400 shrink-0">
-                        <Clock size={12} />
-                        <span>
-                          {date} {time}
-                        </span>
-                      </div>
-
-                      {/* Watchlist Star for Event */}
-                      {toggleWatchlist && (
-                        <button
-                          onClick={() => toggleWatchlist(event)}
-                          className={`opacity-0 group-hover:opacity-100 transition-opacity ${isSaved(event) ? "opacity-100 text-yellow-400" : "text-slate-300 hover:text-yellow-400"}`}
-                        >
-                          <Star
-                            size={14}
-                            fill={isSaved(event) ? "currentColor" : "none"}
-                          />
-                        </button>
-                      )}
-                    </div>
-
-                    <h4 className="text-base font-semibold text-slate-700 dark:text-slate-200 leading-snug">
-                      <a
-                        href={event.link || event.source?.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  <div className="mb-6">
+                    <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">
+                      {strings.subCategories}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={() => setSubSectorFilter(null)}
+                        className={`px-3 py-1 text-xs font-medium rounded-full border transition-colors ${
+                          subSectorFilter === null
+                            ? "bg-blue-600 text-white border-blue-600"
+                            : "bg-zinc-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-zinc-300 dark:border-slate-700 hover:border-blue-400"
+                        }`}
                       >
-                        {event.title}
-                      </a>
-                    </h4>
-
-                    {event.description && (
-                      <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mt-1 bg-white dark:bg-slate-900/50 p-3 rounded border border-zinc-100 dark:border-slate-800/50 shadow-sm">
-                        {event.description.length > 200
-                          ? event.description.substring(0, 200) + "..."
-                          : event.description}
-                      </p>
-                    )}
-
-                    {/* Keywords */}
-                    {event.keywords && event.keywords.length > 0 && (
-                      <div className="mt-1.5 flex flex-wrap gap-1">
-                        {event.keywords.slice(0, 4).map((kw, ki) => (
-                          <span
-                            key={ki}
-                            className="text-[9px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-mono"
-                          >
-                            {kw}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="mt-2 flex gap-2">
-                      {event.impact === "high" && (
-                        <span className="text-[10px] bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 px-1.5 py-0.5 rounded font-bold uppercase">
-                          High Impact
-                        </span>
-                      )}
-                      <span className="text-[10px] text-slate-400 border border-zinc-200 dark:border-slate-700 px-1.5 py-0.5 rounded uppercase">
-                        {(() => {
-                          try {
-                            const url = event.link || event.source?.url || "";
-                            if (!url)
-                              return event.source?.source_type || "News";
-                            const hostname = new URL(url).hostname.replace(
-                              "www.",
-                              "",
-                            );
-                            return hostname.length > 20
-                              ? hostname.substring(0, 17) + "..."
-                              : hostname;
-                          } catch {
-                            return event.source?.source_type || "News";
-                          }
-                        })()}
-                      </span>
+                        {strings.allSubSectors}
+                      </button>
+                      {subSectors.map((sub) => (
+                        <button
+                          key={sub}
+                          onClick={() => setSubSectorFilter(sub)}
+                          className={`px-3 py-1 text-xs font-medium rounded-full border transition-colors ${
+                            subSectorFilter === sub
+                              ? "bg-blue-600 text-white border-blue-600"
+                              : "bg-zinc-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-zinc-300 dark:border-slate-700 hover:border-blue-400"
+                          }`}
+                        >
+                          {translateSubSector(sub)}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 );
-              })}
+              })()}
+
+            {/* TIMELINE */}
+            <div className="relative border-l-2 border-zinc-200 dark:border-slate-800 ml-3 space-y-8 pb-10">
+              {selectedNarrative.events
+                .filter((event) => {
+                  if (!subSectorFilter || selectedNarrative.sector !== "Macro")
+                    return true;
+                  return event.sub_sector === subSectorFilter;
+                })
+                .map((event, index) => {
+                  const time = new Date(event.timestamp).toLocaleTimeString(
+                    [],
+                    {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    },
+                  );
+                  const date = new Date(event.timestamp).toLocaleDateString(
+                    [],
+                    {
+                      day: "2-digit",
+                      month: "short",
+                    },
+                  );
+                  const eventSentiment =
+                    event.analytics?.sentiment?.label || "Neutral";
+
+                  let dotColor = "bg-slate-300 dark:bg-slate-700";
+                  if (eventSentiment === "Bullish") dotColor = "bg-green-500";
+                  if (eventSentiment === "Bearish") dotColor = "bg-red-500";
+
+                  return (
+                    <div key={index} className="pl-6 relative group">
+                      {/* Timeline Dot */}
+                      <div
+                        className={`absolute -left-[9px] top-1.5 w-4 h-4 rounded-full border-4 border-zinc-50 dark:border-slate-950 ${dotColor} shadow-sm`}
+                      />
+
+                      <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 mb-1 justify-between">
+                        <div className="flex items-center gap-2 text-xs font-mono text-slate-400 shrink-0">
+                          <Clock size={12} />
+                          <span>
+                            {date} {time}
+                          </span>
+                        </div>
+
+                        {/* Watchlist Star for Event */}
+                        {toggleWatchlist && (
+                          <button
+                            onClick={() => toggleWatchlist(event)}
+                            className={`opacity-0 group-hover:opacity-100 transition-opacity ${isSaved(event) ? "opacity-100 text-yellow-400" : "text-slate-300 hover:text-yellow-400"}`}
+                          >
+                            <Star
+                              size={14}
+                              fill={isSaved(event) ? "currentColor" : "none"}
+                            />
+                          </button>
+                        )}
+                      </div>
+
+                      <h4 className="text-base font-semibold text-slate-700 dark:text-slate-200 leading-snug">
+                        <a
+                          href={event.link || event.source?.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        >
+                          {event.title}
+                        </a>
+                      </h4>
+
+                      {event.description && (
+                        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mt-1 bg-white dark:bg-slate-900/50 p-3 rounded border border-zinc-100 dark:border-slate-800/50 shadow-sm">
+                          {event.description.length > 200
+                            ? event.description.substring(0, 200) + "..."
+                            : event.description}
+                        </p>
+                      )}
+
+                      {/* Keywords */}
+                      {event.keywords && event.keywords.length > 0 && (
+                        <div className="mt-1.5 flex flex-wrap gap-1">
+                          {event.keywords.slice(0, 4).map((kw, ki) => (
+                            <span
+                              key={ki}
+                              className="text-[9px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-mono"
+                            >
+                              {kw}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="mt-2 flex gap-2">
+                        {event.impact === "high" && (
+                          <span className="text-[10px] bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300 px-1.5 py-0.5 rounded font-bold uppercase">
+                            High Impact
+                          </span>
+                        )}
+                        <span className="text-[10px] text-slate-400 border border-zinc-200 dark:border-slate-700 px-1.5 py-0.5 rounded uppercase">
+                          {(() => {
+                            try {
+                              const url = event.link || event.source?.url || "";
+                              if (!url)
+                                return event.source?.source_type || "News";
+                              const hostname = new URL(url).hostname.replace(
+                                "www.",
+                                "",
+                              );
+                              return hostname.length > 20
+                                ? hostname.substring(0, 17) + "..."
+                                : hostname;
+                            } catch {
+                              return event.source?.source_type || "News";
+                            }
+                          })()}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         )}

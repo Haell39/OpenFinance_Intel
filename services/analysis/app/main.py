@@ -140,6 +140,51 @@ def infer_sector(text: str) -> str:
     return "Macro"
 
 
+def infer_sub_sector(text: str, sector: str) -> str:
+    """Classifica subcategoria dentro de um setor (principalmente Macro)"""
+    if sector != "Macro":
+        return ""
+    
+    text_lower = text.lower()
+    
+    sub_sectors = {
+        "Monetary Policy": [
+            "juros", "selic", "fed", "fomc", "copom", "taxa", "interest rate",
+            "rate cut", "rate hike", "hawkish", "dovish", "monetary", "política monetária",
+            "inflação", "inflation", "ipca", "cpi", "pce", "deflação",
+            "tesouro", "treasury", "bonds", "yield", "títulos", "curva de juros",
+        ],
+        "Geopolitics": [
+            "guerra", "war", "conflito", "conflict", "sanção", "sanctions",
+            "geopolítica", "geopolitical", "otan", "nato", "defesa", "defense",
+            "china", "rússia", "russia", "ucrânia", "ukraine", "irã", "iran",
+            "oriente médio", "middle east", "taiwan", "tensão", "tension",
+            "tarifa", "tariff", "trade war", "embargo",
+        ],
+        "Fiscal Policy": [
+            "fiscal", "governo", "government", "congresso", "congress",
+            "senado", "senate", "câmara", "orçamento", "budget", "spending",
+            "dívida", "debt", "déficit", "deficit", "superávit", "surplus",
+            "reforma", "reform", "tributária", "tax", "imposto",
+            "eleições", "election", "presidente", "president", "regulação", "regulation",
+        ],
+        "Economic Data": [
+            "pib", "gdp", "emprego", "employment", "desemprego", "unemployment",
+            "payroll", "jobs", "nonfarm", "retail sales", "vendas",
+            "recessão", "recession", "crescimento", "growth", "pmi",
+            "confiança do consumidor", "consumer confidence", "housing",
+            "industrial", "manufacturing", "serviços", "services",
+        ],
+    }
+    
+    for sub_sector, keywords in sub_sectors.items():
+        for kw in keywords:
+            if f" {kw} " in f" {text_lower} " or kw in text_lower.split():
+                return sub_sector
+    
+    return "General"
+
+
 def generate_insight(sector: str, sentiment_label: str) -> str:
     """Gera um insight acionável rápido baseado em setor e sentimento"""
     
@@ -549,6 +594,7 @@ def enrich_event(raw_event: dict) -> dict | None:
     
     # Novas classificações de investimento
     sector = "Social" if is_social_source else infer_sector(full_text)
+    sub_sector = infer_sub_sector(full_text, sector)
     insight = generate_insight(sector, sentiment["label"])
     
     # Classificacao e enriquecimento
@@ -565,7 +611,8 @@ def enrich_event(raw_event: dict) -> dict | None:
         "description": body,
         "impact": impact,
         "urgency": urgency,
-        "sector": sector, # [NEW]
+        "sector": sector,
+        "sub_sector": sub_sector,
         "insight": insight, # [NEW]
         "keywords": keywords,
         "entities": entities,

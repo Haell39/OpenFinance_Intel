@@ -187,7 +187,7 @@ export default function App() {
 
   // Real-time & Ticker State
   const [marketSignals, setMarketSignals] = useState(INITIAL_MARKET_SIGNALS);
-  const [refreshInterval, setRefreshInterval] = useState(30000); // 0 = off
+  const [refreshInterval, setRefreshInterval] = useState(300000); // 5min default, 0 = off
   const [lastUpdated, setLastUpdated] = useState(new Date()); // New State
   const [timeSinceUpdate, setTimeSinceUpdate] = useState("0s"); // New State
 
@@ -382,6 +382,8 @@ export default function App() {
               </option>
               <option value={60000}>1m</option>
               <option value={300000}>5m</option>
+              <option value={600000}>10m</option>
+              <option value={1200000}>20m</option>
             </select>
 
             <div className="hidden md:flex items-center text-[10px] text-slate-600 dark:text-slate-500 gap-1">
@@ -455,6 +457,128 @@ export default function App() {
                 isDark={isDark}
                 language={language}
               />
+            </div>
+          )}
+
+          {/* TAB: SETTINGS */}
+          {activeTab === "settings" && (
+            <div className="w-full h-full overflow-y-auto p-6 bg-zinc-200 dark:bg-slate-900 transition-colors duration-300">
+              <div className="max-w-2xl mx-auto space-y-8">
+                <div>
+                  <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-1">
+                    {language === "pt" ? "Configurações" : "Settings"}
+                  </h1>
+                  <p className="text-sm text-slate-500">
+                    {language === "pt"
+                      ? "Personalize sua experiência na plataforma."
+                      : "Customize your platform experience."}
+                  </p>
+                </div>
+
+                {/* Auto-Refresh Section */}
+                <div className="bg-white dark:bg-gray-900 border border-zinc-200 dark:border-gray-800 rounded-lg p-6 shadow-sm">
+                  <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-1">
+                    {language === "pt"
+                      ? "Atualização Automática"
+                      : "Auto-Refresh"}
+                  </h2>
+                  <p className="text-xs text-slate-500 mb-4">
+                    {language === "pt"
+                      ? "Define o intervalo de atualização automática dos dados."
+                      : "Set the automatic data refresh interval."}
+                  </p>
+                  <div className="grid grid-cols-5 gap-2">
+                    {[
+                      { value: 0, label: "Off" },
+                      { value: 60000, label: "1 min" },
+                      { value: 300000, label: "5 min" },
+                      { value: 600000, label: "10 min" },
+                      { value: 1200000, label: "20 min" },
+                    ].map((opt) => (
+                      <button
+                        key={opt.value}
+                        onClick={() => setRefreshInterval(opt.value)}
+                        className={`py-2 px-3 text-sm font-medium rounded-lg border transition-colors ${
+                          refreshInterval === opt.value
+                            ? "bg-blue-600 text-white border-blue-600 shadow-md"
+                            : "bg-zinc-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-zinc-300 dark:border-slate-700 hover:border-blue-400"
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-slate-400 mt-3 font-mono">
+                    {language === "pt"
+                      ? refreshInterval > 0
+                        ? `Dados serão atualizados a cada ${refreshInterval / 60000} minuto(s).`
+                        : "Atualização automática desativada. Use o botão ⚡ para atualizar manualmente."
+                      : refreshInterval > 0
+                        ? `Data will refresh every ${refreshInterval / 60000} minute(s).`
+                        : "Auto-refresh is off. Use the ⚡ button to refresh manually."}
+                  </p>
+                </div>
+
+                {/* Display Section */}
+                <div className="bg-white dark:bg-gray-900 border border-zinc-200 dark:border-gray-800 rounded-lg p-6 shadow-sm">
+                  <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-1">
+                    {language === "pt" ? "Aparência" : "Appearance"}
+                  </h2>
+                  <p className="text-xs text-slate-500 mb-4">
+                    {language === "pt"
+                      ? "Tema e idioma da plataforma."
+                      : "Platform theme and language."}
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={toggleTheme}
+                      className="flex-1 py-2 px-3 text-sm font-medium rounded-lg border bg-zinc-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-zinc-300 dark:border-slate-700 hover:border-blue-400 transition-colors"
+                    >
+                      {isDark ? "☀️ " : "🌙 "}
+                      {isDark
+                        ? language === "pt"
+                          ? "Modo Claro"
+                          : "Light Mode"
+                        : language === "pt"
+                          ? "Modo Escuro"
+                          : "Dark Mode"}
+                    </button>
+                    <button
+                      onClick={() =>
+                        setLanguage((l) => (l === "pt" ? "en" : "pt"))
+                      }
+                      className="flex-1 py-2 px-3 text-sm font-medium rounded-lg border bg-zinc-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-zinc-300 dark:border-slate-700 hover:border-blue-400 transition-colors"
+                    >
+                      {language === "pt" ? "🇧🇷 Português" : "🇺🇸 English"}
+                    </button>
+                  </div>
+                </div>
+
+                {/* About Section */}
+                <div className="bg-white dark:bg-gray-900 border border-zinc-200 dark:border-gray-800 rounded-lg p-6 shadow-sm">
+                  <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-1">
+                    {language === "pt" ? "Sobre" : "About"}
+                  </h2>
+                  <div className="flex items-center gap-3 mt-3">
+                    <img
+                      src="/imgs/icon.png"
+                      alt="OpenFinance"
+                      className="w-10 h-10"
+                    />
+                    <div>
+                      <p className="text-sm font-bold text-slate-800 dark:text-slate-100">
+                        OpenFinance Intel
+                      </p>
+                      <p className="text-[11px] text-slate-500">
+                        v1.0.0 •{" "}
+                        {language === "pt"
+                          ? "Plataforma de Inteligência Financeira"
+                          : "Financial Intelligence Platform"}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </main>

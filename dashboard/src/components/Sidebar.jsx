@@ -101,7 +101,15 @@ const Sidebar = ({
           </span>
         </button>
 
-        <button className="w-full flex items-center justify-center md:justify-start p-2 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors rounded hover:bg-zinc-100 dark:hover:bg-gray-900">
+        <button
+          onClick={() => setActiveTab("settings")}
+          className={`w-full flex items-center justify-center md:justify-start p-2 transition-colors rounded ${
+            activeTab === "settings"
+              ? "text-blue-600 dark:text-blue-400 bg-zinc-100 dark:bg-gray-900"
+              : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-zinc-100 dark:hover:bg-gray-900"
+          }`}
+        >
+          {" "}
           <Settings size={20} />
           <span className="hidden md:block ml-3 text-sm">
             {language === "pt" ? "Configurações" : "Settings"}
