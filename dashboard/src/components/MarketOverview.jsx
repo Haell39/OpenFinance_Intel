@@ -1,6 +1,8 @@
 import React, { useMemo } from "react";
 import MarketMoodGauge from "./MarketMoodGauge";
 import SectorHeatBar from "./SectorHeatBar";
+import OpportunityRadar from "./OpportunityRadar";
+import KeyMetrics from "./KeyMetrics";
 import { Star } from "lucide-react";
 
 const MarketOverview = ({
@@ -84,7 +86,7 @@ const MarketOverview = ({
         </div>
 
         {/* WIDGET 2: VISUALS (Gauge & HeatBar) */}
-        <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 h-[400px]">
+        <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Component 1: Market Mood */}
           <div className="bg-white dark:bg-gray-900 border border-zinc-200 dark:border-gray-800 rounded-lg p-3 shadow-sm h-full">
             <MarketMoodGauge isDark={isDark} language={language} />
@@ -185,6 +187,18 @@ const MarketOverview = ({
               ))}
             </div>
           </div>
+        </div>
+
+        {/* ROW 3: OPPORTUNITY RADAR & KEY METRICS (New!) */}
+        <div className="md:col-span-2 bg-white dark:bg-gray-900 border border-zinc-200 dark:border-gray-800 rounded-lg p-4 shadow-sm min-h-[350px]">
+          <OpportunityRadar
+            events={events}
+            isDark={isDark}
+            language={language}
+          />
+        </div>
+        <div className="md:col-span-1 bg-white dark:bg-gray-900 border border-zinc-200 dark:border-gray-800 rounded-lg p-4 shadow-sm min-h-[350px]">
+          <KeyMetrics events={events} isDark={isDark} language={language} />
         </div>
       </div>
     </div>
