@@ -1,10 +1,10 @@
 # Status do Projeto — OpenFinance Intel 🌍
 
-**Versão Atual**: v7.0 (Opportunity Engine & Settings Release)
+**Versão Atual**: v7.1 (Full Docker Deployment Release)
 
 ## ✅ Visão Geral
 
-O **OpenFinance Intel** é um **Terminal de Inteligência Financeira** completo. O sistema coleta dados de múltiplas fontes globais (RSS, Reddit, Twitter), analisa-os com NLP e Sentimento, e apresenta insights acionáveis em uma interface premium com 4 abas: Market Overview, Intelligence Feed, Watchlist e Configurações.
+O **OpenFinance Intel** é um **Terminal de Inteligência Financeira** completo, 100% containerizado em Docker. O sistema coleta dados de múltiplas fontes globais (RSS, Reddit, Twitter), analisa-os com NLP e Sentimento, e apresenta insights acionáveis em uma interface premium com 4 abas: Market Overview, Intelligence Feed, Watchlist e Configurações. Toda a plataforma sobe com um único `docker compose up --build`.
 
 ---
 
@@ -41,6 +41,7 @@ O **OpenFinance Intel** é um **Terminal de Inteligência Financeira** completo.
 - ✅ **Ticker**: Cotações ao vivo (USD, EUR, BTC) na barra superior (estilo pill)
 - ✅ 🆕 **Página de Configurações**: Auto-refresh (Off/1/5/10/20 min), Aparência (tema/idioma), Sobre
 - ✅ 🆕 **Favicon & Logo**: Ícone personalizado da plataforma no browser e sidebar
+- ✅ 🆕 **Full Docker Deploy**: Frontend containerizado com Nginx (multi-stage build), acessível na porta 80
 
 ### 3. Engenharia de Dados
 
@@ -54,13 +55,13 @@ O **OpenFinance Intel** é um **Terminal de Inteligência Financeira** completo.
 
 ## 🏗️ Estado da Arquitetura
 
-| Serviço       | Status     | Tecnologia     | Observação                                  |
-| ------------- | ---------- | -------------- | ------------------------------------------- |
-| **Collector** | 🟢 Estável | Python/RSS     | Scraper universal + feed discovery          |
-| **Analysis**  | 🟢 Estável | Python/NLP     | Sentiment + Sector + Sub-sector + Insight   |
-| **API**       | 🟢 Estável | FastAPI        | Narrativas, fontes, eventos, scheduler      |
-| **Dashboard** | 🟢 Estável | React/Tailwind | 4 abas: Overview, Feed, Watchlist, Settings |
-| **Notifier**  | 🟡 Básico  | Python/Redis   | Estrutura pronta, alertas não implementados |
+| Serviço       | Status     | Tecnologia   | Observação                                        |
+| ------------- | ---------- | ------------ | ------------------------------------------------- |
+| **Collector** | 🟢 Estável | Python/RSS   | Scraper universal + feed discovery                |
+| **Analysis**  | 🟢 Estável | Python/NLP   | Sentiment + Sector + Sub-sector + Insight         |
+| **API**       | 🟢 Estável | FastAPI      | Narrativas, fontes, eventos, scheduler            |
+| **Dashboard** | 🟢 Estável | React/Nginx  | Multi-stage Docker, porta 80, SPA + reverse proxy |
+| **Notifier**  | 🟡 Básico  | Python/Redis | Estrutura pronta, alertas não implementados       |
 
 ---
 

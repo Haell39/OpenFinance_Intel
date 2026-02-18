@@ -56,14 +56,14 @@ Microserviços Docker orquestrados via Docker Compose:
 └──────────────────┘   └─────────────────┘
 ```
 
-| Serviço       | Tecnologia               | Responsabilidade                                          |
-| ------------- | ------------------------ | --------------------------------------------------------- |
-| **Collector** | Python                   | Scraping RSS/Atom, deduplicação via hash MD5              |
-| **Analysis**  | Python, spaCy, TextBlob  | Sentimento, classificação setorial, sub-setores, insights |
-| **API**       | Python, FastAPI          | Gateway, scheduler, narrativas, gestão de fontes          |
-| **Dashboard** | React 18, Vite, Tailwind | UI premium, visualizações, watchlist                      |
-| **Redis**     | Redis 7 Alpine           | Broker de mensagens (task/event queues)                   |
-| **MongoDB**   | Mongo 7                  | Persistência de eventos enriquecidos                      |
+| Serviço       | Tecnologia              | Responsabilidade                                          |
+| ------------- | ----------------------- | --------------------------------------------------------- |
+| **Collector** | Python                  | Scraping RSS/Atom, deduplicação via hash MD5              |
+| **Analysis**  | Python, spaCy, TextBlob | Sentimento, classificação setorial, sub-setores, insights |
+| **API**       | Python, FastAPI         | Gateway, scheduler, narrativas, gestão de fontes          |
+| **Dashboard** | React 18, Vite, Nginx   | UI premium, visualizações, watchlist                      |
+| **Redis**     | Redis 7 Alpine          | Broker de mensagens (task/event queues)                   |
+| **MongoDB**   | Mongo 7                 | Persistência de eventos enriquecidos                      |
 
 ---
 
@@ -79,9 +79,9 @@ Microserviços Docker orquestrados via Docker Compose:
 docker compose up --build
 ```
 
-Acesse: **http://localhost:5173**
+Acesse: **http://localhost** (porta 80)
 
-> A plataforma começa a coletar dados automaticamente. Aguarde ~2 minutos para os primeiros eventos aparecerem.
+> Tudo roda em Docker — frontend, backend, banco e filas. Aguarde ~2 minutos para os primeiros eventos aparecerem.
 
 ---
 
@@ -89,7 +89,7 @@ Acesse: **http://localhost:5173**
 
 - **Backend**: Python 3.11, FastAPI, Microservices, Docker
 - **AI & NLP**: spaCy (NER), TextBlob (Sentiment), Custom Narrative Engine
-- **Frontend**: React 18, Vite, Tailwind CSS, Lucide Icons
+- **Frontend**: React 18, Vite, Tailwind CSS, Lucide Icons, Nginx (produção)
 - **Data**: MongoDB (NoSQL), Redis (Message Broker)
 - **DevOps**: Docker Compose, HMR, Environment Variables
 

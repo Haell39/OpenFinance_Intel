@@ -85,7 +85,10 @@ _A "Porta de Entrada"._
 
 _A "Face" do sistema._
 
-- **Tecnologia**: React 18 + Vite + Tailwind CSS + Lucide Icons
+- **Tecnologia**: React 18 + Vite (build) + Nginx (produção) + Tailwind CSS + Lucide Icons
+- **Docker**: Multi-stage build (Node → Nginx Alpine ~20MB). Build de produção com arquivos estáticos servidos por Nginx
+- **Reverse Proxy**: Nginx encaminha `/events`, `/sources`, `/narratives` para o container `api:8000`
+- **Porta**: 80 (produção via Docker)
 - **4 Abas**:
   | Aba | Conteúdo |
   |-----|---------|
@@ -157,6 +160,7 @@ _O "Alarme" do sistema._
 | collector | ./services/collector | —     | redis        |
 | analysis  | ./services/analysis  | —     | redis, mongo |
 | notifier  | ./services/notifier  | —     | redis        |
+| dashboard | ./dashboard (Nginx)  | 80    | api          |
 
 ---
 
