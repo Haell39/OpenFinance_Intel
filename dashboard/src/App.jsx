@@ -367,9 +367,14 @@ export default function App() {
           <div className="header-right flex items-center gap-4">
             <button
               onClick={toggleLanguage}
-              className="bg-zinc-200 dark:bg-gray-900 border border-zinc-400 dark:border-gray-700 text-xs font-bold rounded text-slate-700 dark:text-slate-400 px-2 py-1 transition-colors hover:text-blue-600 hover:border-blue-400"
+              className="bg-zinc-200 dark:bg-gray-900 border border-zinc-400 dark:border-gray-700 text-xs font-bold rounded text-slate-700 dark:text-slate-400 px-1.5 py-1 transition-colors hover:border-blue-400 flex items-center gap-1.5"
             >
-              {language === "pt" ? "🇧🇷 PT" : "🇺🇸 EN"}
+              <img
+                src={language === "pt" ? "/imgs/USA.png" : "/imgs/brasil.png"}
+                alt=""
+                className="w-5 h-4 object-cover rounded-sm"
+              />
+              {language === "pt" ? "EN" : "PT"}
             </button>
 
             <select
@@ -386,9 +391,20 @@ export default function App() {
               <option value={1200000}>20m</option>
             </select>
 
-            <div className="hidden md:flex items-center text-[10px] text-slate-600 dark:text-slate-500 gap-1">
+            <div
+              className="hidden md:flex items-center text-[10px] text-slate-600 dark:text-slate-500 gap-1"
+              style={{ minWidth: "38px" }}
+            >
               <span className="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-500/50 animate-pulse"></span>
-              <strong>{timeSinceUpdate}</strong>
+              <strong
+                style={{
+                  fontVariantNumeric: "tabular-nums",
+                  minWidth: "24px",
+                  textAlign: "right",
+                }}
+              >
+                {timeSinceUpdate}
+              </strong>
             </div>
 
             <button
@@ -519,39 +535,58 @@ export default function App() {
                   </p>
                 </div>
 
-                {/* Display Section */}
+                {/* Theme Section */}
                 <div className="bg-white dark:bg-gray-900 border border-zinc-200 dark:border-gray-800 rounded-lg p-6 shadow-sm">
                   <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-1">
-                    {language === "pt" ? "Aparência" : "Appearance"}
+                    {language === "pt" ? "Tema" : "Theme"}
                   </h2>
                   <p className="text-xs text-slate-500 mb-4">
                     {language === "pt"
-                      ? "Tema e idioma da plataforma."
-                      : "Platform theme and language."}
+                      ? "Escolha o tema visual da plataforma."
+                      : "Choose the platform visual theme."}
                   </p>
-                  <div className="flex gap-3">
-                    <button
-                      onClick={toggleTheme}
-                      className="flex-1 py-2 px-3 text-sm font-medium rounded-lg border bg-zinc-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-zinc-300 dark:border-slate-700 hover:border-blue-400 transition-colors"
-                    >
-                      {isDark ? "☀️ " : "🌙 "}
-                      {isDark
-                        ? language === "pt"
-                          ? "Modo Claro"
-                          : "Light Mode"
-                        : language === "pt"
-                          ? "Modo Escuro"
-                          : "Dark Mode"}
-                    </button>
-                    <button
-                      onClick={() =>
-                        setLanguage((l) => (l === "pt" ? "en" : "pt"))
+                  <button
+                    onClick={toggleTheme}
+                    className="w-full py-2.5 px-4 text-sm font-medium rounded-lg border bg-zinc-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-zinc-300 dark:border-slate-700 hover:border-blue-400 transition-colors"
+                  >
+                    {isDark ? "☀️ " : "🌙 "}
+                    {isDark
+                      ? language === "pt"
+                        ? "Mudar para Modo Claro"
+                        : "Switch to Light Mode"
+                      : language === "pt"
+                        ? "Mudar para Modo Escuro"
+                        : "Switch to Dark Mode"}
+                  </button>
+                </div>
+
+                {/* Language Section */}
+                <div className="bg-white dark:bg-gray-900 border border-zinc-200 dark:border-gray-800 rounded-lg p-6 shadow-sm">
+                  <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-1">
+                    {language === "pt" ? "Idioma" : "Language"}
+                  </h2>
+                  <p className="text-xs text-slate-500 mb-4">
+                    {language === "pt"
+                      ? "Escolha o idioma da interface."
+                      : "Choose the interface language."}
+                  </p>
+                  <button
+                    onClick={() =>
+                      setLanguage((l) => (l === "pt" ? "en" : "pt"))
+                    }
+                    className="w-full py-2.5 px-4 text-sm font-medium rounded-lg border bg-zinc-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-zinc-300 dark:border-slate-700 hover:border-blue-400 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <img
+                      src={
+                        language === "pt" ? "/imgs/USA.png" : "/imgs/brasil.png"
                       }
-                      className="flex-1 py-2 px-3 text-sm font-medium rounded-lg border bg-zinc-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-zinc-300 dark:border-slate-700 hover:border-blue-400 transition-colors"
-                    >
-                      {language === "pt" ? "🇧🇷 Português" : "🇺🇸 English"}
-                    </button>
-                  </div>
+                      alt=""
+                      className="w-6 h-4 object-cover rounded-sm"
+                    />
+                    {language === "pt"
+                      ? "Switch to English"
+                      : "Mudar para Português"}
+                  </button>
                 </div>
 
                 {/* About Section */}

@@ -1,69 +1,90 @@
 # OpenFinance Intel 🌍⚡
 
-**Plataforma de Inteligência de Investimentos** — IA, NLP e Análise de Sentimento para transformar o caos do mercado em **Sinais Acionáveis**.
+**Terminal de Inteligência de Investimentos** — IA, NLP e Análise de Sentimento para transformar o caos do mercado em **Sinais Acionáveis**.
 
-O OpenFinance Intel monitora o ecossistema financeiro global em tempo real, coletando notícias, feeds de redes sociais e dados macroeconômicos. Usando **NLP** e **Análise de Sentimento**, classifica cada evento como _Bullish_, _Bearish_ ou _Neutral_ e os organiza em **6 setores de investimento**: Crypto, Tech, Market, Macro, Commodities e Social.
+![Market Overview](imgs/visaomercado.png)
 
----
-
-## 🚀 Funcionalidades
-
-### Inteligência & AI
-
-- **🧠 Análise de Sentimento**: Classificação automática Bullish 🟢 / Bearish 🔴 / Neutral ⚪ via TextBlob
-- **🎯 Radar de Oportunidades**: Detecção automática de sinais acionáveis — Momentum, Oportunidade Contrarian, Clusters de Alto Impacto e Buzz Social
-- **📊 Índice Fear & Greed**: Gauge visual 0-100 calculado em tempo real a partir do sentimento agregado
-- **💡 Insights por Setor**: Cada narrativa inclui insight acionável para investidores (ex: "Pânico social crescente. Possível oportunidade contrarian.")
-
-### Dashboard & UI
-
-- **📰 Intelligence Feed**: Split View (Narrativas + Timeline) com agrupamento inteligente por setor
-- **🏷️ Subcategorias Macro**: Filtragem por Política Monetária, Geopolítica, Política Fiscal e Dados Econômicos
-- **🖥️ Market Overview**: Bento Grid com Sentimento do Mercado, Raio-X Setorial, Top Sinais Bullish/Bearish, Radar de Oportunidades e Indicadores Chave
-- **💼 Watchlist**: Favoritos com persistência local para monitorar riscos e oportunidades
-- **🎨 Dual Theme**: Light Mode (padrão) + Dark Mode com persistência
-- **🌎 Bilíngue**: PT-BR / EN-US com alternância instantânea
-- **⚙️ Configurações**: Página completa com controle de auto-refresh (Off/1/5/10/20 min), aparência e idioma
-- **⚡ Ticker**: Cotações ao vivo (USD, EUR, BTC) na barra superior
-
-### Fontes de Dados
-
-- **RSS/Atom**: Bloomberg, Reuters, CNBC, BBC, Al Jazeera, NYT, Google News
-- **Reddit**: r/wallstreetbets, r/investing, r/stocks, r/StockMarket, r/SecurityAnalysis, r/economy
-- **Flexível**: Adicione suas próprias fontes RSS ou perfis Twitter/X via modal integrado
+> _"O OpenFinance Intel monitora o ecossistema financeiro global em tempo real, coletando notícias, feeds de redes sociais e dados macroeconômicos. Usando **NLP** e **Análise de Sentimento**, classifica cada evento como Bullish, Bearish ou Neutral e os organiza em 6 setores de investimento."_
 
 ---
 
-## 🏗️ Arquitetura
+## 🚀 Funcionalidades Visuais
 
-Microserviços Docker orquestrados via Docker Compose:
+### 1. Market Overview (Visão Geral)
 
+O painel de controle do investidor. Aqui você tem o pulso do mercado em uma única tela.
+
+- **🧠 Bento Grid**: Layout moderno e responsivo.
+- **📊 Fear & Greed Index**: Medidor de sentimento em tempo real (0-100).
+- **🎯 Radar de Oportunidades**: Identifica anomalias e tendências de alta convicção.
+- **⚡ Ticker**: Cotações de USD, EUR e BTC ao vivo.
+
+![Market Overview](imgs/visaomercado.png)
+
+---
+
+### 2. Intelligence Feed (Feed de Inteligência)
+
+Onde a notícia vira dado. O feed processa milhares de manchetes e entrega apenas o que importa.
+
+- **🤖 Análise de IA**: Cada notícia recebe uma tag de sentimento (Bullish/Bearish) e um **Insight Acionável**.
+- **🏷️ Filtros Macro**: Subcategorias granulares (Política Monetária, Geopolítica, Fiscal, Dados Econômicos).
+- **📱 Social Sentiment**: Monitoramento de Reddit (WSB, Investing) e Twitter para captar o "humor da multidão".
+
+![Intelligence Feed](imgs/Intelligence.png)
+
+---
+
+### 3. Watchlist (Carteira de Monitoramento)
+
+Nunca perca uma narrativa. Salve eventos e acompanhe o desdobramento da história.
+
+- **⭐ Favoritos**: Clique na estrela em qualquer evento para salvar.
+- **💾 Persistência**: Seus dados ficam salvos no navegador (Local Storage).
+- **📉 Gestão de Risco**: Monitore ameaças potenciais de perto.
+
+![Watchlist](imgs/watchlist.png)
+
+---
+
+### 4. Configurações & Personalização
+
+O terminal é seu. Ajuste para o seu fluxo de trabalho.
+
+- **🎨 Temas**: Dark Mode (padrão) e Light Mode.
+- **🌎 Idioma**: Tradução instantânea PT-BR / EN-US.
+- **⏱️ Auto-Refresh**: Configure intervalos de 1 a 20 minutos para atualizações automáticas.
+
+![Settings](imgs/config.png)
+
+---
+
+## 🏗️ Arquitetura Técnica
+
+Todo o sistema roda em **Docker**, orquestrado via Docker Compose.
+
+```mermaid
+graph TD
+    User[Usuário] -->|HTTP:80| Nginx[Dashboard (Nginx + React)]
+    Nginx -->|/api| API[API Gateway (FastAPI)]
+
+    API -->|Task| Redis[Redis Queue]
+    Redis --> Collector[Collector Service]
+    Redis --> Analysis[Analysis Service (NLP)]
+    Redis --> Notifier[Notifier Service]
+
+    Collector -->|Raw Data| Mongo[(MongoDB)]
+    Analysis -->|Enriched Data| Mongo
+    API -->|Query| Mongo
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    Dashboard (React)                     │
-│              localhost:80 — Nginx + Static Files         │
-└────────────────────────┬────────────────────────────────┘
-                         │ HTTP /api
-┌────────────────────────▼────────────────────────────────┐
-│               API Gateway (FastAPI :8000)                │
-│          Narratives • Sources • Events • Scheduler       │
-└───────┬─────────────────────────────────────┬───────────┘
-        │ Redis Queue                         │ MongoDB
-┌───────▼──────────┐   ┌─────────────────┐   │
-│    Collector      │──►│    Analysis      │───┘
-│  RSS/Atom/Twitter │   │  NLP • Sentiment │
-│  Deduplication    │   │  Sector • Insight│
-└──────────────────┘   └─────────────────┘
-```
 
-| Serviço       | Tecnologia              | Responsabilidade                                          |
-| ------------- | ----------------------- | --------------------------------------------------------- |
-| **Collector** | Python                  | Scraping RSS/Atom, deduplicação via hash MD5              |
-| **Analysis**  | Python, spaCy, TextBlob | Sentimento, classificação setorial, sub-setores, insights |
-| **API**       | Python, FastAPI         | Gateway, scheduler, narrativas, gestão de fontes          |
-| **Dashboard** | React 18, Vite, Nginx   | UI premium, visualizações, watchlist (Docker Nginx)       |
-| **Redis**     | Redis 7 Alpine          | Broker de mensagens (task/event queues)                   |
-| **MongoDB**   | Mongo 7                 | Persistência de eventos enriquecidos                      |
+| Serviço       | Tecnologia              | Responsabilidade                               |
+| ------------- | ----------------------- | ---------------------------------------------- |
+| **Collector** | Python                  | Scraping RSS/Atom/Reddit, deduplicação via MD5 |
+| **Analysis**  | Python, spaCy, TextBlob | NLP, Sentimento, Classificação Setorial        |
+| **API**       | Python, FastAPI         | Interface REST, Scheduler, Gestão de Fontes    |
+| **Dashboard** | React 18, Vite, Nginx   | UI SPA, Nginx Reverse Proxy (Porta 80)         |
+| **Dados**     | MongoDB, Redis          | Persistência (NoSQL) e Mensageria (Pub/Sub)    |
 
 ---
 
@@ -73,64 +94,37 @@ Microserviços Docker orquestrados via Docker Compose:
 
 - Docker & Docker Compose
 
-### Executar
+### Como Rodar
 
 ```bash
+# 1. Clone o repositório
+git clone https://github.com/Haell39/OpenFinance_Intel.git
+
+# 2. Suba o ambiente (Build automático)
 docker compose up --build
 ```
 
 Acesse: **http://localhost** (porta 80)
 
-> Tudo roda em Docker — frontend, backend, banco e filas. Aguarde ~2 minutos para os primeiros eventos aparecerem.
+> O sistema leva ~2 min para iniciar a coleta e preencher o banco de dados na primeira vez.
 
 ---
 
-## 🚀 Publicação & Deploy
+## 🚀 Deploy em Produção
 
-Consulte o guia oficial de deploy em **[doc/DEPLOY.md](doc/DEPLOY.md)** para instruções passo-a-passo de como subir a plataforma em:
+Consulte o guia oficial **[doc/DEPLOY.md](doc/DEPLOY.md)** para instruções passo-a-passo:
 
-- **VPS** (DigitalOcean, AWS, Hetzner) — Recomendado
-- **PaaS** (Railway, Render)
+- **VPS (Oracle Cloud/AWS)**: Método recomendado (Docker Compose)
+- **PaaS (Railway/Render)**: Configuração via Dockerfile nico.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Python 3.11, FastAPI, Microservices, Docker
-- **AI & NLP**: spaCy (NER), TextBlob (Sentiment), Custom Narrative Engine
-- **Frontend**: React 18, Vite, Tailwind CSS, Lucide Icons, Nginx (produção)
-- **Data**: MongoDB (NoSQL), Redis (Message Broker)
-- **DevOps**: Docker Compose, HMR, Environment Variables
-
----
-
-## 📁 Estrutura do Projeto
-
-```
-TheOdds/
-├── dashboard/              # Frontend React + Vite + Nginx
-│   ├── src/
-│   │   ├── components/     # MarketOverview, IntelligenceFeed, Watchlist, etc.
-│   │   ├── App.jsx         # App principal + routing + settings
-│   │   └── styles.css      # Design system
-│   └── imgs/               # Ícones e assets
-├── services/
-│   ├── api/                # FastAPI Gateway
-│   ├── collector/          # RSS/Atom Scraper
-│   ├── analysis/           # NLP & Sentiment Engine
-│   └── notifier/           # Alert Service
-├── doc/                    # Documentação técnica
-└── docker-compose.yml      # Orquestração
-```
-
----
-
-## 🤝 Contribuição
-
-1. Fork o repositório
-2. Crie uma branch (`git checkout -b feature/NovaAnalise`)
-3. Commit suas mudanças
-4. Push e abra um Pull Request
+- **Backend**: Python 3.11, FastAPI
+- **AI/NLP**: spaCy, TextBlob, Google Gemini (Opcional)
+- **Frontend**: React 18, Tailwind CSS, Lucide Icons, Recharts
+- **Infra**: Docker, Nginx, GitHub Actions
 
 ---
 
