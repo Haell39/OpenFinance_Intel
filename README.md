@@ -107,16 +107,6 @@ Acesse: **http://localhost** (porta 80)
 > O sistema leva ~2 min para iniciar a coleta e preencher o banco de dados na primeira vez.
 
 ---
-
-## 🚀 Deploy em Produção
-
-Consulte o guia oficial **[doc/DEPLOY.md](doc/DEPLOY.md)** para instruções passo-a-passo:
-
-- **VPS (Oracle Cloud/AWS)**: Método recomendado (Docker Compose)
-- **PaaS (Railway/Render)**: Configuração via Dockerfile nico.
-
----
-
 ## 🛠️ Tech Stack
 
 - **Backend**: Python 3.11, FastAPI
