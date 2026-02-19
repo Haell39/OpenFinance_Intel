@@ -41,9 +41,9 @@ Microserviços Docker orquestrados via Docker Compose:
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                    Dashboard (React)                     │
-│              localhost:5173 — Vite + HMR                 │
+│              localhost:80 — Nginx + Static Files         │
 └────────────────────────┬────────────────────────────────┘
-                         │ HTTP
+                         │ HTTP /api
 ┌────────────────────────▼────────────────────────────────┐
 │               API Gateway (FastAPI :8000)                │
 │          Narratives • Sources • Events • Scheduler       │
@@ -61,7 +61,7 @@ Microserviços Docker orquestrados via Docker Compose:
 | **Collector** | Python                  | Scraping RSS/Atom, deduplicação via hash MD5              |
 | **Analysis**  | Python, spaCy, TextBlob | Sentimento, classificação setorial, sub-setores, insights |
 | **API**       | Python, FastAPI         | Gateway, scheduler, narrativas, gestão de fontes          |
-| **Dashboard** | React 18, Vite, Nginx   | UI premium, visualizações, watchlist                      |
+| **Dashboard** | React 18, Vite, Nginx   | UI premium, visualizações, watchlist (Docker Nginx)       |
 | **Redis**     | Redis 7 Alpine          | Broker de mensagens (task/event queues)                   |
 | **MongoDB**   | Mongo 7                 | Persistência de eventos enriquecidos                      |
 
@@ -85,6 +85,15 @@ Acesse: **http://localhost** (porta 80)
 
 ---
 
+## 🚀 Publicação & Deploy
+
+Consulte o guia oficial de deploy em **[doc/DEPLOY.md](doc/DEPLOY.md)** para instruções passo-a-passo de como subir a plataforma em:
+
+- **VPS** (DigitalOcean, AWS, Hetzner) — Recomendado
+- **PaaS** (Railway, Render)
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Backend**: Python 3.11, FastAPI, Microservices, Docker
@@ -99,7 +108,7 @@ Acesse: **http://localhost** (porta 80)
 
 ```
 TheOdds/
-├── dashboard/              # Frontend React + Vite
+├── dashboard/              # Frontend React + Vite + Nginx
 │   ├── src/
 │   │   ├── components/     # MarketOverview, IntelligenceFeed, Watchlist, etc.
 │   │   ├── App.jsx         # App principal + routing + settings
