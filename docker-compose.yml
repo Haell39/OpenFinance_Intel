@@ -28,6 +28,18 @@ services:
     depends_on:
       - redis
       - mongo
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/events')",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
 
   collector:
     build: ./services/collector
@@ -66,7 +78,8 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - api
+      api:
+        condition: service_healthy
 
 volumes:
   mongo_data:
