@@ -53,7 +53,7 @@ O terminal é seu. Ajuste para o seu fluxo de trabalho.
 - **🌎 Idioma**: Tradução instantânea PT-BR / EN-US.
 - **⏱️ Auto-Refresh**: Configure intervalos de 1 a 20 minutos para atualizações automáticas.
 
-![Settings](imgs\config.png)
+![Settings](imgs/config.png)
 
 ---
 
@@ -63,12 +63,12 @@ Todo o sistema roda em **Docker**, orquestrado via Docker Compose.
 
 ```mermaid
 graph TD
-    User[Usuário] -->|HTTP:80| Nginx[Dashboard (Nginx + React)]
-    Nginx -->|/api| API[API Gateway (FastAPI)]
+    User[Usuário] -->|HTTP:80| Nginx["Dashboard - Nginx + React"]
+    Nginx -->|/api| API["API Gateway - FastAPI"]
 
     API -->|Task| Redis[Redis Queue]
     Redis --> Collector[Collector Service]
-    Redis --> Analysis[Analysis Service (NLP)]
+    Redis --> Analysis["Analysis Service - NLP"]
     Redis --> Notifier[Notifier Service]
 
     Collector -->|Raw Data| Mongo[(MongoDB)]
