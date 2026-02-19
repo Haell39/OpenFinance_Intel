@@ -1,8 +1,7 @@
-1. Filtros: Urgencia, Localidade, e outros (pedir sugestões).
-2. Mudar o simbolo do botao de refresh.
-3. Pensar numa nova ideia de visualização do dashboard (Ve com o gemini pro e com o antigravity)
-
-Futuramente
-
-Ve como encaixar as bets e a odd caparation
-Plano premium pra assinatura (algo simples facil que vala a pena)
+Notifier
+Integração n8n, zapier, telegram...
+Alertas em Tempo Real: Push notifications para eventos de alto impacto
+Backtesting de Sentimento: Cruzar sentimento histórico vs. variação de preços
+API Pública: Endpoints para integração com ferramentas externas
+Deploy Cloud: Pipeline CI/CD para AWS/GCP com domínio próprio
+Autenticação: Login com OAuth e watchlist persistida no servidor
