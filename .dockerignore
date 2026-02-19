@@ -4,7 +4,6 @@
 **/*.pyd
 **/*.log
 **/.venv/
-**/.env
 **/node_modules/
 **/dist/
 **/.git/
