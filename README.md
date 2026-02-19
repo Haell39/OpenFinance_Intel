@@ -2,8 +2,6 @@
 
 **Terminal de Inteligência de Investimentos** — IA, NLP e Análise de Sentimento para transformar o caos do mercado em **Sinais Acionáveis**.
 
-![Market Overview](imgs/visaomercado.png)
-
 > _"O OpenFinance Intel monitora o ecossistema financeiro global em tempo real, coletando notícias, feeds de redes sociais e dados macroeconômicos. Usando **NLP** e **Análise de Sentimento**, classifica cada evento como Bullish, Bearish ou Neutral e os organiza em 6 setores de investimento."_
 
 ---
