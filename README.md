@@ -53,7 +53,7 @@ O terminal é seu. Ajuste para o seu fluxo de trabalho.
 - **🌎 Idioma**: Tradução instantânea PT-BR / EN-US.
 - **⏱️ Auto-Refresh**: Configure intervalos de 1 a 20 minutos para atualizações automáticas.
 
-![Settings](imgs/config.png)
+![Settings](imgs\config.png)
 
 ---
 
