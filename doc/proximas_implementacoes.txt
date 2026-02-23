@@ -1,7 +1,30 @@
-Notifier
-Integração n8n, zapier, telegram...
-Alertas em Tempo Real: Push notifications para eventos de alto impacto
-Backtesting de Sentimento: Cruzar sentimento histórico vs. variação de preços
-API Pública: Endpoints para integração com ferramentas externas
-Deploy Cloud: Pipeline CI/CD para AWS/GCP com domínio próprio
-Autenticação: Login com OAuth e watchlist persistida no servidor
+
+Sua tarefa é projetar a implementação de um novo módulo de "Análise de Probabilidade de Impacto". Este módulo deve transformar o sistema de um agregador de notícias em um motor preditivo.
+
+Diretrizes de Implementação:
+
+1. Arquitetura de Inteligência "Freemium":
+
+
+Camada Básica (Engrenagens Internas): Projete um serviço de inferência que utilize modelos de Machine Learning Supervisionado (como Random Forest ou XGBoost). Este modelo deve ser treinado em datasets históricos de notícias e indicadores de mercado para rodar localmente via Docker, sem custos de API externa.
++3
+
+Camada Advanced (LLM Integration): Estruturar a integração com a API da OpenAI para análise de sentimento contextual profunda e raciocínio lógico sobre notícias complexas. O sistema deve permitir que o usuário insira sua própria API Key para mitigar custos de escala.
+
+2. Foco de Nicho e Assertividade:
+
+O sistema não deve tentar prever "tudo". Foque a lógica de predição em um destes dois pilares:
+
+Risco Reputacional/ESG: Prever volatilidade baseada em crises de imagem de empresas.
+
+Impacto de Políticas Públicas: Cruzar dados governamentais com o sentimento social (Reddit) para prever impacto em setores como Energia ou Agro.
+
+
+Terminologia Crítica: Substitua qualquer menção a "previsão certeira" ou "assertiva" por "Análise de Probabilidade de Impacto", focando em gestão de risco e probabilidades.
+
+3. Integração Técnica e Diferencial:
+
+Novo Microsserviço: Desenhe um serviço de Inference em FastAPI que se conecte à events_queue do Redis.
+
+Objetivo Final:
+Apresente um plano de ação para a criação do MVP desta funcionalidade, definindo a estrutura do banco de dados para os novos logs de predição e o fluxo de dados entre os microsserviços existentes e o novo serviço de inferência.

@@ -60,6 +60,20 @@ services:
       - REDIS_PORT=6379
       - EVENTS_QUEUE=events_queue
       - ALERTS_QUEUE=alerts_queue
+      - INFERENCE_QUEUE=inference_queue
+    depends_on:
+      - redis
+      - mongo
+
+  inference:
+    build: ./services/inference
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+      - MONGO_DB=sentinelwatch
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - INFERENCE_QUEUE=inference_queue
+      - ENABLE_LLM_LAYER=false
     depends_on:
       - redis
       - mongo

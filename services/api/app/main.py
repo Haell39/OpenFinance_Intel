@@ -333,6 +333,30 @@ async def get_narratives() -> list[dict]:
         return generate_mock_narratives()
 
 
+# --- v1.1.0: Predictions Endpoint ---
+
+@app.get("/predictions")
+def get_predictions(
+    sector: str | None = None,
+    min_probability: float = Query(default=0.0, ge=0.0, le=1.0),
+    limit: int = Query(default=50, ge=1, le=200),
+):
+    """
+    Retorna predições de probabilidade de impacto.
+    Filtros opcionais: sector, min_probability, limit.
+    """
+    query = {}
+    if sector:
+        query["sector"] = sector
+    if min_probability > 0:
+        query["probability"] = {"$gte": min_probability}
+
+    predictions = list(
+        mongo_db.predictions.find(query, {"_id": 0})
+        .sort("predicted_at", -1)
+        .limit(limit)
+    )
+    return predictions
 
 
 def generate_mock_narratives() -> list[dict]:

@@ -1,4 +1,4 @@
-# OpenFinance Intel — Infraestrutura Global 🏗️
+# OpenFinance Intel — Infraestrutura Global 🏗️ (v1.1.0)
 
 ## 🎯 Conceito
 
@@ -8,7 +8,7 @@ Plataforma **Event-Driven** de inteligência de investimento. O sistema ingere d
 
 ## 🧱 Arquitetura de Microserviços
 
-O sistema opera em **6 containers Docker** orquestrados via Docker Compose, comunicando-se por **Redis** (filas de mensagens) e **MongoDB** (persistência).
+O sistema opera em **8 containers Docker** orquestrados via Docker Compose, comunicando-se por **Redis** (filas de mensagens) e **MongoDB** (persistência).
 
 ```
 Internet (RSS/Reddit/Twitter)
@@ -80,8 +80,21 @@ _A "Porta de Entrada"._
 - **Smart Seeder**: Upsert de fontes padrão sem destruir o banco existente
 - **Filtro Social Estrito**: Setor "Social" contém apenas eventos de Reddit/Twitter/Nitter
 - **Setor Garantido**: Todos os 6 setores aparecem na resposta, mesmo sem eventos
+- **v1.1.0**: Novo endpoint `GET /predictions` retorna predições de probabilidade de impacto
 
-### 4. 🖥️ Dashboard (React)
+### 4. 🤖 Inference Service (v1.1.0)
+
+_O "Motor Preditivo" do sistema._
+
+- **Responsabilidade**: Calcular probabilidade de impacto para cada evento enriquecido
+- **Pipeline de Inferência**:
+  1. **Feature Engineering**: 14 features numéricas (sentimento, score, setor, keywords, urgência)
+  2. **Modelo ML**: RandomForest treinado ou heurística ponderada como fallback
+  3. **LLM Layer (Opcional)**: Análise contextual via OpenAI GPT-4o-mini (BYOK)
+- **Foco de Nicho MVP**: Impacto de Políticas Públicas (Macro, Commodities, Market)
+- **Terminologia**: "Análise de Probabilidade de Impacto" (gestão de risco, não previsão)
+
+### 5. 🖥️ Dashboard (React)
 
 _A "Face" do sistema._
 
@@ -95,10 +108,11 @@ _A "Face" do sistema._
   | **Market Overview** | Bento Grid: Pulso IA, Gauge de Sentimento, Raio-X Setorial, Top Sinais, Radar de Oportunidades, Indicadores Chave (Fear & Greed) |
   | **Intelligence Feed** | Narrativas por setor → Timeline detalhada com subcategorias Macro, insights, keywords |
   | **Watchlist** | Eventos/narrativas favoritados com persistência LocalStorage |
-  | **Configurações** | Auto-refresh (Off/1/5/10/20 min), tema, idioma, sobre |
+  | **Probabilidade** | Análise de Probabilidade de Impacto: cards de predição com barras de probabilidade, filtros por confiança/setor |
+  | **Configurações** | Auto-refresh (Off/10/20/30 min), tema, idioma, sobre |
 - **Dual Theme**: Light/Dark com classe CSS e persistência
 - **i18n**: PT-BR / EN-US com tradução completa
-- **Auto-Refresh**: Configurável de Off a 20 min (padrão: 5 min)
+- **Auto-Refresh**: Configurável de Off a 30 min (padrão: 20 min)
 - **Favicon Custom**: Ícone da plataforma no browser tab e sidebar
 
 ### 5. 📢 Notifier Service
@@ -129,7 +143,7 @@ _O "Alarme" do sistema._
 ### MongoDB
 
 - **Database**: `sentinelwatch`
-- **Collections**: `events` (enriquecidos), `sources` (fontes configuradas)
+- **Collections**: `events` (enriquecidos), `sources` (fontes configuradas), `predictions` (v1.1.0)
 - Exemplo de evento enriquecido:
   ```json
   {
@@ -145,7 +159,7 @@ _O "Alarme" do sistema._
 
 ### Redis
 
-- **Filas**: `tasks_queue`, `events_queue`, `alerts_queue`
+- **Filas**: `tasks_queue`, `events_queue`, `alerts_queue`, `inference_queue` (v1.1.0)
 - Broker de baixa latência entre microserviços
 
 ---
@@ -160,6 +174,7 @@ _O "Alarme" do sistema._
 | collector | ./services/collector | —     | redis        |
 | analysis  | ./services/analysis  | —     | redis, mongo |
 | notifier  | ./services/notifier  | —     | redis        |
+| inference | ./services/inference | —     | redis, mongo |
 | dashboard | ./dashboard (Nginx)  | 80    | api          |
 
 ---

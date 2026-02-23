@@ -2,6 +2,7 @@ import {
   LayoutDashboard,
   Newspaper,
   Briefcase,
+  Activity,
   Settings,
   LogOut,
   Sun,
@@ -30,6 +31,11 @@ const Sidebar = ({
       id: "watchlist",
       label: language === "pt" ? "Minha Carteira" : "My Watchlist",
       icon: Briefcase,
+    },
+    {
+      id: "predictions",
+      label: language === "pt" ? "Probabilidade" : "Probability",
+      icon: Activity,
     },
   ];
 

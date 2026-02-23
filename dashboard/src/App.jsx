@@ -3,6 +3,7 @@ import { createSource, fetchEvents } from "./api/events.js";
 import MarketOverview from "./components/MarketOverview.jsx";
 import IntelligenceFeed from "./components/IntelligenceFeed.jsx";
 import Watchlist from "./components/Watchlist.jsx";
+import PredictionRadar from "./components/PredictionRadar.jsx";
 import Sparkline from "./components/Sparkline.jsx";
 import Sidebar from "./components/Sidebar.jsx";
 
@@ -187,7 +188,7 @@ export default function App() {
 
   // Real-time & Ticker State
   const [marketSignals, setMarketSignals] = useState(INITIAL_MARKET_SIGNALS);
-  const [refreshInterval, setRefreshInterval] = useState(300000); // 5min default, 0 = off
+  const [refreshInterval, setRefreshInterval] = useState(1200000); // 20min default, 0 = off
   const [lastUpdated, setLastUpdated] = useState(new Date()); // New State
   const [timeSinceUpdate, setTimeSinceUpdate] = useState("0s"); // New State
 
@@ -385,10 +386,9 @@ export default function App() {
               <option value={0}>
                 {language === "pt" ? "Auto: Off" : "Auto: Off"}
               </option>
-              <option value={60000}>1m</option>
-              <option value={300000}>5m</option>
               <option value={600000}>10m</option>
               <option value={1200000}>20m</option>
+              <option value={1800000}>30m</option>
             </select>
 
             <div
@@ -476,6 +476,17 @@ export default function App() {
             </div>
           )}
 
+          {/* TAB: PREDICTIONS (v1.1.0) */}
+          {activeTab === "predictions" && (
+            <div className="w-full h-full">
+              <PredictionRadar
+                isDark={isDark}
+                language={language}
+                refreshInterval={refreshInterval}
+              />
+            </div>
+          )}
+
           {/* TAB: SETTINGS */}
           {activeTab === "settings" && (
             <div className="w-full h-full overflow-y-auto p-6 bg-zinc-200 dark:bg-slate-900 transition-colors duration-300">
@@ -503,13 +514,12 @@ export default function App() {
                       ? "Define o intervalo de atualização automática dos dados."
                       : "Set the automatic data refresh interval."}
                   </p>
-                  <div className="grid grid-cols-5 gap-2">
+                  <div className="grid grid-cols-4 gap-2">
                     {[
                       { value: 0, label: "Off" },
-                      { value: 60000, label: "1 min" },
-                      { value: 300000, label: "5 min" },
                       { value: 600000, label: "10 min" },
                       { value: 1200000, label: "20 min" },
+                      { value: 1800000, label: "30 min" },
                     ].map((opt) => (
                       <button
                         key={opt.value}

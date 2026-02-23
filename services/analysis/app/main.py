@@ -18,6 +18,7 @@ def get_settings() -> dict:
         "redis_port": int(os.getenv("REDIS_PORT", "6379")),
         "events_queue": os.getenv("EVENTS_QUEUE", "events_queue"),
         "alerts_queue": os.getenv("ALERTS_QUEUE", "alerts_queue"),
+        "inference_queue": os.getenv("INFERENCE_QUEUE", "inference_queue"),
     }
 
 # --- NLP SETUP ---
@@ -678,6 +679,9 @@ def run() -> None:
             alert_payload = dict(enriched_event)
             alert_payload.pop("_id", None)
             redis_client.lpush(settings["alerts_queue"], json.dumps(alert_payload))
+
+            # Publicação para inferência de probabilidade de impacto (v1.1.0)
+            redis_client.lpush(settings["inference_queue"], json.dumps(alert_payload))
             
             print(
                 f"[analysis] ✓ evento {enriched_event['id'][:8]}... "
