@@ -53,7 +53,7 @@ const PredictionRadar = ({ isDark, language, refreshInterval }) => {
   const fetchPredictions = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/predictions?limit=100");
+      const res = await fetch("/predictions?limit=500");
       if (res.ok) {
         const data = await res.json();
         setPredictions(data);

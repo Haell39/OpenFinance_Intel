@@ -177,7 +177,7 @@ def list_events(
 
     # Fetch events including _id (don't suppress it)
     events = list(
-        mongo_db.events.find(filters).sort("timestamp", -1).limit(100)
+        mongo_db.events.find(filters).sort("timestamp", -1).limit(500)
     )
     
     # Convert ObjectId to string id
@@ -339,7 +339,7 @@ async def get_narratives() -> list[dict]:
 def get_predictions(
     sector: str | None = None,
     min_probability: float = Query(default=0.0, ge=0.0, le=1.0),
-    limit: int = Query(default=50, ge=1, le=200),
+    limit: int = Query(default=500, ge=1, le=500),
 ):
     """
     Retorna predições de probabilidade de impacto.
