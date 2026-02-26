@@ -195,9 +195,14 @@ const MarketOverview = ({
                             {pct}%
                           </span>
                         </div>
-                        <p className="text-xs text-slate-700 dark:text-slate-300 line-clamp-2 leading-snug">
+                        <a
+                          href={event.link || event.source?.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-xs text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 line-clamp-2 leading-snug transition-colors cursor-pointer"
+                        >
                           {event.title}
-                        </p>
+                        </a>
                         <div className="h-1 bg-zinc-100 dark:bg-gray-800 rounded-full overflow-hidden">
                           <div
                             className={`h-full ${barColor} rounded-full`}

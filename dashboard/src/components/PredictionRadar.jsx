@@ -47,7 +47,7 @@ const SECTOR_ICONS = {
   Social: "🌐",
 };
 
-const ITEMS_PER_PAGE = 15;
+const ITEMS_PER_PAGE = 10;
 
 const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
   const [predictions, setPredictions] = useState([]);
@@ -64,10 +64,24 @@ const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
     try {
       if (isInitial) setLoading(true);
       else setRefreshing(true);
-      const res = await fetch("/predictions?limit=500");
+      const res = await fetch("/predictions?limit=250");
       if (res.ok) {
         const data = await res.json();
-        setPredictions(data);
+        // Only update if events actually changed (new/removed events or probability changed)
+        const oldMap = new Map(
+          predictions.map((p) => [p.event_id, p.probability]),
+        );
+        const newMap = new Map(data.map((p) => [p.event_id, p.probability]));
+        const hasChanges =
+          data.length !== predictions.length ||
+          data.some(
+            (p) =>
+              !oldMap.has(p.event_id) ||
+              oldMap.get(p.event_id) !== p.probability,
+          );
+        if (hasChanges || isInitial) {
+          setPredictions(data);
+        }
         setLastUpdated(new Date());
       }
     } catch (err) {
@@ -100,7 +114,10 @@ const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
     .sort((a, b) => {
       const dateA = new Date(a.predicted_at || 0);
       const dateB = new Date(b.predicted_at || 0);
-      return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
+      const cmp = sortOrder === "newest" ? dateB - dateA : dateA - dateB;
+      // Stable tiebreaker: use event_id so order never shuffles for same timestamp
+      if (cmp !== 0) return cmp;
+      return (a.event_id || "").localeCompare(b.event_id || "");
     });
 
   // --- Pagination ---
@@ -451,8 +468,8 @@ const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
         <div className="text-center py-4 space-y-1">
           <p className="text-[10px] text-slate-400">
             {language === "pt"
-              ? `📊 Exibindo os ${Math.min(predictions.length, 500)} eventos mais recentes processados pelo modelo de Machine Learning.`
-              : `📊 Showing the ${Math.min(predictions.length, 500)} most recent events processed by the Machine Learning model.`}
+              ? `📊 Exibindo os ${Math.min(predictions.length, 250)} eventos mais recentes processados pelo modelo de Machine Learning.`
+              : `📊 Showing the ${Math.min(predictions.length, 250)} most recent events processed by the Machine Learning model.`}
           </p>
           <p className="text-[10px] text-slate-400 italic">
             {language === "pt"

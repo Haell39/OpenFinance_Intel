@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
   Target,
   TrendingUp,
@@ -7,53 +7,87 @@ import {
   Shield,
   Eye,
   ArrowUpRight,
+  Brain,
 } from "lucide-react";
 
 /**
  * OpportunityRadar — Detects actionable investment signals from event data.
- * Analyzes sentiment extremes, sector momentum, contrarian signals,
- * and high-impact event clusters to surface opportunities for analysts.
+ * Combines NLP-enriched event data with ML probability predictions
+ * to surface high-confidence opportunities for analysts.
  */
 const OpportunityRadar = ({ events, isDark, language }) => {
+  const [predictions, setPredictions] = useState([]);
+
+  // Fetch ML predictions to enrich signal detection
+  useEffect(() => {
+    const fetchPredictions = async () => {
+      try {
+        const res = await fetch("/predictions?limit=250");
+        if (res.ok) {
+          const data = await res.json();
+          setPredictions(data);
+        }
+      } catch (err) {
+        console.error("[OpportunityRadar] Failed to fetch predictions:", err);
+      }
+    };
+    fetchPredictions();
+  }, []);
+
   const t = {
     pt: {
       title: "Radar de Oportunidades",
-      subtitle: "Sinais detectados por IA",
+      subtitle: "NLP + Machine Learning",
       momentum: "Momentum",
       contrarian: "Oportunidade Contrarian",
       highImpact: "Cluster de Alto Impacto",
       sectorShift: "Rotação Setorial",
       socialBuzz: "Buzz Social",
+      mlAlert: "Alerta ML",
       noSignals: "Monitorando... Sem sinais fortes no momento.",
       bullish: "Otimista",
       bearish: "Pessimista",
       confidence: "Confiança",
       events: "eventos",
       action: "Ação Sugerida",
+      mlPowered: "ML",
+      nlpPowered: "NLP",
     },
     en: {
       title: "Opportunity Radar",
-      subtitle: "AI-detected signals",
+      subtitle: "NLP + Machine Learning",
       momentum: "Momentum",
       contrarian: "Contrarian Opportunity",
       highImpact: "High-Impact Cluster",
       sectorShift: "Sector Rotation",
       socialBuzz: "Social Buzz",
+      mlAlert: "ML Alert",
       noSignals: "Monitoring... No strong signals at the moment.",
       bullish: "Bullish",
       bearish: "Bearish",
       confidence: "Confidence",
       events: "events",
       action: "Suggested Action",
+      mlPowered: "ML",
+      nlpPowered: "NLP",
     },
   };
   const s = language === "pt" ? t.pt : t.en;
+
+  // Build a lookup map: event_id → prediction
+  const predMap = useMemo(() => {
+    const map = {};
+    predictions.forEach((p) => {
+      map[p.event_id] = p;
+    });
+    return map;
+  }, [predictions]);
 
   const signals = useMemo(() => {
     if (!events || events.length === 0) return [];
     const detected = [];
 
-    // Group by sector
+    // Group by sector with ML enrichment
     const sectorMap = {};
     events.forEach((e) => {
       const sector = e.sector || "Global";
@@ -64,6 +98,10 @@ const OpportunityRadar = ({ events, isDark, language }) => {
           neutral: 0,
           total: 0,
           highImpact: 0,
+          mlHighRisk: 0,
+          avgMlProba: 0,
+          mlProbaSum: 0,
+          mlCount: 0,
           events: [],
         };
       sectorMap[sector].total++;
@@ -72,14 +110,59 @@ const OpportunityRadar = ({ events, isDark, language }) => {
       else if (label === "Bearish") sectorMap[sector].bearish++;
       else sectorMap[sector].neutral++;
       if (e.impact === "high") sectorMap[sector].highImpact++;
+
+      // ML enrichment
+      const pred = predMap[e.id];
+      if (pred) {
+        sectorMap[sector].mlProbaSum += pred.probability;
+        sectorMap[sector].mlCount++;
+        if (pred.confidence === "high") sectorMap[sector].mlHighRisk++;
+      }
+
       sectorMap[sector].events.push(e);
     });
 
-    // 1. MOMENTUM SIGNAL — Sector with >70% bullish or bearish
+    // Calculate average ML probability per sector
+    Object.values(sectorMap).forEach((data) => {
+      data.avgMlProba = data.mlCount > 0 ? data.mlProbaSum / data.mlCount : 0;
+    });
+
+    // 1. ML HIGH-RISK ALERT — Sector with avg ML probability >= 0.65
+    Object.entries(sectorMap).forEach(([sector, data]) => {
+      if (data.mlCount < 3) return;
+      if (data.avgMlProba >= 0.65) {
+        detected.push({
+          type: "mlAlert",
+          icon: Brain,
+          color: "red",
+          sector,
+          source: "ML",
+          title:
+            language === "pt"
+              ? `${s.mlAlert}: Risco Elevado em ${sector}`
+              : `${s.mlAlert}: Elevated Risk in ${sector}`,
+          description:
+            language === "pt"
+              ? `Modelo ML detectou probabilidade média de ${Math.round(data.avgMlProba * 100)}% de impacto em ${data.mlCount} eventos. ${data.mlHighRisk} classificados como alto risco.`
+              : `ML model detected ${Math.round(data.avgMlProba * 100)}% avg impact probability across ${data.mlCount} events. ${data.mlHighRisk} classified as high risk.`,
+          action:
+            language === "pt"
+              ? `Revisar exposição imediatamente. O modelo de ML indica alta probabilidade de impacto material em ${sector}.`
+              : `Review exposure immediately. ML model indicates high probability of material impact in ${sector}.`,
+          confidence: Math.round(data.avgMlProba * 100),
+          eventCount: data.mlCount,
+        });
+      }
+    });
+
+    // 2. MOMENTUM SIGNAL — Sector with >70% bullish or bearish (NLP)
     Object.entries(sectorMap).forEach(([sector, data]) => {
       if (data.total < 3) return;
       const bullPct = (data.bullish / data.total) * 100;
       const bearPct = (data.bearish / data.total) * 100;
+
+      // Boost confidence if ML agrees
+      const mlBoost = data.avgMlProba >= 0.5 ? 10 : 0;
 
       if (bullPct >= 70) {
         detected.push({
@@ -87,19 +170,20 @@ const OpportunityRadar = ({ events, isDark, language }) => {
           icon: TrendingUp,
           color: "green",
           sector,
+          source: mlBoost > 0 ? "NLP+ML" : "NLP",
           title:
             language === "pt"
               ? `${s.momentum} ${s.bullish} em ${sector}`
               : `${s.bullish} ${s.momentum} in ${sector}`,
           description:
             language === "pt"
-              ? `${Math.round(bullPct)}% das ${data.total} notícias são positivas. Forte consenso de alta.`
-              : `${Math.round(bullPct)}% of ${data.total} news are positive. Strong bullish consensus.`,
+              ? `${Math.round(bullPct)}% das ${data.total} notícias são positivas.${mlBoost > 0 ? ` ML confirma probabilidade de impacto (${Math.round(data.avgMlProba * 100)}%).` : " Forte consenso de alta."}`
+              : `${Math.round(bullPct)}% of ${data.total} news are positive.${mlBoost > 0 ? ` ML confirms impact probability (${Math.round(data.avgMlProba * 100)}%).` : " Strong bullish consensus."}`,
           action:
             language === "pt"
               ? `Monitorar oportunidades de entrada em ${sector}. Confirmar com volume.`
               : `Monitor entry opportunities in ${sector}. Confirm with volume.`,
-          confidence: Math.round(bullPct),
+          confidence: Math.min(Math.round(bullPct) + mlBoost, 99),
           eventCount: data.total,
         });
       }
@@ -110,79 +194,89 @@ const OpportunityRadar = ({ events, isDark, language }) => {
           icon: TrendingDown,
           color: "red",
           sector,
+          source: mlBoost > 0 ? "NLP+ML" : "NLP",
           title:
             language === "pt"
               ? `${s.momentum} ${s.bearish} em ${sector}`
               : `${s.bearish} ${s.momentum} in ${sector}`,
           description:
             language === "pt"
-              ? `${Math.round(bearPct)}% das ${data.total} notícias são negativas. Pressão vendedora.`
-              : `${Math.round(bearPct)}% of ${data.total} news are negative. Selling pressure.`,
+              ? `${Math.round(bearPct)}% das ${data.total} notícias são negativas.${mlBoost > 0 ? ` ML confirma risco de impacto (${Math.round(data.avgMlProba * 100)}%).` : " Pressão vendedora."}`
+              : `${Math.round(bearPct)}% of ${data.total} news are negative.${mlBoost > 0 ? ` ML confirms impact risk (${Math.round(data.avgMlProba * 100)}%).` : " Selling pressure."}`,
           action:
             language === "pt"
               ? `Revisar exposição em ${sector}. Considerar proteção.`
               : `Review exposure in ${sector}. Consider hedging.`,
-          confidence: Math.round(bearPct),
+          confidence: Math.min(Math.round(bearPct) + mlBoost, 99),
           eventCount: data.total,
         });
       }
     });
 
-    // 2. CONTRARIAN SIGNAL — Sector with extreme bearish (>80%) = possible bottom
+    // 3. CONTRARIAN SIGNAL — Extreme bearish (>80%) = possible bottom (NLP)
     Object.entries(sectorMap).forEach(([sector, data]) => {
       if (data.total < 4) return;
       const bearPct = (data.bearish / data.total) * 100;
       if (bearPct >= 80) {
+        // If ML says low probability, strengthen contrarian case
+        const mlContrarian = data.avgMlProba < 0.35;
         detected.push({
           type: "contrarian",
           icon: Shield,
           color: "amber",
           sector,
+          source: mlContrarian ? "NLP+ML" : "NLP",
           title:
             language === "pt"
               ? `${s.contrarian}: ${sector}`
               : `${s.contrarian}: ${sector}`,
           description:
             language === "pt"
-              ? `Pessimismo extremo (${Math.round(bearPct)}%). Historicamente, sentimento tão negativo pode indicar fundo.`
-              : `Extreme pessimism (${Math.round(bearPct)}%). Historically, sentiment this negative may signal a bottom.`,
+              ? `Pessimismo extremo (${Math.round(bearPct)}%).${mlContrarian ? ` Porém, ML indica baixa probabilidade real de impacto (${Math.round(data.avgMlProba * 100)}%), reforçando tese contrarian.` : " Historicamente, sentimento tão negativo pode indicar fundo."}`
+              : `Extreme pessimism (${Math.round(bearPct)}%).${mlContrarian ? ` However, ML indicates low actual impact probability (${Math.round(data.avgMlProba * 100)}%), supporting contrarian thesis.` : " Historically, sentiment this negative may signal a bottom."}`,
           action:
             language === "pt"
               ? `Assista a reversões. Oportunidade para investidores com perfil contrarian.`
               : `Watch for reversals. Opportunity for contrarian investors.`,
-          confidence: 65,
+          confidence: mlContrarian ? 78 : 65,
           eventCount: data.total,
         });
       }
     });
 
-    // 3. HIGH-IMPACT CLUSTER — Sector with 3+ high-impact events
+    // 4. HIGH-IMPACT CLUSTER — ML-enhanced (NLP high impact + ML high probability)
     Object.entries(sectorMap).forEach(([sector, data]) => {
-      if (data.highImpact >= 3) {
+      const mlHighCount = data.mlHighRisk;
+      const nlpHighCount = data.highImpact;
+      const combinedHigh = Math.max(mlHighCount, nlpHighCount);
+
+      if (combinedHigh >= 3) {
+        const usesML = mlHighCount >= 2;
         detected.push({
           type: "highImpact",
           icon: Zap,
           color: "purple",
           sector,
+          source: usesML ? "NLP+ML" : "NLP",
           title:
             language === "pt"
               ? `${s.highImpact}: ${sector}`
               : `${s.highImpact}: ${sector}`,
           description:
             language === "pt"
-              ? `${data.highImpact} eventos de alto impacto detectados. Possível catalisador de mercado.`
-              : `${data.highImpact} high-impact events detected. Possible market catalyst.`,
+              ? `${combinedHigh} eventos de alto impacto detectados.${usesML ? ` ${mlHighCount} confirmados pelo modelo ML.` : ""} Possível catalisador de mercado.`
+              : `${combinedHigh} high-impact events detected.${usesML ? ` ${mlHighCount} confirmed by ML model.` : ""} Possible market catalyst.`,
           action:
             language === "pt"
               ? `Atenção redobrada. Avaliar posições e stops em ${sector}.`
               : `Stay alert. Evaluate positions and stops in ${sector}.`,
-          confidence: 80,
-          eventCount: data.highImpact,
+          confidence: usesML ? 88 : 80,
+          eventCount: combinedHigh,
         });
       }
     });
 
-    // 4. SOCIAL BUZZ — if Social sector has volume
+    // 5. SOCIAL BUZZ — if Social sector has volume (NLP)
     if (sectorMap["Social"] && sectorMap["Social"].total >= 3) {
       const socialData = sectorMap["Social"];
       const dominant =
@@ -196,6 +290,7 @@ const OpportunityRadar = ({ events, isDark, language }) => {
         icon: Eye,
         color: "blue",
         sector: "Social",
+        source: "NLP",
         title:
           language === "pt"
             ? `${s.socialBuzz}: Varejo Ativo`
@@ -215,8 +310,8 @@ const OpportunityRadar = ({ events, isDark, language }) => {
 
     // Sort by confidence
     detected.sort((a, b) => b.confidence - a.confidence);
-    return detected.slice(0, 4);
-  }, [events, language]);
+    return detected.slice(0, 5);
+  }, [events, predMap, language]);
 
   const colorMap = {
     green: {
@@ -269,9 +364,16 @@ const OpportunityRadar = ({ events, isDark, language }) => {
             {s.title}
           </h2>
         </div>
-        <span className="text-[10px] text-slate-400 font-mono">
-          {s.subtitle}
-        </span>
+        <div className="flex items-center gap-2">
+          {predictions.length > 0 && (
+            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-700">
+              🧠 ML Active
+            </span>
+          )}
+          <span className="text-[10px] text-slate-400 font-mono">
+            {s.subtitle}
+          </span>
+        </div>
       </div>
 
       {/* Signals */}
@@ -298,11 +400,25 @@ const OpportunityRadar = ({ events, isDark, language }) => {
                       <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">
                         {signal.title}
                       </h3>
-                      <span
-                        className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${colors.badge} shrink-0 ml-2`}
-                      >
-                        {signal.eventCount} {s.events}
-                      </span>
+                      <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                        {/* Source badge: NLP, ML, or NLP+ML */}
+                        <span
+                          className={`text-[8px] font-bold px-1 py-0.5 rounded ${
+                            signal.source === "ML"
+                              ? "bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400"
+                              : signal.source === "NLP+ML"
+                                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+                                : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500"
+                          }`}
+                        >
+                          {signal.source}
+                        </span>
+                        <span
+                          className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${colors.badge}`}
+                        >
+                          {signal.eventCount} {s.events}
+                        </span>
+                      </div>
                     </div>
                     <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-2">
                       {signal.description}
