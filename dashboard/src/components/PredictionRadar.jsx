@@ -52,6 +52,7 @@ const ITEMS_PER_PAGE = 15;
 const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
   const [predictions, setPredictions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [filter, setFilter] = useState("all"); // all, high, medium, low
   const [sectorFilter, setSectorFilter] = useState("all");
@@ -59,8 +60,10 @@ const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const fetchPredictions = async () => {
+    const isInitial = predictions.length === 0;
     try {
-      setLoading(true);
+      if (isInitial) setLoading(true);
+      else setRefreshing(true);
       const res = await fetch("/predictions?limit=500");
       if (res.ok) {
         const data = await res.json();
@@ -71,6 +74,7 @@ const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
       console.error("Failed to fetch predictions:", err);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -153,7 +157,12 @@ const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            {lastUpdated && (
+            {refreshing && (
+              <span className="text-[10px] text-blue-400 font-medium animate-pulse">
+                {language === "pt" ? "Atualizando..." : "Refreshing..."}
+              </span>
+            )}
+            {lastUpdated && !refreshing && (
               <span className="text-[10px] text-slate-400 font-mono">
                 {language === "pt" ? "Atualizado" : "Updated"}{" "}
                 {lastUpdated.toLocaleTimeString([], {
@@ -165,10 +174,13 @@ const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
             )}
             <button
               onClick={fetchPredictions}
-              disabled={loading}
+              disabled={loading || refreshing}
               className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-colors disabled:opacity-50"
             >
-              <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
+              <RefreshCw
+                size={14}
+                className={loading || refreshing ? "animate-spin" : ""}
+              />
               {language === "pt" ? "Atualizar" : "Refresh"}
             </button>
           </div>
@@ -436,7 +448,12 @@ const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
         )}
 
         {/* Disclaimer */}
-        <div className="text-center py-4">
+        <div className="text-center py-4 space-y-1">
+          <p className="text-[10px] text-slate-400">
+            {language === "pt"
+              ? `📊 Exibindo os ${Math.min(predictions.length, 500)} eventos mais recentes processados pelo modelo de Machine Learning.`
+              : `📊 Showing the ${Math.min(predictions.length, 500)} most recent events processed by the Machine Learning model.`}
+          </p>
           <p className="text-[10px] text-slate-400 italic">
             {language === "pt"
               ? "⚠️ Análise de Probabilidade de Impacto — ferramenta de apoio à decisão, não recomendação de investimento."

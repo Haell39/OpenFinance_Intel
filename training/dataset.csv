@@ -1,0 +1,664 @@
+sentiment_polarity,sentiment_abs,impact_score,sector_encoded,sub_sector_encoded,keyword_count,entity_count,title_length,description_length,has_crisis_keyword,has_policy_keyword,is_social_source,urgency_encoded,impact_encoded,label,event_id,title
+0.5,0.5,2,2,4,6,3,112,67,0,0,0,1,1,0,5e8909dd55ce54fa30b4a21d7ac408e5,"Stocks making the biggest moves after hours: Palo Alto Networks, Toll Brothers, Caesars Entertainmen"
+0.15,0.15,0,1,4,6,3,87,151,0,0,0,1,1,0,c9eec29c6573c6b2c02dba050165ff40,"Berkshire Hathaway trims Apple stake, buys NYTimes stock in Buffett's last moves as CEO"
+0.24,0.24,0,2,4,6,3,113,65,0,0,0,1,1,0,ae9182f1760ed9acf6426ca8a6402ac8,"Stocks making the biggest moves midday: General Mills, Southwest, Genuine Parts, Norwegian Cruise Li"
+0.14,0.14,0,3,4,6,3,85,144,0,1,0,1,1,0,bf0011a1c30c82e094ef41436ea766bb,CFTC defends its right to prediction market enforcement as states challenge platforms
+0.03,0.03,0,1,4,6,3,63,129,0,0,0,1,1,0,abfed604531d894180861b95d9d315ba,Hedge fund manager Rob Citrone is short U.S. stocks. Here's why
+-0.33,0.33,3,3,4,6,3,112,60,0,0,0,1,2,0,8ae986df84d99628417543608a71b8bb,‘Am I crazy?’ My boyfriend’s parents say he shouldn’t marry me until he earns $50K a year. Who is to
+0.0,0.0,5,1,4,6,3,75,127,1,0,0,1,2,0,51f21a350cc04d35d77c264bed2c5390,What the 10-year Treasury’s move toward 4% says about AI anxiety in markets
+0.0,0.0,0,1,4,6,3,114,161,0,0,0,1,1,0,76add20946791530549c7d48f1cda9fa,"Appaloosa upped its bet on this airline during the fourth quarter, while adding to tech and selling "
+0.15,0.15,0,3,4,6,3,80,152,0,0,0,1,1,0,9369f6c524091fcfe938821148cfe184,"Berkshire returns to the newspaper business, takes bigger bite of Domino’s Pizza"
+-0.12,0.12,0,1,4,6,3,84,160,0,0,0,1,1,0,444c9558ee71ce141fd3ef1f8f3a2ce9,Infosys joins forces with the AI company that triggered a sharp selloff in its stock
+-0.06,0.06,0,3,3,6,3,75,140,0,0,0,1,1,0,5211741897abd507a06bb5079e3be378,Stripe-owned Bridge gets OCC conditional approval for national bank charter
+0.0,0.0,0,3,4,6,3,71,161,0,0,0,1,1,0,ee68ae25b5c81a0eb6cde0e2112e95c1,Quantoz gains Visa nod to issue stablecoin-linked debit cards in Europe
+0.07,0.07,3,0,4,6,3,79,170,0,0,0,1,2,0,138ad4a256590dbd1718c4c3d1715d52,HIVE Digital posts 219% revenue jump as miner-AI hybrid strategy gains traction
+0.08,0.08,3,0,4,6,3,60,171,0,0,0,1,2,0,5f7c55f334ac58d4acb98f868d041402,"New Bitcoin whales are trapped underwater, but for how long?"
+0.0,0.0,3,0,4,6,3,76,153,0,0,0,1,2,0,36d16f5d559fc67c49e2d02bea1df9d6,Traders pinpoint three price targets for Bitcoin if $70K holds as resistance
+0.27,0.27,0,4,4,6,3,76,134,0,0,0,1,1,0,d3e4c6a936f933cb1117ec72f396b9d6,Precious Metals Royalties Firm to Offer Dividends in Tether's Tokenized Gold
+-0.1,0.1,5,3,4,6,3,83,124,1,0,0,1,2,0,ee3c97c1242e66839810a440761a6863,Stripe-Owned Bridge Gains National Bank Trust Charter to Boost Stablecoin Offerings
+0.4,0.4,5,0,4,6,3,92,131,0,0,0,1,2,0,d6725bfbb72e6d7cc324ea5235c746bc,Abu Dhabi Funds Boosted BlackRock Bitcoin ETF Exposure to $1 Billion by End of 2025: Filings
+0.0,0.0,3,0,4,6,3,75,139,0,0,0,1,2,0,4e35610b62a444e16dc08c1691d1c9ef,"Bitcoin Miner Bitdeer Overtakes MARA, Establishing Hash Rate Lead: JPMorgan"
+-0.07,0.07,2,0,4,6,3,69,133,0,0,0,1,1,0,931b4d611168527efe602c2398ab1348,Gemini Stock Dives as Winklevoss-Led Crypto Exchange Dumps Executives
+0.2,0.2,0,1,4,6,3,106,179,0,0,0,1,1,0,7efaf7f1e36320776ffd0d699665d5f8,Meta’s own research found parental supervision doesn’t really help curb teens’ compulsive social med
+0.11,0.11,5,1,4,6,3,53,95,1,0,0,1,2,0,bb23abe59cf54f0e98c95e61bf9e7085,Apple is reportedly cooking up a trio of AI wearables
+0.07,0.07,0,3,4,6,3,48,99,0,0,0,1,1,0,ff6ae1546716f6207228a985f2893724,"Thrive raises $10B for new fund, its largest yet"
+0.07,0.07,0,3,4,6,3,76,110,0,0,0,1,1,0,b18783c8ffc5064ce6605c206d3c77a4,Climactic launches hybrid fund to get startups through the ‘valley of death’
+0.14,0.14,0,3,4,6,3,29,123,0,0,0,1,1,0,fe1eb306827964871a36beaa4656645e,Anthropic releases Sonnet 4.6
+0.19,0.19,0,1,4,6,3,36,329,0,0,0,1,1,0,79cbade1c5f15a54f66f2a08b17e587e,The best deals on MacBooks right now
+0.35,0.35,2,1,4,6,3,55,329,0,0,0,1,1,0,1cd360ec0e6b2444ddbf7c2585a45e8b,Google’s AI search results will make links more obvious
+0.19,0.19,0,2,4,6,3,63,328,0,0,0,1,1,0,13afecefe2db7bd4e697482ae1d6c1cb,Sony’s WH-1000XM6 are nearly $100 off for just a few more hours
+0.22,0.22,0,3,4,6,3,69,321,0,0,0,1,1,0,621fa7c2cd8a99479a84284eb103a1b7,Piggyback’s fantastic Metroid Prime art book is nearly 20 percent off
+0.31,0.31,2,1,4,6,3,35,351,0,0,0,1,1,0,d7e130016d2bcd8be8022ebfa10b773d,Google announces dates for I/O 2026
+0.35,0.35,11,5,4,6,3,132,69,0,0,1,2,3,1,7c90041133ae5a624d53fa7d86b53ca1,Many consumer electronics manufacturers 'will go bankrupt' by the end of 2026 thanks to the RAMpocal
+0.5,0.5,10,5,4,6,3,95,266,1,0,1,2,3,1,5e5d14690e42ebce05475c0a346e354e,Netflix grants Warner Bros. Discovery 7-day waiver to reopen deal talks with Paramount Skydance
+0.07,0.07,0,5,4,6,3,72,355,0,0,1,1,1,0,edc3e33e4f6ab1155944cc6320ecb5dd,$ZIM 20k -&gt;250k in a few trading hours (Friday noon to Tuesday open).
+-0.07,0.07,5,5,4,6,3,116,400,0,0,1,1,2,0,e8c483663a71b7201161f632d202a705,"yolo bet that we smack Iran after market close, few hours before Ramadan. slammed $80k on DHT monthl"
+0.15,0.15,2,5,4,6,3,85,400,0,0,1,1,1,0,07ea83c7dd49b8e19e36ede401f41dbe,"When companies can't buy hard drives, they'll buy the next best thing (cloud storage)"
+0.1,0.1,0,5,4,6,3,126,331,0,0,1,1,1,0,40bfe7d283ebc280076b598d97aab9b3,"What are people doing as far as cash positions? Are you fully invested? Raising cash, and if so how "
+-0.03,0.03,0,5,4,6,3,38,400,0,0,1,1,1,0,2bce26a9b2caa35016c6557112794561,Lump Sum or DCA during High Valuations
+-0.17,0.17,7,5,4,6,3,36,400,0,0,1,2,3,1,fa025234f8b70963bd71d6cd597a7b11,Working in the Trades and investing.
+-0.1,0.1,0,5,4,6,3,42,371,0,0,1,1,1,0,1ea44b3c0f648f645079e2c2c326083f,"Steering away from options, want some help"
+0.18,0.18,5,5,4,6,3,62,400,1,0,1,1,2,0,129508a4142d184961528ea6e505708b,"Daily General Discussion and Advice Thread - February 17, 2026"
+0.6,0.6,7,5,4,6,3,140,59,1,0,1,2,3,1,2406397087003dee19fb09a1b65c60ab,"Hegseth warns Anthropic (marginally own through ZM) will ""pay a price"" and may be punished as a ""sup"
+0.08,0.08,0,5,4,6,3,101,400,0,0,1,1,1,0,5208fe73ece3228ab5b034f270d960ca,What company have you held in your portfolio for a long time that you never hear mentioned on Reddit
+-0.06,0.06,5,5,4,6,3,112,334,1,0,1,1,2,0,cfd5287c9c47b014d8d530056aea57d6,How do those who are holding onto Palantir (PlTR) feel about you position with their downward trend 
+-0.02,0.02,0,5,4,6,3,64,400,0,0,1,1,1,0,588bcca14a8d914a5a175a1537d1515a,Stock Pickers See Their Moment to Shine in Market’s AI Freak-Out
+0.26,0.26,7,5,4,6,3,42,400,0,0,1,2,3,1,a0a72f260ae3b1bbbdff483dc97b0bb1,Meta announces new partnership with Nvidia
+0.25,0.25,5,5,4,6,3,114,65,1,0,1,1,2,0,4aa4d8748ee6de0ad47489dee7b82323,"Warner Bros rejects Paramount $30 bid, gives 7 days for higher offer as $82.7B Netflix deal heads to"
+0.1,0.1,7,5,4,6,3,28,399,1,0,1,2,3,1,5fffe171826eaacaba211ab069e72c5a,And Another Unsettling Start
+0.16,0.16,0,5,4,6,3,63,59,0,0,1,1,1,0,7cac017843303464ae9fccd738a501b1,BofA Survey Shows Investor Worry Over Capex Race at Record High
+0.03,0.03,9,5,4,6,3,48,400,1,0,1,2,3,1,1dad8c07456464fb3697f0921baec42f,US Debt Hits $38T Are Bond Yields About to Bite?
+-0.1,0.1,5,5,4,6,3,104,64,0,0,1,1,2,0,aae01ec622b9381db05981b6be3ede24,"Meta expands Nvidia deal to use millions of AI chips in data center build-out, including standalone "
+0.0,0.0,0,5,4,6,3,72,66,0,0,1,1,1,0,68ea5677ac49d4c6a43328dfed7126a5,The Efficiency Trap: Why AI’s Micro-Success Could Become a Macro Problem
+0.0,0.0,2,5,4,6,3,26,58,0,0,1,1,1,0,96d71fc7aed4b2545fdbe1af49c7fbd4,In Search of Profitability
+-0.16,0.16,5,5,4,6,3,54,58,1,0,1,2,2,0,28e5dcc26b3b944f8ab3d486d4dcc93d,Breaking Down RBC's Constellation Software Mega Report
+0.2,0.2,8,5,4,6,3,104,72,1,0,1,2,3,1,85e33ec53da9fe5612e483ba0125bd41,"Goldman Sachs CEO Warns of US Economic ‘Shocks’ As CBO Projects $1,900,000,000,000 in Deficits This "
+0.0,0.0,0,5,4,6,3,91,72,0,0,1,1,1,0,b849e46ce8ef4adba08e83fa705c5f3e,Andrew Yang says AI will wipe out millions of white-collar jobs in the next 12 to 18 months
+0.0,0.0,0,5,4,6,3,4,69,0,0,1,1,1,0,302473ea342ac2cc07c01667d175d2d3,44🇺🇸
+0.13,0.13,9,5,4,6,3,140,400,1,1,1,2,3,1,6676e16a77032bed79cd1d784f0f4465,Sen. John Kennedy (R-La.) warned Trump and the Republicans: “Moms and dads lie awake at night worryi
+0.03,0.03,0,5,4,6,3,129,65,0,1,1,1,1,0,4d563f801054fb89c2626d46660b169a,"Before Donald Trump, the US economy averaged 328,000 new jobs each month. But last year, the US only"
+0.0,0.0,12,3,4,6,3,86,95,1,0,0,2,3,1,83ce0ec20409371c72f6197a9b888de7,"War, geopolitics, energy crisis: how the economy evades every disaster - The Economist"
+0.0,0.0,7,2,4,6,3,61,70,1,0,0,2,3,1,bf84a0656e79a4daf38a91ad8ff0d9fa,The European Crisis: Origin and Future - Geopolitical Futures
+0.23,0.23,12,3,1,6,3,106,115,1,0,0,2,3,1,ab2dd7745fa54719679ab0684db342fe,"FO° Talks: Sudan’s Civil War Explained — RSF vs SAF, Darfur Crisis and Red Sea Geopolitics - Fair Ob"
+0.14,0.14,8,3,1,6,3,111,120,1,0,0,2,3,1,48f5b2e6e858e9ec27343dc8d2965691,Unpacking the new face of conflict: Sudan’s civil war amid a fragmented geopolitical order - Vision 
+0.0,0.0,12,3,1,6,3,67,76,1,0,0,2,3,1,7f24e8babbdf8f72e7e66f8e78da4847,US-China Trade War Escalates To Geopolitical Crisis - Seeking Alpha
+0.05,0.05,5,3,1,6,3,68,77,1,1,0,1,2,0,b5c232061ab140af42558156845eb3d0,The Quiet Architect of Trump’s Global Trade War - The New York Times
+0.25,0.25,0,3,4,6,3,76,85,0,0,0,1,1,0,1dd526afc10af2c16dc98847af8872c4,Top 5 Renewable Energy Sources Reshaping The Global Economy In 2026 - Forbes
+0.57,0.57,7,3,4,6,3,125,134,1,0,0,2,3,1,29169f413378a8792d24339fbe66fb4f,"Ray Dalio warns of ‘great disorder’ period for world economy, marked by ‘clash of great powers’—just"
+0.2,0.2,0,3,3,6,3,60,69,1,0,0,1,1,0,762378a0268b92f063ec3c0f2c2724e5,Economic Growth Does Not Point to a Recession - ismworld.org
+0.0,0.0,4,3,0,6,3,90,99,1,0,0,1,2,0,ca278437bd9b7dc79e0fb71c64ecaed2,"Charting the Global Economy: US Jobs, Inflation Send Mixed Signals for Fed - Yahoo Finance"
+0.25,0.25,0,3,1,6,3,78,242,0,1,0,1,1,0,74a03246e6324797c01e87450160fb30,Vance: Irã não está disposto a aceitar algumas das ‘linhas vermelhas’ de Trump
+0.25,0.25,8,4,4,6,3,74,230,1,1,0,2,3,1,d8074332b50adbafac8d3ab4dbc2aabf,"Em Washington, Lula deve negociar retorno da Petrobras à Venezuela, diz TV"
+-0.17,0.17,0,1,4,6,3,78,199,0,1,0,1,1,0,2a58ecadb558a0325fee3022fd41b539,Índice de ADRs brasileiros cai na contramão de índices de NY; Vale recua forte
+0.25,0.25,2,4,4,6,3,71,247,0,0,0,1,1,0,e564268db46f61e2c79460f09255584b,Ouro e prata disparam: descubra se é hora de colocar seu dinheiro neles
+0.25,0.25,4,1,4,6,3,68,251,1,0,0,1,2,0,ec5a94c00409a67624b836321774ed4d,"Bolsas de NY fecham em alta, com recuperação de techs e Fed no radar"
+0.0,0.0,2,3,3,6,3,66,399,0,1,0,1,1,0,ab1ce6c70d9b2f3b5150cf004fc33767,UE investiga Shein por venda de produtos ilegais e design viciante
+0.0,0.0,17,2,4,6,3,82,399,0,0,0,2,3,1,8ab4fba0fef9a3f3a59f3ae03a4bde6b,Irã fecha parcialmente o Estreito de Ormuz em meio a negociações nucleares com EUA
+-0.04,0.04,5,2,4,6,3,63,400,1,0,0,2,2,0,fa6bcc998ffb6b638aed589d480fd17a,Paramount terá uma semana para melhorar oferta pela Warner Bros
+0.0,0.0,6,3,4,6,3,103,400,0,1,0,2,2,1,0d0c5dc405476e24dd57cbc0206bc695,Quanto custa viver no ES? Pesquisa revela que capixaba gasta mais do que a média brasileira; veja va
+0.2,0.2,0,2,4,6,3,104,400,0,0,0,2,1,0,81899e60010080230b69db9102b80c22,'Salas da fúria': como são os espaços cada vez mais populares para liberar a raiva e aliviar o estre
+0.0,0.0,0,3,4,6,3,64,0,0,0,0,1,1,0,dab03b8daf3336e642bb45dd968ca893,Resultados e receitas da Tactile Systems acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,87,0,0,0,0,1,1,0,eb6f1ac70c6f19410f58c0d142c2191b,Resultados da Goosehead Insurance abaixo do esperado e receitas acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,64,0,0,0,0,1,1,0,a070b1434e784287e69901b3090b00ef,Resultados e receitas da MKS Instruments acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,84,0,0,0,0,1,1,0,82aba736cfc7fce2b3b1b8e7939e3153,Resultados da Jeld-Wen Holding abaixo do esperado e receitas acima do esperado no Q4
+0.0,0.0,0,3,4,5,3,52,0,0,0,0,1,1,0,772e5e4f31dba3c69e427e09a0d14a20,Resultados e receitas da EQT acima do esperado no Q4
+0.0,0.0,2,3,4,6,3,75,57,0,0,0,1,1,0,625c843853c0ee83eb40c483f06a6f54,"Champions: Guirassy brilha, Borussia Dortmund bate Atalanta e sai na frente"
+0.0,0.0,0,3,4,6,3,72,117,0,0,0,1,1,0,4d5402956e7bdb64dd30ef8d5cfc6a85,Eclipse solar é visto do hemisfério sul com “anel de fogo”; veja imagens
+0.0,0.0,0,3,4,6,3,70,92,0,0,0,1,1,0,3517587b2052f296c9059c53ccaaabd6,Mocidade Alegre recebe troféu após vencer Carnaval de SP; veja momento
+0.0,0.0,0,3,4,6,3,75,74,0,0,0,1,1,0,3ac50ebefdbb241d083752285ca8b7f2,PSG vence Monaco de virada em jogo de ida das oitavas de final da Champions
+0.0,0.0,4,3,4,6,3,102,102,1,0,0,1,2,0,d2200a1637d18ba6c407fba564e76825,"Federal Reserve Board announces approval of application by Cooperativa de Ahorro y Credito Elga, Ltd"
+0.05,0.05,4,3,4,6,3,84,84,1,0,0,1,2,0,e24717af068bc0bff11d62c045d56713,Federal Reserve Board issues enforcement action with former employee of Regions Bank
+0.0,0.0,4,3,4,6,3,140,196,1,0,0,1,2,0,aaac6bdaec2267e08eb17873d3675f08,Federal Reserve Board finalizes hypothetical scenarios for its annual stress test and votes to maint
+0.0,0.0,4,3,4,6,3,92,92,1,0,0,1,2,0,99774caf8fa3ed7f0a21c2e9ee5d01ef,"Federal Reserve Board announces approval of application by Cornerstone Capital Bancorp, Inc."
+0.14,0.14,4,3,4,6,3,139,139,1,0,0,1,2,0,21b981bfd52940e7fac9ba83ab0bf402,"Federal Reserve Board announces appointment of seven members, including four new members, to its Ins"
+0.05,0.05,0,3,4,6,3,59,123,0,0,0,1,1,0,56ad979efd8e10a763a476b2b746112b,Carnaval RJ: o que esperar do 3º dia de desfiles na Sapucaí
+0.0,0.0,0,3,4,6,3,68,104,0,0,0,1,1,0,a95034942c3db412da6e5d7cbdc1133f,Ludmilla agita 600 mil foliões com “Fervo da Lud” no Rio; veja fotos
+0.0,0.0,0,3,4,6,3,66,119,0,0,0,1,1,0,d00d707af8aea7601295a78ad5811700,PI: monitoramento de tartarugas marinhas tem alteração no Carnaval
+0.06,0.06,0,0,4,6,3,77,167,0,0,0,1,1,0,f1fda580459141287e5d513a641ac841,"Ether bulls target $2.5K as staking ETF launch, RWA market cap reflect growth"
+0.0,0.0,0,2,4,6,3,68,94,0,0,0,1,1,0,bc2567612c41d73f14451d59f486dd5b,Carnaval SP: web reage à vitória da Mocidade no Grupo Especial de SP
+0.51,0.51,2,1,4,6,3,55,309,0,0,0,1,1,0,89407a14088d341222fbd1e109cce1bb,Here are the best Apple Watch deals available right now
+-0.02,0.02,0,3,4,6,3,77,352,0,1,0,1,1,0,010b0325d479732cbdf0478343e3efbc,Stephen Colbert says CBS banned him from airing this James Talarico interview
+0.1,0.1,0,5,4,6,3,39,400,0,0,1,1,1,0,4e162975fe7ad88e5e9afa7ad410b13e,How is wmt and cost growth sustainable?
+0.0,0.0,2,3,4,6,3,54,83,0,0,0,1,1,0,06a34c0e99c8e653d8b1ae0f991359d3,Melody anuncia colaboração com grupo de K-pop; confira
+0.2,0.2,0,3,4,6,3,72,89,0,1,0,1,1,0,840615f1835f10e113684e4546b61ebd,Mourinho responsabiliza Vini Jr por paralisação de Benfica x Real Madrid
+-0.01,0.01,4,5,4,6,3,65,399,0,0,1,1,2,0,2d7922f1a1b7fc47415a3297af50b284,SEC has extended approval deadline of the removal of the PDT rule
+0.1,0.1,5,3,4,6,3,74,121,1,0,0,1,2,0,a71bbdd024d32d26664a2f268fcb2fc9,How Paramount brought its failing bid for Warner Bros. back from the brink
+0.0,0.0,2,3,4,6,3,71,78,0,0,0,1,1,0,de6f15d93ded01788ac9cf9040a9f664,CBF defende Vini Jr. após novo caso de racismo: “Temos orgulho de você”
+0.25,0.25,0,3,4,6,3,58,238,0,0,0,1,1,0,44f94b0e3763c7e3f5de8c36130c791e,A Mocidade Alegre é a campeã do carnaval 2026 de São Paulo
+-0.43,0.43,3,5,4,6,3,80,400,0,0,1,1,2,0,3691cad5aa9b20d0f9a6ee6a78bcc49a,"Worse performing/biggest loss on a stock, by percentage, that you have ever had?"
+-0.01,0.01,0,2,4,6,3,91,104,0,0,0,1,1,0,629bdc3045dc383694e3b5536f51775a,Sandisk’s stock falls as Western Digital plans to sell shares. What investors need to know.
+0.0,0.0,3,0,4,6,3,72,139,0,0,0,1,2,0,d7e6c1be90a9e8690d5077f62dfc9891,Why Bitcoin Open Interest Has Seen Its Largest Decline in Almost 3 Years
+0.2,0.2,0,3,3,6,3,84,93,0,0,0,1,1,0,8b0ed9b66af13731f00d3f12c2485e11,How CSOs can work to unlock growth through sustainability - The World Economic Forum
+-0.25,0.25,0,2,4,6,3,63,72,0,0,0,1,1,0,8fcb5bf575d88bffef0bd6c1d28c9e07,"Ford turns to F1 and bounties to build a $30,000 electric truck"
+-0.07,0.07,0,3,4,6,3,33,97,0,0,0,1,1,0,ec9c8e0c03cd11f94fb73a2ce4f024f0,Jack Altman joins Benchmark as GP
+0.25,0.25,9,3,2,6,3,87,187,1,1,0,2,3,1,a2c26c307dcb0d0dab3ae6bf4038830e,"Intellexa’s Predator spyware used to hack iPhone of journalist in Angola, research says"
+0.32,0.32,2,2,4,6,3,98,67,0,0,0,1,1,0,e9de8c007a2b67f18f3e469fc2b5f288,"Stocks making the biggest moves after hours: Akamai Technologies, Opendoor, Live Nation &amp; more"
+0.5,0.5,2,2,4,6,3,94,64,0,0,0,1,1,0,de1c93a7b6003e8771290ef7ef69885e,"Stocks making the biggest moves premarket: Walmart, Hims &amp; Hers, Carvana, Figma &amp; more"
+0.5,0.5,2,2,4,6,3,102,67,0,0,0,1,1,0,68dc9df29e06ed48ea7ff23a85fa0afc,"Stocks making the biggest moves after hours: Carvana, Etsy, DoorDash, Booking Holdings, Figma and mo"
+0.0,0.0,4,3,0,6,3,66,78,1,0,0,1,2,0,1b89168c7de71018af69db15d8e1b8a9,"Fed officials split on where interest rates should go, minutes say"
+0.5,0.5,2,2,4,6,3,98,65,0,0,0,1,1,0,f3d648d84e3cc755077c2a20ca662f30,"Stocks making the biggest moves midday: Wingstop, Moody's, Madison Square Garden Sports &amp; more"
+0.5,0.5,2,3,4,6,3,117,95,0,0,0,1,1,0,d4c03281ee8db5b5a62113a70553a75f,‘Many politicians work well into their 80s’: I’m 71 and earn $300K for a Fortune 200 company. Do I w
+0.15,0.15,0,3,4,6,3,83,205,0,0,0,1,1,0,e4f935f4c70493ae1489d337cdcd2ac3,"People still want to see BTS and Harry Styles concerts, lifting Live Nation’s sales"
+0.12,0.12,0,1,4,6,3,56,130,0,0,0,1,1,0,3ae33bca9ca97d8582e158ee0b85e334,4 reasons cybersecurity stocks are primed for a breakout
+0.01,0.01,0,3,2,6,3,79,119,0,0,0,1,1,0,cc8c2966c4f6253e1e05ca7a655e3805,This is the sobering way most Americans plan to use their tax refunds this year
+0.5,0.5,2,1,4,6,3,88,96,0,0,0,1,1,0,5f3749dbaa3bf1f4a737be44c3e3f36a,Nvidia options are priced for a perfect earnings outlook. These are your smarter trades.
+0.0,0.0,8,0,4,6,3,69,146,1,0,0,2,3,1,7b4b889c44cd0d1b951c36337c6175d9,Bitcoin options market structure leans toward $60K retest in February
+0.5,0.5,2,2,4,6,3,71,141,0,0,0,1,1,0,45750fd9d172ee62342dd182729e2b18,Kraken’s xStocks tops $25B in volume with more than 80K onchain holders
+0.0,0.0,3,0,4,6,3,63,139,0,0,0,1,2,0,d1905afdc2be7e2709ce6f5c7a6f9bba,Bitcoin Lightning Network exceeds $1B in monthly volume: Report
+-0.08,0.08,3,0,4,6,3,80,171,0,0,0,1,2,0,c6173e238ded79609ec725989acb49b0,"Bitcoin’s monthly losses break records, but history says a turnaround is brewing"
+-0.07,0.07,2,0,4,6,3,86,146,0,1,0,1,1,0,0c552a4facb15e83a3f356c410044666,SEC leaders seek to clarify how tokenized securities interact with existing regulation
+0.25,0.25,5,1,4,6,3,87,123,1,0,0,1,2,0,8ef3ad70edf54a70fb40dedd863e5bfa,'Warhammer' Veteran Jervis Johnson Warns AI Could Become the 'Asbestos of the Internet'
+0.0,0.0,0,0,4,6,3,64,133,0,0,0,1,1,0,1b8c73a2d68ee2ea95fd7189b3b52636,AI in Hollywood? 'Silicon Valley' Star T.J. Miller Isn't Worried
+-0.02,0.02,0,1,4,6,3,85,127,0,0,0,1,1,0,a48a138589609259db74635a9f7ea9bf,"Google Brings AI Music Generation to Gemini—We Tried It, and It's Too Little Too Late"
+0.0,0.0,0,0,4,6,3,82,127,0,0,0,1,1,0,389daa75b65f675990a131a797ce3167,"Ethereum Treasury Sharplink Reports Growing ETH Holdings, Institutional Investment"
+0.0,0.0,2,0,4,6,3,65,137,0,0,0,1,1,0,b330b92becef6907b03deed016fe59b6,'The Sandbox' Adds Web-Based Games in Season 7 Accessibility Push
+-0.25,0.25,0,3,4,6,3,95,169,0,0,0,1,1,0,bca8657e1c671b63ced5f3b4ffb5d8a1,"FBI says ATM ‘jackpotting’ attacks are on the rise, and netting hackers millions in stolen cash"
+0.03,0.03,0,3,4,6,3,49,129,0,0,0,1,1,0,2073b4074bea78007dac03df538f1729,"At a critical moment, Snap loses a top Specs exec"
+0.32,0.32,7,3,4,6,3,92,151,1,0,0,2,3,1,b518aa96536002f94108c77c6bf282c9,Second and last chance for innovators to win scaling perks: Belden extends nomination window
+0.02,0.02,0,3,4,6,3,84,203,0,0,0,1,1,0,04ed599a4494415136d049d757682bdb,Cellebrite cut off Serbia citing abuse of its phone unlocking tools. Why not others?
+-0.22,0.22,5,1,4,6,3,66,132,1,0,0,1,2,0,3d5f8f7c31e0a96e066d8e83f69fe0e0,Google says its AI systems helped deter Play Store malware in 2025
+0.3,0.3,2,3,4,6,3,92,352,0,0,0,1,1,0,25abfd58b90709efaaa2b71a8a9654be,A $10K+ bounty is waiting for anyone who can unplug Ring doorbells from Amazon&#8217;s cloud
+0.15,0.15,0,3,4,6,3,38,287,0,0,0,1,1,0,5487d9ae2c5724b9b8d76fb0f9ffbea0,The best earbuds we’ve tested for 2026
+0.14,0.14,0,3,4,6,3,72,340,0,0,0,1,1,0,a43e8787536cc562209674264563564b,"After Search Party backlash, Ring is still avoiding the bigger questions"
+-0.12,0.12,0,3,4,6,3,92,363,0,0,0,1,1,0,b66eccffc66b36f55aaaa9d093b1f260,Sony is closing the studio behind the Demon&#8217;s Souls and Shadow of the Colossus remakes
+0.11,0.11,3,5,4,6,3,38,399,1,0,1,1,2,0,f2548735c1f2d31372c95c629b3d4a57,Betting on BTC to crash by end of week
+0.17,0.17,0,5,4,6,3,20,244,0,0,1,1,1,0,f98ae5891ef3e5fc26382df9f01afeca,Riding CVNA to $0 📉😎
+-0.13,0.13,0,5,4,6,3,119,80,0,0,1,2,1,0,789b75cd572c5d4afc350a061993e68b,"Klarna beats all metrics, sees 38% revenue growth, 28% new customer growth to 180 million - Stock du"
+0.0,0.0,0,5,4,6,3,7,87,0,0,1,1,1,0,dfdf582e7942b8f31efcb71f5500b548,🐻 +1.2M
+0.15,0.15,0,5,4,6,3,45,147,0,0,1,1,1,0,5ba595e1d25fae51a827838d72aee120,"Daily Discussion Thread for February 19, 2026"
+0.23,0.23,4,5,4,6,3,71,400,1,0,1,1,2,0,d95048d26b045afed9fd41662aebc808,the american consumer finally hit a wall... r we moving to 'value' now?
+0.26,0.26,0,5,4,6,3,28,400,0,0,1,1,1,0,92b9b9c7782993a5a9eb3bf3064c0fb9,The Ex-U.S. Trade is Working
+0.06,0.06,0,5,4,6,3,33,400,0,0,1,1,1,0,a09087e8474fe1b48e1a04116a8e4ed7,Retirement holdings @ 54 yrs old?
+-0.18,0.18,0,5,4,6,3,70,400,0,0,1,1,1,0,6325dc81028902c7d10ccc491e3695d4,Is dollar-based/fractional share investing less common than I assumed?
+0.1,0.1,0,5,4,6,3,95,400,0,0,1,1,1,0,a74ceb6ba4075fb27d25d582a805ebf5,"Most of Carvana’s (CVNA) Income is Fluff, Potentially Hiding Huge Concealed Losses Last Quarter"
+0.01,0.01,0,5,4,6,3,104,400,0,0,1,1,1,0,8c158e2aa36316ba0ac0ff33fc1e441e,"PLTR ""IF it does not make sense to buy the whole company, it does not make sense to buy a single sha"
+0.07,0.07,2,5,4,6,3,87,400,0,0,1,1,1,0,0fe21ae969fd937c3e32b2a328f8b26d,Blue Owl permanently halts redemptions at private credit fund aimed at retail investors
+0.09,0.09,0,5,4,6,3,53,399,0,1,1,1,1,0,67a315f9fa4afc98da05d4ac56011931,"How to buy Anduril, Space-x, Open AI and more pre IPO"
+0.11,0.11,5,5,4,6,3,60,400,0,0,1,1,2,0,12072c8a1d958d0afb6a2599a167ef90,The hyperscalers are like the Five Families of the Godfather
+0.0,0.0,4,5,4,6,3,66,71,1,0,1,1,2,0,ecb9ee63ac4649c086bec4ab7027eff0,"Fed officials split on where interest rates should go, minutes say"
+0.5,0.5,2,5,4,6,3,64,59,0,0,1,1,1,0,4b5cc4e93209d97e347023b37e922a03,Goldman Says Most Large-Cap Stock Pickers Beat Market Since 2007
+0.25,0.25,3,5,4,6,3,89,71,0,0,1,1,2,0,9df576f851a18bd44dbe5e9875efcae4,"Amazon surpasses Walmart in annual revenue for first time, as both chase AI-fueled growth"
+0.16,0.16,0,5,4,6,3,82,400,0,1,1,1,1,0,d110135a5348bc0467e99efd977d434b,"Walmart posts strong holiday growth, but earnings outlook falls short of estimates"
+-0.02,0.02,5,5,4,6,3,24,400,0,1,1,1,2,0,8af87a31cae8a68f621a9f92b1a1663f,Walmart beats estimates?
+0.0,0.0,0,5,4,6,3,35,58,0,0,1,1,1,0,112b26d7e683916f469a77a34e3538e9,Some ramblings on the SaaSpocalypse
+-0.5,0.5,3,5,4,6,3,20,64,0,0,1,1,2,0,1b609382d2601c96aec839a40821121c,🤔❓️❓️❓️ WTF IS THIS?
+-0.03,0.03,3,5,4,6,3,111,72,0,0,1,1,2,0,ca9f3eb34d4d0dc95e94eb8937c66a1d,"It's fine when I do it to terrorize communities, but you can't do it to call out economic inequality"
+-0.17,0.17,4,5,4,6,3,140,59,1,0,1,1,2,0,adaf28c097497ef1cc48e31f00b3f00f,The Fed just casually dropped $18.5 billion into the banking system this week. Just a little overnig
+0.14,0.14,8,5,4,6,3,140,72,1,1,1,2,3,1,d63a2dc2ff5ed6f37bcb84bd7b0deda6,The billionaire owner of a competing bridge met with Howard Lutnick hours before President Trump thr
+0.1,0.1,3,5,4,6,3,87,67,0,0,1,1,2,0,49edc3382a01c93139659c33ebaf457f,"Largest payroll revision since 2009, are economic indicators telling a different story?"
+0.0,0.0,7,3,4,6,3,109,118,1,0,0,2,3,1,62fad6bea1a0cef401f63f70f31b8241,The Geopolitics of Southeast Asia’s Cyber-scamming Crisis - The International Institute for Strategi
+0.13,0.13,0,3,4,6,3,98,107,0,1,0,1,1,0,af847e87c22537cb1160758b995f354e,Christine Lagarde’s move to run World Economic Forum not a ‘foregone conclusion’ - Financial Times
+0.0,0.0,0,3,2,6,3,133,142,1,1,0,1,1,0,20c6c84a2b7f133b0b55f1d204212ea7,Trump's trade deficit was third highest on record even despite his tariffs upending the global econo
+0.0,0.0,0,3,4,6,3,78,87,0,0,0,1,1,0,96b1c63e1a4ff4a77e12cf16e916a3bb,Why the IMF’s newest report finds that the yuan is undervalued - The Economist
+0.0,0.0,0,3,3,6,3,99,108,0,0,0,1,1,0,7a0fe033ecd20675d9626b99a2232e28,"German economy remains stuck and set for just 1% growth in 2026, chamber of commerce says - Reuters"
+0.25,0.25,0,3,4,6,3,83,276,0,1,0,1,1,0,81e377bd85ada7889253e5c2a9b367ea,Juiz manda leiloar apartamento de luxo onde Collor vive e cumpre pena por corrupção
+0.25,0.25,0,3,0,6,3,66,292,0,1,0,1,1,0,c72be8737b0a3383bd50ad3124d1735d,Depoimento de Vorcaro vira disputa entre CPMI e Comissão do Senado
+0.25,0.25,0,2,4,6,3,79,260,0,0,0,1,1,0,11bb21862e24f63bbf03ec7a7f918f56,Receita demite de chefia auditor suspeito de acessar dados de parente de Gilmar
+0.25,0.25,5,2,4,6,3,76,242,1,0,0,1,2,0,1451d5fa8e1f3269bd6b61da6636c6e9,Co-CEO da Netflix diz que acordo com Warner colocará mais filmes nos cinemas
+0.25,0.25,0,3,4,6,3,85,311,0,0,0,1,1,0,7523df6c283417458c03ea3dcc7d5db0,Caso Master: corregedor manda cinco tribunais explicarem depósitos bilionários no BRB
+0.0,0.0,8,3,2,6,3,105,400,0,1,0,2,3,1,a8273c6b997a25edb68f0683812e0272,Policiais e manifestantes entram em confronto na Argentina enquanto Congresso discute reforma trabal
+0.0,0.0,4,3,2,6,3,111,400,0,1,0,2,2,0,7900d772984e25ad41fb734ab6ffbe94,"Vinho brasileiro deve ser protegido da concorrência em acordo UE-Mercosul por meio de salvaguardas, "
+0.5,0.5,6,3,1,6,3,104,399,0,1,0,2,2,1,5c748b36192b4155c621a31d57f23804,"Milei canta 'Burning love' e ri com Orban e Infantino nos EUA, em meio a greve geral na Argentina; V"
+0.0,0.0,5,3,2,6,3,103,399,0,1,0,1,2,0,981d884fbb3569316cb253d691f536b2,"Reforma tributária: estudos apontam que carga sobre vinhos e espumantes deve cair para 33%, diz Alck"
+0.0,0.0,0,3,2,6,3,85,400,0,1,0,2,1,0,8a1e6e255a91f751e7d75e2c58638ae7,"Greve geral na Argentina paralisa fábricas da Stellantis, VW, Ford, Toyota e Mercedes"
+0.0,0.0,0,3,4,6,3,65,0,0,0,0,1,1,0,f5dcadc9c391b8fdf06cdc3fd369e0b2,Resultados e receitas da Middlesex Water abaixo do esperado no Q4
+0.0,0.0,0,3,4,6,3,86,0,0,0,0,1,1,0,3f74a024e5ba72a121061e410bea0d57,Resultados da Fidelity Financial abaixo do esperado e receitas acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,60,0,0,0,0,1,1,0,1855a3b0bfa0aef5a28d52c53a7b10a5,Resultados e receitas da ICU Medical acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,69,0,0,0,0,1,1,0,bff24451eb993b69cc5879af96014fd0,Resultados e receitas da indie Semiconductor abaixo do esperado no Q4
+0.0,0.0,0,3,4,6,3,75,0,0,0,0,1,1,0,d7eb7b5ed4cc20cfbcffe0cb85da05a4,Resultados da Casella acima do esperado e receitas abaixo do esperado no Q4
+0.0,0.0,0,4,4,6,3,69,0,0,0,0,1,1,0,2611eb8832cba38e87363edb3180af92,Exportação de soja do Brasil em fevereiro mantém ritmo abaixo em 2025
+0.0,0.0,0,3,2,6,3,72,163,0,1,0,1,1,0,a57190aec983d3b94d158e36208f3252,Carros elétricos: lei que permite carregadores em condomínios é aprovada
+0.0,0.0,0,2,4,6,3,70,194,0,0,0,1,1,0,986425e5b8e33d7aff915d8ea95a642f,Receita dispensa da chefia servidor alvo da PF por vazamentos de dados
+0.2,0.2,0,3,2,6,3,73,81,0,1,0,1,1,0,485041efb713bc5dc261d9dd7981dadc,Trump lamenta prisão do ex-príncipe Andrew no Reino Unido: “Muito triste”
+0.0,0.0,0,3,4,6,3,74,58,0,0,0,1,1,0,97f528ba980589053aadeb2de9a7d2d4,"Em meio à acusação de racismo contra Prestianni, Benfica denuncia Valverde"
+0.0,0.0,4,3,4,6,3,87,87,1,0,0,1,2,0,1b61788260644eb6b140a8ff8cc31ce7,Federal Reserve Board announces approval of application by Fulton Financial Corporation
+0.07,0.07,4,3,3,6,3,140,211,1,1,0,1,2,0,e58ee149133345974668776362e2bae7,"Federal Reserve Board announces it will hold a hybrid public outreach meeting on Thursday, March 26,"
+0.0,0.0,4,3,4,6,3,65,65,1,0,0,1,2,0,cea89db1b1a6a5fac480ac219ba5e317,"Minutes of the Federal Open Market Committee, January 27–28, 2026"
+0.0,0.0,0,3,4,6,3,73,103,0,0,0,1,1,0,60803bdfbb3b5ff739e158634403fcec,Explosão de caminhão na capital do Chile deixa quatro mortos e 17 feridos
+0.0,0.0,4,3,4,6,3,50,125,1,1,0,1,2,0,eecf6ade568b7f45a9da6315d2362bd4,Hélio Lopes coloca nome na disputa por vaga no TCU
+0.0,0.0,0,3,4,6,3,66,109,0,1,0,1,1,0,4ad7cb286e6ed77cdfd023de4489be1d,JPMorgan Chase contesta processo de US$ 5 bilhões movido por Trump
+0.48,0.48,7,3,4,6,3,100,187,1,0,0,2,3,1,d880f318415b8ee0104fc632c4e1e821,United Airlines’ best loyalty perks will soon be reserved for its cardholders. Is the card worth it?
+-0.11,0.11,4,3,0,6,3,66,59,1,0,0,1,2,0,eb16615ea0788e7312d1ae0f0035d5f2,Why your portfolio may face one last rate-hike surprise before May
+0.25,0.25,3,2,4,6,3,83,207,0,0,0,1,2,0,d74384cd149ae818a96975e19652d811,FII TRBL11 aluga a Shopee galpão que esteve em disputa com Correios; cotas disparam
+0.0,0.0,0,3,2,6,3,73,196,0,1,0,1,1,0,00980f49785be4673de0af77c4abd892,Farmacêuticas reagem a projetos no Congresso que mudam regras de patentes
+0.21,0.21,0,1,4,6,3,116,125,0,0,0,1,1,0,e7b8a2c5b31b312cee335bc95504868b,Russia Orders Google to Pay $1.2 Quintillion—A Fine One Million Times Bigger Than the World Economy 
+-0.08,0.08,0,5,4,6,3,140,58,0,1,1,1,1,0,647bd5e7949608d54410eaed4b903027,"In an extraordinary and illegal move, Trump says he's transferring 10 billion dollars from the US go"
+-0.22,0.22,0,1,4,6,3,31,336,1,0,0,1,1,0,c8391e73da79937bd2804030e1f6b6a7,The Pitt has a sharp take on AI
+0.0,0.0,0,3,4,6,3,69,57,0,1,0,1,1,0,d7abc245a83267a8e5923ca44af073fd,João Fonseca x Ignacio Buse: acompanhe ao vivo as oitavas do Rio Open
+0.2,0.2,0,3,4,6,3,72,117,0,0,0,1,1,0,1e03bd5f2abc020049b51b9ed7839ed4,BioNTech processa Moderna por violação de patente sobre vacinas da Covid
+0.0,0.0,3,3,0,6,3,68,102,1,0,0,1,2,0,f3b49fb3d6f0afe420b78d32ede0b425,FMI diz que a situação econômica e humanitária da Venezuela é frágil
+0.0,0.0,0,3,4,6,3,65,73,0,0,0,1,1,0,afb361a0fb28582d0d0e8c359e168b7e,Ana Castela mostra novo visual e encanta fãs; veja antes e depois
+0.0,0.0,0,3,4,6,3,66,71,0,0,0,1,1,0,3ad303a52e06114aef5a1ec1a6d3f70f,Marina Ruy Barbosa rebate críticas à sua beleza: “Povo amarguinho”
+-0.09,0.09,5,2,4,6,3,75,195,1,0,0,1,2,0,007ba16f77ddf8dd9de6959a7b1c6e0e,"Wayfair’s stock sinks, as investors worry expansion plans will hurt profits"
+0.33,0.33,2,1,4,6,3,72,330,0,0,0,1,1,0,4fce3449cecc37fcf550849bedcbae70,The executive that helped build Meta’s ad machine is trying to expose it
+0.0,0.0,0,3,4,6,3,74,145,0,1,0,1,1,0,b8a0afed3ae3df635a32bebedc71b8ac,Wilson Witzel se diz pré-candidato no RJ e cita convite do DC para eleição
+0.0,0.0,0,3,4,6,3,63,72,0,0,0,1,1,0,e2df0312ef46dd9da008c16b1dc6c7ae,Sandy reage a fotos de Lucas Lima com nova namorada no Carnaval
+0.0,0.0,0,3,4,6,3,74,125,0,0,0,1,1,0,89a10fbb32ac8aa55babaf93767bf9fe,Homem acusado de arrastar mulher por 400 metros se entrega à polícia em MG
+0.0,0.0,0,3,4,6,3,73,83,0,0,0,1,1,0,c2537fd941d7a6f7256e7d33587e2e68,Alpinista é condenado pela morte da namorada no pico mais alto da Áustria
+0.1,0.1,5,0,4,6,3,60,131,0,0,0,1,2,0,570b76b757323cfd830a905112940ae2,"Bitcoin falls to nearly $64,000 as 2026 crypto woes continue"
+0.5,0.5,2,2,4,6,3,89,68,0,0,0,1,1,0,8ccf70407a8433d08664a02329f714be,"Stocks making the biggest moves premarket: Arcellx, Novo Nordisk, Domino's Pizza and more"
+-0.5,0.5,3,2,4,6,3,80,119,0,0,0,1,2,0,5e14aaae5dd80d912299b53f83d2e185,Here are 3 forces that drove the stock market during Wall Street’s comeback week
+0.0,0.0,0,2,4,6,3,85,61,0,0,0,1,1,0,20630e15ea50b2491bcbf08c7deddf62,Market volatility trap? Why this income-first strategy may 'leave a lot on the table'
+0.03,0.03,5,1,4,6,3,102,166,1,0,0,1,2,0,0457ae4b2cd6b08c4c86fe05aa6346fe,"Illiquid loans, investor demands: Blue Owl's software lending triggers another quake in private cred"
+0.0,0.0,0,3,2,6,3,75,63,0,1,0,1,1,0,3f71bbb13896b3f26ff204034a518dda,The government is trying to rein in Medicare Advantage costs. Will it work?
+0.2,0.2,0,2,4,6,3,94,131,1,1,0,1,1,0,7caf53896ab0103531fe82419d86263d,Trump threatens ‘obnoxious’ use of tariffs as markets buckle in wake of Supreme Court decision
+-0.21,0.21,0,2,4,6,3,77,233,1,1,0,1,1,0,c098fb464df77cab2293bce38c183407,Dow has its worst day in a month as Trump looks to impose replacement tariffs
+0.1,0.1,0,2,4,6,3,110,194,0,0,0,1,1,0,10346b440364495f7e24de7a60f5c9ec,Novo Nordisk’s stock closes at 4-year low after its next-gen weight-loss drug lost to Lilly’s in Pha
+0.0,0.0,0,3,4,6,3,78,169,0,0,0,1,1,0,ce808f00e9b9b11fa370bc9ffb53180d,ProShares GENIUS ETF's $17B debut boosts case for tokenized money market funds
+0.09,0.09,5,2,4,6,3,58,149,1,0,0,1,2,0,3b04cc1f527e8246b928f4d6dabd4de5,XRP price chart and whale activity warn of a drop below $1
+0.0,0.0,6,0,4,6,3,65,184,1,0,0,2,2,1,c06dc8a087b2b785c29e1ec2fd19a80f,OCC grants Crypto.com conditional approval for bank trust charter
+0.0,0.0,7,0,4,6,3,67,143,1,0,0,2,3,1,e5713d733daa0d80be870e9a4c20f448,US lender Rate unveils mortgage program recognizing crypto holdings
+0.15,0.15,3,0,4,6,3,66,134,1,0,0,1,2,0,331c05bf81ebb55c4b71098e7b10aef0,Bitcoin traders diverge over BTC price strength with $60K in sight
+-0.1,0.1,2,0,4,6,3,60,129,0,0,0,1,1,0,43e1366288799ad04ab16498fa346ff1,Ethereum Founder Vitalik Buterin Continues ETH Selling Spree
+0.15,0.15,2,0,4,6,3,71,122,0,0,0,1,1,0,21f202e4c6c928a1b02fd2dffbba1252,Crypto.com Secures Conditional Approval for National Trust Bank Charter
+0.0,0.0,0,3,4,6,3,82,127,0,1,0,1,1,0,2b8d8a214a17df525de50e15e6005579,Trump-Backed Stablecoin Briefly Slips as World Liberty Claims 'Coordinated Attack'
+0.03,0.03,3,0,4,6,3,66,113,0,0,0,1,2,0,f57e33c90e71e631ad8f3b9bed8fb19c,Strategy’s 100th Bitcoin Purchase Ever Is Its Smallest Yet in 2026
+-0.1,0.1,2,0,4,6,3,54,129,0,0,0,1,1,0,8302533f72cb4b59c814ac86dd6c15b9,Crypto Funds Shed $4B Across Five-Week Negative Streak
+0.15,0.15,0,1,4,6,3,89,143,0,0,0,1,1,0,32b05bcf13cf498681c503380fca9038,Particle’s AI news app listens to podcasts for interesting clips so you you don’t have to
+-0.12,0.12,0,2,4,6,3,77,163,0,0,0,1,1,0,7f5769f4455620d8a923a53adebfdc2d,Spotify rolls out AI-powered Prompted Playlists to the U.K. and other markets
+-0.01,0.01,0,2,4,6,3,44,227,0,0,0,1,1,0,10922a9c0b0255037cf06802967a79e6,Finnish quantum unicorn IQM set to go public
+-0.06,0.06,0,2,4,6,3,87,211,0,1,0,1,1,0,86913596c3d8d78936d72f82c6e494d1,"VPN flaws allowed Chinese hackers to compromise dozens of Ivanti customers, says report"
+0.0,0.0,0,3,4,6,3,70,142,1,0,0,1,1,0,76da7b940b1bd0e77b17c829e91d540a,5 days left to lock in the lowest TechCrunch Disrupt 2026 ticket rates
+0.14,0.14,0,1,4,6,3,80,340,0,0,0,1,1,0,e28f2d9893b5066fc5b3221ebbbc215e,The creators of Dark Sky have a new weather app that shares multiple predictions
+0.04,0.04,0,3,4,6,3,74,352,0,0,0,1,1,0,019072b88506ea1f4d61a44cfb8905ae,Discord distances itself from Persona age verification after user backlash
+-0.04,0.04,0,3,4,6,3,61,332,0,0,0,1,1,0,f3d241e1b62f80b1bc3bdf7ea45996ab,Kohler&#8217;s new shower reuses dirty water to get you clean
+0.26,0.26,0,1,4,6,3,74,341,0,0,0,1,1,0,79af32caca317851807d3d65f7a006f8,"If Big Tech cared about fighting AI slop, it wouldn’t be drowning us in it"
+0.14,0.14,0,3,4,6,3,74,365,0,0,0,1,1,0,496836603020abf26cac98f713851f4c,"Yep, it’s fast: Donut Lab’s solid-state battery gets its first test result"
+0.24,0.24,5,5,4,6,3,67,348,1,1,1,1,2,0,f8faac115386279f1f0ea389e87eb215,"Bitcoin falls below $65,000 as Trump tariff moves raise uncertainty"
+0.0,0.0,0,5,4,6,3,80,67,0,0,1,1,1,0,38bd90b7be5e56ab5eed2d1e08deb864,"AMA: My name is Jensen Huang and I'm here to save the S&amp;P, ask me anything.."
+-0.3,0.3,3,5,4,6,3,124,70,0,0,1,1,2,0,3212d0a41da19be8b8fc624e3e3145d1,"AWS suffered ‘at least two outages’ caused by AI tools, and now I’m convinced we’re living inside a "
+0.3,0.3,5,5,4,6,3,49,63,0,0,1,1,2,0,d445e464397675e8bf86dd1e8daa3cb5,The moment I buy a thousand dollars worth of puts
+-0.3,0.3,6,5,4,6,3,81,87,0,0,1,2,2,1,318274ad92581f1a355f21d6da25ada9,Novo Nordisk sinks 15% after weight loss drug fails to match Eli Lilly's in trial
+0.03,0.03,5,5,4,6,3,28,400,1,0,1,1,2,0,aa302d620a355371c0efd149c13801d0,"""Tesla is not a car company"""
+0.06,0.06,0,5,4,6,3,75,400,0,0,1,1,1,0,8fa41d1c99d832054d8ca844edf55fa8,"Is it just me, or is r/investing is being flooded by LLM-generated content?"
+0.2,0.2,0,5,4,6,3,79,400,0,0,1,1,1,0,b9c9274136738ff68483a9e589c3f4ea,Why did they let me buy AVUVX without having the minimum 5 million requirement?
+0.06,0.06,7,5,4,6,3,50,400,1,0,1,2,3,1,39f0d72a114c6cf63f11664d93d6327d,Software Meltdown overreaction? Cybersecurity now?
+0.0,0.0,5,5,4,6,3,52,400,0,0,1,1,2,0,237a8d08301b76828646bda5f522f31b,Global Copper Inventories Surge to Multi year highs.
+0.14,0.14,0,5,4,6,3,22,400,0,1,1,1,1,0,91ac788a123a77ad61b06fa0addd01fd,Trump's Deadman switch
+-0.09,0.09,5,5,4,6,3,87,400,1,1,1,1,2,0,4a33e6a691a9d2b60d5fa631575935b4,Trump demands Netflix fire Susan Rice or pay the consequences as DOJ probes Warner deal
+0.05,0.05,0,5,4,6,3,81,400,0,0,1,1,1,0,b65a9d9c44a2b614c48905e7f0d9fe84,Novo Nordisk sinks 10% after weight loss drug fails to match Eli Lilly’s in trial
+0.37,0.37,2,5,4,6,3,32,400,0,0,1,1,1,0,094035946f9acce3031a4434d2e31674,PayPal Halted on Takeover Rumors
+0.08,0.08,5,5,4,6,3,23,399,1,0,1,1,2,0,e8a89b06984fe48fa70efab84923d03b,Future of Drone stocks?
+0.0,0.0,0,5,4,6,3,79,71,1,1,1,1,1,0,92047c8a386364d6cbe621e8b4ecb431,Dow slides 800 points as sell-off ramps up following Trump's global tariff hike
+0.0,0.0,5,5,4,6,3,84,65,1,0,1,1,2,0,426745d0bf2bba13f78b9ba5fbd57aee,DOJ probes Netflix for potential anticompetitive leverage in $72B Warner Bros merger
+0.19,0.19,8,5,4,6,3,64,400,1,1,1,2,3,1,abc7e5585ea3b4b3845716b6050850f8,Dow Plunges 771 Points as Trump Announces 15% Global Tariff Hike
+-0.0,0.0,0,5,4,6,3,19,319,0,0,1,1,1,0,7adf111d8ccaa9b8ef1a65140fe8ec7f,Is NYSE open today?
+-0.2,0.2,0,5,4,6,3,39,59,0,0,1,1,1,0,b2172d14be9359c975e75c88d062c866,How AI agents could destroy the economy
+0.0,0.0,0,5,4,6,3,41,58,0,0,1,1,1,0,93316fe4259f4002d5854be8a26da0e3,How will OpenAI compete? — Benedict Evans
+0.0,0.0,0,5,4,6,3,32,58,0,0,1,1,1,0,81ddf7c54196ac74c82a3d535311843e,Elliott's Perspectives on Toyota
+0.6,0.6,5,5,4,6,3,30,71,0,0,1,1,2,0,66df946a853152b02a4dccd94e311926,When do I get to own anything?
+0.03,0.03,0,5,4,6,3,128,62,0,1,1,1,1,0,6ef50ec9b9babbbf292c622f6eb0db57,"Job growth in the US fell a staggering 88% in 2025, compared to the previous year. Trump’s economic "
+0.0,0.0,0,5,4,6,3,140,72,0,0,1,1,1,0,1327a7268ea37ae9a21b268323780710,The amount Elon Musk has donated over his lifetime is equivalent to the median American donating $75
+-0.1,0.1,2,5,4,6,3,119,399,0,1,1,2,1,0,83173f07131a627bc89fb4888127d65d,"Trump announces aliens are real the exact day epstein files drop. a meme coin pumps 5000%. I,m done "
+-0.3,0.3,3,5,4,6,3,126,61,0,1,1,1,2,0,22e9963aae5fe142c3453208dcbc99fe,"Trump pulled the plug on Biden’s funds for Appalachia, and the same MAGA towns he gutted are freakin"
+0.0,0.0,3,3,4,6,3,72,81,0,0,0,1,2,0,c98d6ff4c047f6bdf14d081f9e0472e0,There’s a ‘Doom Loop’ at the Heart of the Global Economy - Bloomberg.com
+-0.0,0.0,0,3,1,6,3,89,278,1,1,0,1,1,0,7ffe0f30edc1efd323c62dd7ac314995,Analysis-US Supreme Court ruling offers little respite for global economy - Yahoo Finance
+0.0,0.0,0,3,4,6,3,42,51,0,1,0,1,1,0,267c14075f3c56dbb459fa045fc1dcb4,Why it's still a Trump trade world - Axios
+0.07,0.07,0,2,4,6,3,83,92,1,1,0,1,1,0,8fb587f3ec2c6c4fce68d0aaa3fee6c0,‘Murky Waters’ for Global Businesses After Trump’s Tariff Loss - The New York Times
+-0.08,0.08,0,3,4,6,3,92,101,1,1,0,1,1,0,5f02d66fe4ed8b6caf4f7e27f1051ec1,Charting the global economy: Trump’s tariffs struck down by Supreme Court - The Boston Globe
+0.25,0.25,0,3,4,6,3,63,212,0,0,0,1,1,0,3892779380fc7b678cad1766d2773b08,"Justiça libera R$ 1,3 bi para INSS pagar revisões de benefícios"
+0.25,0.25,0,3,4,6,3,69,179,0,0,0,2,1,0,73656ec95bb2fdb2a994f98916ede462,CNU: prazo para aprovados manifestarem interesse em vaga termina hoje
+0.25,0.25,5,2,4,6,3,84,266,1,0,0,1,2,0,956d78c3fe1a1db233c32f639a837b9e,Bolsas da Europa fecham sem coesão em meio a reações a tarifas dos EUA e geopolítica
+0.25,0.25,0,3,4,6,3,68,225,0,0,0,1,1,0,654c30744088a33c2e418265fe2c3aba,InfoMoney libera Planner Financeiro 2026 gratuito por tempo limitado
+0.25,0.25,0,3,4,6,3,81,210,0,1,0,1,1,0,7b3da4442a3800ba40090c15a77012e2,Rush anuncia cinco shows no Brasil em 2027; ingressos serão vendidos nesta semana
+0.0,0.0,2,3,4,6,3,88,400,0,0,0,1,1,0,cd401ac3f8c1837a1b0305688ff522de,Volvo fará um recall de 40 mil SUVs elétricos EX30 devido a risco de incêndio na bateria
+0.0,0.0,6,3,1,6,3,102,400,1,1,0,2,2,1,9e8f1b3e1629317ba09bce191bd49386,Parlamentares da UE adiam votação sobre acordo comercial com os EUA após novo tarifaço global de Tru
+0.0,0.0,6,3,4,6,3,108,400,1,1,0,2,2,1,e473e11f02c193434d22d6724831d520,"Redução da jornada para 40h semanais pode aumentar custos das empresas em até R$ 267 bilhões ao ano,"
+0.0,0.0,2,3,2,6,3,105,400,1,1,0,1,1,0,d6c11fa76c24fff89ff8c5d8364e22a6,"Países que quiserem 'brincar' com a decisão da Suprema Corte enfrentarão tarifas mais altas, ameaça "
+0.0,0.0,7,2,4,6,3,82,400,0,1,0,2,3,1,72458571ea3f36b56efa3be3d1b75e46,"Minha Casa, Minha Vida faz lançamentos e vendas de imóveis baterem recorde em 2025"
+0.0,0.0,0,3,4,6,3,87,0,0,0,0,1,1,0,abeda47b4908da9c747c2ed43da8cbd0,Estudo liga consumo de álcool por influenciadores a maior vontade de beber entre jovens
+0.0,0.0,0,3,4,6,3,72,0,0,0,0,1,1,0,70688ceb252764b4af4e9d26358bd456,Arranha-céus vazios de Nova Iorque onde os ultrarricos escondem fortunas
+0.0,0.0,0,3,4,6,3,79,0,0,0,0,1,1,0,42d6fa41cd860fe2cca382e443e6e872,Em que consiste o ’desafio do paracetamol’ que preocupa especialistas de saúde?
+0.0,0.0,0,3,4,6,3,75,0,0,0,0,1,1,0,806f1c0f86b9d4e5682f1b9ffec04051,Lamborghini trava planos de elétricos por fraca procura no segmento de luxo
+0.0,0.0,0,3,4,6,3,81,0,0,0,0,1,1,0,9a51efdfa9f6d32e634cc9c314f26df2,Resultados da Dream Finders abaixo do esperado e receitas acima do esperado no Q4
+-0.49,0.49,5,3,1,6,3,53,214,0,0,0,1,2,0,4489fb5551315b05182db41a47c98139,Irmãos de Flávio tensionam base com ataques a aliados
+0.0,0.0,0,3,4,6,3,70,97,0,0,0,1,1,0,bd091ddf84eee04a9c303dd7ae41d8af,"Quem é Álvaro Jacomossi, ex-modelo preso por tráfico em festas de luxo"
+0.0,0.0,2,3,1,6,3,71,164,1,1,0,1,1,0,02b2a1f24cc46ff4d58208b231c9ced6,Lula vai propor “SUS do Transporte” com tarifa zero em plano de governo
+0.0,0.0,0,3,4,6,3,64,105,0,0,0,1,1,0,d3626e8cc5574f57dc291e10995af3a5,Cintia Dicker se declara para Pedro Scooby: “Meu maior apoiador”
+0.0,0.0,0,3,1,6,3,71,201,0,0,0,1,1,0,963062264fd093495c2e8a72b2495ed3,ASML revela avanço em fonte de luz EUV que pode produzir 50% mais chips
+0.25,0.25,0,2,4,6,3,100,62,0,0,0,1,1,0,dc4b2ce7ae99c27e8f155de49485b559,"Stocks making the biggest moves midday: KKR, Blackstone, CrowdStrike, International Paper &amp; more"
+0.17,0.17,3,0,4,6,3,84,136,0,0,0,1,2,0,a6d64ad800426e461977efb6d799692a,Strategy shows no fear — it keeps adding to a losing bitcoin position as prices drop
+0.15,0.15,3,0,4,6,3,73,139,1,1,0,1,2,0,beeec3e4a4585f1697a16a04c40f35d4,"Price predictions 2/23: SPX, DXY, BTC, ETH, XRP, BNB, SOL, DOGE, BCH, ADA"
+0.0,0.0,2,0,4,6,3,68,160,0,0,0,1,1,0,28bc0625dab3e6716dc4a019aafdc4e3,"Stablecore's Jack Henry integration opens stablecoins to 1,600 banks"
+0.0,0.0,3,0,4,6,3,84,146,0,0,0,1,2,0,78d601029e4f52609c529dd2fb42955e,Satlantis launches Bitcoin-native ticketing platform with built-in Lightning wallets
+-0.07,0.07,2,0,4,6,3,67,152,0,1,0,1,1,0,b5e32251dd9938a65ec9e982ad9b6804,Trump crypto company says ‘coordinated attack‘ on stablecoin failed
+0.5,0.5,2,1,4,6,3,55,124,0,0,0,1,1,0,e6cfdfaf7713ab354e9b0da32a9d9fb4,OpenAI calls in the consultants for its enterprise push
+0.33,0.33,2,3,4,6,3,49,149,0,0,0,1,1,0,c6f5f8475c6e4b126950bfbe5d52fa24,Guide Labs debuts a new kind of interpretable LLM
+0.09,0.09,0,3,4,6,3,71,336,0,0,0,1,1,0,434a9b407157b18dbf9955eba2236f8c,Apple’s newest AirTags are already on sale if you’re looking to upgrade
+0.05,0.05,0,5,4,6,3,140,61,0,0,1,1,1,0,8bd3917c15b892e463b98ac1af9a729b,Tesla U.S. Sales Fall for Fourth Straight Month in January: New registration estimates suggest the a
+0.0,0.0,0,3,1,6,3,77,86,1,0,0,1,1,0,7e815fea4b143d23b6e9bf13e7dd48d2,How the Supreme Court's tariff decision impacts the global economy - CBS News
+0.0,0.0,0,1,4,6,3,106,115,0,0,0,1,1,0,1579321528b1c4a65e037394812461ae,"'Ghost GDP': How the AI boom could upend middle-class workers, wallet and Wall Street - The Times of"
+0.25,0.25,0,3,1,6,3,73,263,0,1,0,1,1,0,3aed0303d61b93da3c091fe582754b46,Governo diz que novos atos contra a Cargill no Pará “não serão tolerados”
+0.25,0.25,3,0,4,6,3,80,207,0,0,0,1,2,0,83dc321eef33de5a2e3932f861ac87ad,Engie avalia minerar bitcoin em maior usina solar do grupo após perdas no Brasil
+-0.08,0.08,0,3,2,6,3,78,301,0,1,0,1,1,0,d96028ffcae9cdb09d5c2525a99a26a5,Ex-embaixador britânico nos EUA é preso após revelações relacionadas a Epstein
+-0.17,0.17,0,1,4,6,3,85,293,0,0,0,1,1,0,3b34bc025191d475068532ed5d1fb814,OpenAI aprofunda parcerias com gigantes da consultoria para avançar em IA empresarial
+0.25,0.25,0,3,2,6,3,83,230,0,1,0,1,1,0,c3e2310a37ca4076525b160cb9e4d848,"Após proibição de uso de jato, Vorcaro sugere depor por vídeo em Comissão do Senado"
+0.25,0.25,0,3,4,6,3,68,0,0,0,0,1,1,0,e332f8c12e9ad625a97756959a470dae,Resultados e receitas da Lincoln Educational acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,72,127,0,0,0,1,1,0,63b5642b6c11a8e1a83587af526d91e9,O que é a síndrome de Tourette? Entenda a condição de convidado do BAFTA
+0.0,0.0,0,2,4,6,3,64,157,1,0,0,1,1,0,c4d83a72ec950d51718bb746e232953f,Banco Master: Ibaneis Rocha é alvo de novo pedido de impeachment
+0.0,0.0,0,2,4,6,3,66,214,0,0,0,1,1,0,39abf6d03621acf16374e594955f7d75,MPF investiga colisão entre navio e balsas no Porto de Santos (SP)
+0.0,0.0,0,2,4,6,3,61,145,0,0,0,1,1,0,4d6a010c6f16b6c4e36d4ce16d1597b5,Quem eram as vítimas do acidente com lancha no interior de SP
+0.25,0.25,0,3,2,6,3,83,178,0,1,0,1,1,0,0789c96dff37882433ca56f5f5cfe737,"Leilão da nova sede do governo no centro de SP recebeu duas propostas, diz Tarcísio"
+0.0,0.0,0,3,4,6,3,64,100,0,0,0,1,1,0,47c0d7f4654a8b95915b76ae4a34b6cb,Kevin Durant não descarta disputar Olimpíada de Los Angeles 2028
+0.0,0.0,0,3,4,6,3,75,88,1,0,0,1,1,0,bf4064a56111fc075ca7275a80943bb3,Lenda do esqui diz que médico a salvou de amputação após acidente nos Jogos
+0.25,0.25,4,4,4,6,3,74,191,1,1,0,2,2,0,4e7b35b576b8fefebdebde4210aff11b,"Ibovespa fecha em queda, com exterior e bancos, mas Vale e Petrobras sobem"
+0.0,0.0,0,3,1,6,3,70,79,1,0,0,1,1,0,b1f48091eebda477fc28fda4a4bbfc25,"World economy is in ‘a sort of tariff doom loop,’ says economist - CNN"
+0.0,0.0,0,3,4,6,3,68,126,0,0,0,1,1,0,04a2b0edca413d2aca8f0b5a44837ccf,Bolsas da Europa fecham mistas em meio à questões tarifárias dos EUA
+0.2,0.2,0,3,4,6,3,51,133,0,0,0,1,1,0,a63868c9573d71ff07e0255b6da2ea30,Americans are destroying Flock surveillance cameras
+0.25,0.25,5,1,4,6,3,76,235,1,0,0,1,2,0,2b13fda1ec22ac66e9297a8ce49cfe76,Ações de software e cartões despencam em NY após estudo apontar riscos da IA
+0.25,0.25,2,3,4,6,3,84,309,0,0,0,1,1,0,cbf42af5e5a4a6926b672f941bfb9351,Filho do cineasta Rob Reiner se declara inocente das acusações de homicídio dos pais
+0.25,0.25,0,3,2,6,3,79,147,0,1,0,1,1,0,411499dd51f50063bb095224c5260439,Câmara da Itália aprova extensão de prazo para filhos menores pedirem cidadania
+0.25,0.25,0,3,2,6,3,84,193,0,1,0,1,1,0,26232afb3ba6f0a3080abc60f22e63dd,Moraes prorroga prazo para governo do Rio enviar imagens de megaoperação contra o CV
+0.1,0.1,2,1,4,6,3,75,154,0,0,0,1,1,0,1b57201f2a48aeca98f730a657133125,"Human Existence Is Just as Wasteful as AI Data Centers, Sam Altman Suggests"
+0.25,0.25,0,3,3,6,3,81,246,0,0,0,1,1,0,31f9b122989c316eb226c39c072e8eb1,Citi negocia vendas de participação no Banamex para Blackstone e CEOs da Televisa
+0.0,0.0,0,4,4,6,3,74,141,0,0,0,1,1,0,3af6964809915c956a018f9cda030e6e,Caminhões enfrentam fila de 25 km para descarregar soja em Miritituba (PA)
+0.0,0.0,0,3,4,6,3,55,124,0,0,0,1,1,0,0c4a09f74b7777ee9c0ac88cb3dd3efe,Met Gala 2026 divulga dress code para o tapete vermelho
+0.0,0.0,0,3,4,6,3,65,151,0,0,0,1,1,0,718b3d1809cfaf188bfe71c386551a92,Vídeo: Drone mostra incêndios no México após morte de “El Mencho”
+0.0,0.0,6,3,4,6,3,71,72,1,0,0,2,2,1,883240c0899fa9b594e9ee6d35e58adf,Campanha da Federação Paulista incentiva autoexclusão nas bets; entenda
+0.08,0.08,0,0,4,6,3,50,168,0,0,0,1,1,0,ef60c89de666251a36a1973cf2fdfd52,JP Morgan lança BDR de ETF global com gestão ativa
+-0.12,0.12,0,3,4,6,3,116,56,0,0,0,1,1,0,8e32623c2a5c5a266d0b481ae95e1715,‘I feel the clock ticking’: My wife and I are in our 60s — and employ 48 people in a small town. Can
+0.0,0.0,5,0,4,6,3,66,123,0,1,0,1,2,0,d2d3519896d6bde2de21a87b92ce006d,"OpenClaw Creator Bans Bitcoin, Crypto Chatter After Joining OpenAI"
+-0.23,0.23,0,3,1,6,3,83,67,1,0,0,1,1,0,49374bc44500faee3f4c0a251330df8c,Tariff ruling sparks ‘refund chaos’ that small businesses and families can’t afford
+0.11,0.11,7,5,4,6,3,96,399,0,0,1,2,3,1,1ff3a360a262669b8eaf18bd1dcce920,Wyckoff Cycle Rule: Why Google and Nvidia are the High-Conviction Leaders of the Mag 7 Right Now
+0.0,0.0,0,5,4,6,3,47,400,0,0,1,1,1,0,64f397e5da414bdfa4667cd3e6b5d748,"r/Stocks Daily Discussion Monday - Feb 23, 2026"
+-0.12,0.12,0,1,4,6,3,66,139,0,0,0,1,1,0,7f5ced932e48f8c65055e8d21e9d9315,Google’s Cloud AI leads on the three frontiers of model capability
+0.12,0.12,8,4,4,6,3,85,285,1,0,0,2,3,1,499913217c7ca8e3b26e19a7d73428d4,"Ouro fecha em alta de quase 3%, com tarifas, dólar enfraquecido e riscos geopolíticos"
+0.0,0.0,0,3,4,6,3,74,131,0,0,0,1,1,0,2e2e783846d41c15809e7c4797d824fe,Um dos maiores mistérios de Saturno é revelado: como surgiram Titã e anéis
+0.15,0.15,2,3,4,6,3,72,150,0,0,0,1,1,0,104d3a0cb702408dc19eedec47e0b874,EUA dizem que partes do México voltaram ao normal após ataques de cartel
+0.0,0.0,0,3,2,6,3,65,102,0,0,0,1,1,0,1f8781dcf06bde5396a11797ae47bb7a,Deputado Paulo Azi deve ser o relator da PEC do fim da escala 6×1
+0.0,0.0,2,4,4,6,3,69,0,0,0,0,1,1,0,a0e547520a80111284f13f502f905c7b,Futuros do petróleo bruto em alta durante a sessão dos Estados Unidos
+-0.08,0.08,4,3,2,6,3,86,110,1,1,0,1,2,0,8129da832953f342f86c444ef4f72466,Congress must enact Trump’s tariffs now to steer the U.S. from a massive revenue cliff
+0.0,0.0,0,2,4,6,3,75,147,0,0,0,1,1,0,8677f76e7ef58176fc2e43dae9ae9e16,OpenAI avança no mercado empresarial e aprofunda parcerias com consultorias
+0.0,0.0,2,3,2,6,3,75,107,0,1,0,1,1,0,cdffefbbd5ba198af362b4c2dcf2fda6,Dana White abre o jogo sobre futuro de Alex Poatan no UFC e faz constatação
+0.0,0.0,0,3,1,6,3,69,207,0,1,0,1,1,0,ae6bb09cd1d0eafede72e6e5ef4a582f,Banco Mundial: Recuperação da Ucrânia custará mais de US$ 500 bilhões
+0.0,0.0,0,4,4,6,3,63,104,0,1,0,1,1,0,788f07c8a7011c5cf80f898a25027ce0,"AngloGold Ashanti produziu 3,1 milhões de onças de ouro em 2025"
+0.0,0.0,2,3,4,6,3,70,71,0,0,0,1,1,0,a92e144246b7417311be83e7eb7beb8d,AC/DC no Brasil: produtora anuncia lote extra de ingressos; saiba mais
+0.09,0.09,0,3,4,6,3,113,70,0,0,0,1,1,0,848a4270273a80da08ec9f1c7c400d40,The moving company held my boyfriend’s stuff hostage until he paid them an extra $300. Is this stand
+-0.3,0.3,3,3,4,6,3,101,139,0,0,0,1,2,0,36b6f961824fdc48b24a2a03c3ab6b41,‘I found out too late’: My stepmother cheated me out of $500K from my father’s estate. What can I do
+0.03,0.03,2,5,4,6,3,94,400,0,0,1,1,1,0,4a9c814349b98c6cc0af633cdb4718ac,"Do any serious investors actually share their moves in real time, or is that just not a thing?"
+0.12,0.12,4,3,0,6,3,81,269,1,1,0,1,2,0,7d1b4ab85907b0f42dc9aad358ee10c0,Líder democrata diz que partido vai barrar extensão de tarifas de Trump no Senado
+0.02,0.02,3,0,4,6,3,77,142,0,0,0,2,2,0,f4d173a0fc089391d087c599a39c34d0,Critical Bitcoin weekly trend breaks for first time in 2+ years: Is BTC done?
+0.0,0.0,0,4,4,6,3,59,0,0,0,0,1,1,0,b0cc234a343f78eca76101ddc6aca5df,Futuros do ouro em alta durante a sessão dos Estados Unidos
+0.0,0.0,2,3,4,6,3,72,128,0,0,0,1,1,0,9959dd0cd4abf61ca8d254ac6741baef,Atacante se recupera de graves lesões ligamentares e reforça o São Paulo
+0.0,0.0,0,3,4,6,3,73,110,0,0,0,1,1,0,cfab499d57aef8cc5a81de6a930ed08c,Filho de Michele e Rob Reiner se declara inocente do assassinato dos pais
+0.0,0.0,0,3,4,6,3,69,136,0,1,0,1,1,0,f957be9a0c63cf1983d384f8a96d15bf,Damares Alves propõe que CPMI ouça Vorcaro na Alesp ou no TRF-3 em SP
+0.0,0.0,0,3,4,6,3,73,100,0,0,0,1,1,0,d7a5224c5beda6b289e1cbd627d27142,Engenheiro erra pergunta sobre astronomia no “Domingão”; saiba a resposta
+0.0,0.0,0,3,2,6,3,71,205,0,1,0,1,1,0,ce56f5a96f1f3758493fb4e8b6633f55,Where Trump’s affordability ideas stand ahead of his State of the Union
+0.2,0.2,5,3,4,6,3,90,164,1,0,0,1,2,0,ab7962fd2a019a895a4bdcf758f58219,Paramount looks to put itself in the driver’s seat on Warner Bros. deal with increased bid
+-0.17,0.17,7,0,4,6,3,108,127,0,0,0,2,3,1,ac0d1b876c1c12a0f607003262106491,Bitcoin ETFs are hemorrhaging billions. Here’s what investors awaiting a crypto turnaround should wa
+0.05,0.05,0,3,4,6,3,72,152,0,0,0,1,1,0,a34368a015f4f57eba733a40210d09a3,Domino’s CEO says it’s ‘just not true’ that people are eating less pizza
+0.0,0.0,0,2,4,6,3,84,97,0,0,0,1,1,0,7509d6f38a9902637c13b5b8fec9ab7e,Medicare Advantage’s once-blistering growth dropped in 2026. Here’s what that means.
+0.1,0.1,0,1,4,6,3,70,152,0,0,0,1,1,0,e01aeb9c984fc66ad44061f266e99818,"Ex-Apple team launches Acme Weather, a new take on weather forecasting"
+-0.25,0.25,0,1,4,6,3,80,195,0,0,0,1,1,0,25d70b7c88b9a253fddf8c2f51d063eb,Anthropic accuses Chinese AI labs of mining Claude as US debates AI chip exports
+0.3,0.3,7,1,4,6,3,49,194,1,0,0,2,3,1,4d5d3f20689bf735498325108cc95ba4,Uber wants to be a Swiss Army Knife for robotaxis
+0.06,0.06,0,2,4,6,3,47,343,0,1,0,1,1,0,a0b6f63b93fd4da5efc8594ab0f03552,Will Trump’s DOJ actually take on Ticketmaster?
+0.02,0.02,0,1,4,6,3,64,326,0,0,0,1,1,0,56342918efea51c77ac775528de4e697,Billions of dollars later and still nobody knows what an Xbox is
+0.14,0.14,0,1,4,6,3,84,367,0,0,0,1,1,0,464b34865cacf2d1c25002bd1e105997,Anthropic accuses DeepSeek and other Chinese firms of using Claude to train their AI
+0.0,0.0,2,5,4,6,3,40,65,0,0,1,1,1,0,b2b0bf3917b0f9d95fa37af1963eac20,Paypal Halted following Takeover report.
+0.17,0.17,0,5,4,6,3,43,400,1,1,1,2,1,0,3b9265eb358672edbe6abca4f87f309d,Who’s win and lose in the new tarriff rate.
+0.5,0.5,5,5,4,6,3,94,64,0,0,1,1,2,0,28713af314b678f3c94640738c9d3408,IBM is the latest AI casualty. Shares are tanking 11% on Anthropic programming language threat
+0.0,0.0,0,5,4,6,3,84,62,0,0,1,1,1,0,7b4673cca60f724d121d0b8c38c706b4,Shocking inequality — The Top 1% in the US now have more wealth than the middle 60%.
+0.25,0.25,2,2,4,6,3,80,187,0,0,0,1,1,0,0c9668ece721629618cbd7a7863bd238,Irani (RANI3) resiste à sazonalidade e apresenta resultados sólidos no trimestre
+0.25,0.25,6,2,4,6,3,84,203,1,1,0,2,2,1,d839644caaae1f1c6794778f9a22ec04,"Dólar hoje cai a R$ 5,16, menor valor desde maio de 2024, com novas tarifas de Trump"
+0.07,0.07,0,3,4,6,3,68,259,0,0,0,1,1,0,35cee40e834ee38831c8cf0263db1415,Canadá convoca equipe de segurança da OpenAI após tiroteio em escola
+0.25,0.25,3,2,4,6,3,84,228,1,0,0,1,2,0,eb87970d6dd66f4975a137f33f99c86a,"Mercado imobiliário fecha 2025 com recordes em lançamentos e vendas, apesar de juros"
+0.25,0.25,0,3,2,6,3,82,249,0,1,0,1,1,0,024862f02e432829efd34da2a7fc4127,"Dengue em SP: Butantan entregará mais 1,3 milhão de doses da vacina no 1º semestre"
+0.0,0.0,0,3,4,6,3,81,0,0,1,0,1,1,0,d96557b7aba8349b064ecef1947eab97,Eurodeputados congelam acordo comercial UE-EUA devido às últimas ameaças de Trump
+0.0,0.0,2,3,4,6,3,74,168,0,1,0,1,1,0,6d7fac80d6a44ae017a22a9b9b410ccf,"Pecuaristas receberão boa notícia, diz Fávaro após agenda na Coreia do Sul"
+0.0,0.0,2,3,4,6,3,61,94,0,0,0,1,1,0,64b2086dc7e307878ba65b5726197b8b,Gisèle Pelicot relata 10 anos de abusos em nova autobiografia
+0.0,0.0,0,3,4,6,3,68,132,0,0,0,1,1,0,62e0c81d093672c3fac5ed53bbeb9ba5,Renan: Comissão decide nesta terça-feira sobre depoimento de Vorcaro
+0.0,0.0,0,3,2,6,3,75,105,0,0,0,1,1,0,3e81dc1690c63f064920fe17c3ac2334,"Exportações para os EUA após maio exigem cuidados, diz presidente da Abimaq"
+0.0,0.0,4,3,1,6,3,73,155,1,0,0,1,2,0,6b7343ab15047d855fb5dd988b170090,Defesa Civil de SP mobiliza gabinete de crise para tempestades no litoral
+-0.12,0.12,10,0,4,6,3,73,162,1,0,0,2,3,1,8de7c376f4ed35072d6d05595dcebf0e,Negative Bitcoin funding rate may signal pending short-squeeze above $70K
+0.19,0.19,0,3,4,6,3,67,180,0,1,0,1,1,0,31b4de9cf9aca3af1c7e811e058d7995,Trump‘s Board of Peace said mulling stablecoin for Gaza efforts: FT
+0.25,0.25,2,2,4,6,3,84,296,0,0,0,1,1,0,28e546e0305a5970c16d9c2918e02807,Exportação de pescados do Brasil deve somar US$ 600 mi após alívio tarifário dos EUA
+0.25,0.25,6,4,4,6,3,76,259,0,0,0,2,2,1,8f8c945c73bf2dc82154db7ce4199575,Petróleo fecha com leve alta sob tensão no Oriente Médio e ataques na Rússia
+0.25,0.25,0,3,4,6,3,77,237,0,0,0,1,1,0,f017c49dc82d3c877293209ee629ab2b,Inmet emite alertas laranja e amarelo para tempestades em SP e outros estados
+0.0,0.0,5,3,4,6,3,58,116,1,0,0,1,2,0,73e2f5b10b1f6a0cddee4d6595ca39bb,Winona Ryder está confirmada na 3ª temporada de “Wandinha”
+0.0,0.0,0,3,1,6,3,68,140,0,1,0,1,1,0,4f16662be7c2e66e3ea6b3cf9ce14740,Viana diz que decisão do STF sobre Vorcaro “atrapalha e atrasa” CPMI
+0.0,0.0,2,3,4,6,3,68,86,0,0,0,1,1,0,654408ead60a53b503c755ba99683652,Samsung anuncia sistema com várias IAs em um único aparelho; entenda
+0.0,0.0,4,3,4,6,3,69,210,1,0,0,1,2,0,bafb542b92bb221338ace14a7791448f,Reunião entre André Mendonça e Polícia Federal deve ser “burocrática”
+0.0,0.0,2,3,1,6,3,53,181,1,1,0,1,1,0,a5dc777008cb97b5e87beca2233dcc2b,Análise: Desgaste do STF impõe agenda negativa a Lula
+0.12,0.12,0,3,4,6,3,64,151,0,0,0,1,1,0,4e07e749df281079ce8ffda4478be68e,PayPal draws takeover interest following 46% stock slide: Report
+0.0,0.0,0,3,4,6,3,75,97,0,0,0,1,1,0,9ef36c018157a416e5b5d5c6a42686b6,Caos no México: Fotos de satélite mostram incêndios após morte de El Mencho
+0.0,0.0,0,3,4,6,3,70,151,0,0,0,1,1,0,7f32853e7f62460df07a723a7e196852,"“Lava sua boca, seu mentiroso”: CPMI do INSS é suspensa após bate-boca"
+0.0,0.0,0,2,4,6,3,62,74,0,0,0,1,1,0,027124bcd86fe560400fc73c3dcc7313,Homem cai de cachoeira de 40 metros no PR ao tentar fazer foto
+0.0,0.0,0,3,4,6,3,97,87,0,0,0,1,1,0,b1605fe60c33fdc7a105824e513311dd,"Kalshi Clears 'Backlog' of Suspicious Activity, Plans to Disclose Actions Against Insider Trading"
+0.15,0.15,5,5,4,6,3,85,400,0,0,1,1,2,0,ae5956f0402305afebe1f826813a31c8,IBM sinks as Anthropic positions Claude Code as the ideal tool for code modernization
+0.0,0.0,0,3,4,6,3,54,73,0,0,0,1,1,0,895de29afdec39dd6afffae3fac7ec6c,Taça da Copa do Mundo desembarca no Brasil; veja fotos
+0.0,0.0,6,3,1,6,3,62,166,1,1,0,2,2,1,8eed52174e4b6f06ed18ae20340839c6,Hugo Motta cria comissão para tarifa zero e mira pauta de Lula
+0.0,0.0,2,3,4,6,3,72,83,0,0,0,1,1,0,172bdfb3f7c6b39392193ac9d6461413,"Após infarto de Herson Capri, peça com o ator ganha nova data de estreia"
+0.0,0.0,0,3,2,6,3,70,85,0,1,0,1,1,0,67c80071e69c4a5b263fbb8ed108f775,Governo revoga decreto de estudos de concessão de hidrovias no Tapajós
+0.0,0.0,0,3,4,6,3,75,195,0,1,0,1,1,0,03777026b503494f82b850c2ffd1a646,"MP irá recorrer de decisão que absolveu homem por estupro, diz especialista"
+0.25,0.25,0,3,2,6,3,71,282,0,1,0,1,1,0,15bf1af3d07b3434909d83fa53a6993b,"Flávio: Todo mundo quer vencer discussão, mas precisamos ganhar eleição"
+0.08,0.08,2,2,4,6,3,72,224,0,0,0,1,1,0,9b91d7c9dab3646b37bcc8beace0051e,Ações de empresas de segurança digital caem após lançamento da Anthropic
+0.0,0.0,0,1,4,6,3,75,126,0,0,0,1,1,0,eec87c13ca463a22aee842f1fcf47397,We Talked to an AI Trained on Jeffrey Epstein’s Emails. Here's What It Said
+0.25,0.25,0,3,4,6,3,84,236,0,0,0,1,1,0,bda3fbc221a0a717e421438e821b6be4,Líder do cartel mais procurado do México foi morto após visita de parceira romântica
+0.25,0.25,3,0,4,6,3,61,239,0,0,0,1,2,0,c5b4e990b846133be1311d585638a43f,Startups: Engie quer minerar Bitcoin em usina solar no Brasil
+0.25,0.25,0,3,4,6,3,79,250,0,1,0,1,1,0,3e5c137c4981a24393674e600caed3f5,Lagarde diz que sairá do BCE quando concluir o que foi designada em seu mandato
+0.3,0.3,2,2,4,6,3,85,258,0,0,0,1,1,0,9b7390849a095d296fd35b82346c7485,"Smart Fit (SMFT3) cai 3,36% após Pátria zerar toda sua participação depois de 15 anos"
+0.23,0.23,10,0,4,6,3,72,185,1,0,0,2,3,1,bd7195b1a53468ef7e0301f61a27d50b,Michael Saylor says quantum threat to Bitcoin is more than 10 years away
+0.43,0.43,6,5,4,6,3,138,59,1,0,1,2,2,1,e8648132378729e2c51680ba7476d006,"A two-child household must earn $400,000 a year for childcare to be affordable, study says. ""It’s ea"
+0.25,0.25,0,2,4,6,3,73,202,0,0,0,1,1,0,9985f6a1ec328235158c8e273eee5d6c,Ações da Desktop (DESK3) caem mais de 14% após venda travada para a Claro
+0.25,0.25,0,2,4,6,3,74,175,0,0,0,1,1,0,a09ff6502153fd97b9d43af44bffa0b1,RIAA3: ações da Riachuelo caem após notícia de follow-on de R$ 500 milhões
+0.25,0.25,3,2,4,6,3,79,192,0,0,0,1,2,0,ee916c360c053fca389fee4dcef4dbc7,Vivo (VIVT3) sobe 3% após balanço do 4º tri; o que chamou a atenção do mercado?
+0.25,0.25,0,2,4,6,3,65,164,0,0,0,1,1,0,f2de9359f8758d4e3369a45abae00ff8,Ações da Cosan fecham em alta com possibilidade de IPO da Compass
+0.25,0.25,7,1,4,6,3,84,264,1,0,0,2,3,1,869a3519394ac8e9d0e93b74e4b23e7a,"Bolsas de NY fecham em baixa, por impacto de tarifas e softwares pressionados por IA"
+0.25,0.25,7,0,4,6,3,81,253,1,0,0,2,3,1,ef9cc9c791704afd9d2f6ea80039069d,Ação da IBM tem maior queda desde 2000 com promessa de IA da Anthropic para COBOL
+0.0,0.0,0,3,4,6,3,70,0,0,0,0,1,1,0,5d543249a2cb8961d70b2dfd707f7bdc,Resultados e receitas da Keysight Technologies acima do esperado no Q1
+0.0,0.0,0,3,4,6,3,57,0,0,0,0,1,1,0,0e34ac73e8683391cc429e6c77c0468c,Resultados e receitas da BWX Tech acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,88,0,0,0,0,1,1,0,e45d2ca8637af2b7da44a8e6ca2fa95c,Resultados da Allison Transmission abaixo do esperado e receitas acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,78,0,0,0,0,1,1,0,82254933c0b841170ff569f063cf7f91,Resultados da Dmc Global abaixo do esperado e receitas acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,64,0,0,0,0,1,1,0,dddf277d97a1e002e78ab590c481f2ee,Resultados e receitas da Myriad Genetics acima do esperado no Q2
+0.25,0.25,3,2,4,6,3,82,219,0,0,0,1,2,0,0008ca1877829d47e2d04e633cb6b655,"Azul tem dia volátil e fecha em queda de 1,7% após subir 46% com fim do Chapter 11"
+0.0,0.0,0,3,4,6,3,50,123,0,0,0,1,1,0,49667d7f0f69f5c1c80e23563c3e60fd,Quem foi a primeira atriz negra a ganhar um Oscar?
+0.0,0.0,2,3,2,6,3,75,87,0,1,0,1,1,0,427aff6ade862135292967fc2b57adf9,Violência no México: Governo enviou 2.500 soldados como reforço após ataque
+0.2,0.2,0,3,4,6,3,71,111,0,0,0,1,1,0,89f9ecabb0ff47239647de3058e37c61,Árbitro de Real x Benfica já foi detido em operação contra prostituição
+0.25,0.25,0,2,4,6,3,80,235,0,0,0,1,1,0,f4d63c8863277082b616bf4afec77a4c,"Gerdau (GGBR4) aprova recompra de até 55 milhões de ações PN e 1,4 milhão de ONs"
+0.12,0.12,5,1,4,6,3,88,148,1,0,0,1,2,0,148526cdf9fcf4ec404622c3243304fc,Did a blog post just cause software stocks to lose more than $200 billion in market cap?
+0.0,0.0,2,3,4,6,3,68,130,0,0,0,1,1,0,6164c688a13a37caadfdacaeda32b38b,Homem tenta matar ex com motosserra e acaba morto pela polícia em MG
+0.0,0.0,4,4,4,6,3,55,78,0,0,0,1,2,0,a4687668df5c20aecd226ae1489bb30d,Petróleo fecha em queda com negociações entre EUA e Irã
+0.0,0.0,5,0,4,6,3,72,142,1,0,0,1,2,0,44428a956e4516403fdd769333fd4193,Bitcoin cai em sessão aversa a riscos com tarifas e tensões geopolíticas
+0.0,0.0,0,3,1,6,3,70,78,0,0,0,1,1,0,96da4b2159de68e0724fe6737f375429,Defesa Civil emite alerta de “perigo” para regiões do litoral paulista
+-0.13,0.13,0,2,4,6,3,95,150,0,0,0,1,1,0,f0cea96f7258ab0bb25ece8ee884df65,"With AI, investor loyalty is (almost) dead: At least a dozen OpenAI VCs now also back Anthropic"
+0.0,0.0,5,0,4,6,3,56,176,0,0,0,1,2,0,9ca654067e3f300e6032493968431754,Bitcoin may reverse course and rally to $75K: Here’s how
+0.25,0.25,5,2,4,6,3,76,213,0,1,0,1,2,0,9dc6a1f819f99fedec0fa25dfee4a907,Ibovespa fecha em queda com bancos e perdas em NY após testar 191 mil pontos
+0.0,0.0,0,3,4,5,3,61,0,0,0,0,1,1,0,8e4d268db73ef025700907eb1854e120,Resultados e receitas da HealthStream acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,71,0,0,0,0,1,1,0,dd31f738faa83dcd0aab602a73acb0af,Resultados e receitas da Telefonica Brasil ADR abaixo do esperado no Q4
+0.0,0.0,0,3,4,6,3,77,0,0,0,0,1,1,0,6cf5c144b530b3027a2e57c567ae54b8,Resultados e receitas da Ryman Hospitality Properties acima do esperado no Q4
+0.5,0.5,2,3,3,6,3,81,0,0,0,0,1,1,0,ae0dcb9c62edf720488e5bf515588f57,Resultados e receitas da Innovative Industrial Properties acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,83,0,0,0,0,1,1,0,b0880cf37d9023a69f05d88b5e234841,Resultados da Quaker Chemical abaixo do esperado e receitas acima do esperado no Q4
+0.12,0.12,0,3,4,6,3,81,144,0,0,0,1,1,0,3a1512e5c682ed7309e7393bbb0945bc,PayPal’s stock pops on takeover hopes. Here’s who could swoop in with a purchase.
+0.0,0.0,0,3,3,6,3,80,89,0,0,0,1,1,0,904654cb32fd3c891374b8a440cf1950,The price of barriers: Why protectionism threatens global growth - news.cgtn.com
+0.0,0.0,0,3,4,6,3,90,0,0,0,0,1,1,0,d14214edcf3d58c32e7bacb1aace3bb9,Resultados da Diversified Healthcare acima do esperado e receitas abaixo do esperado no Q4
+-0.12,0.12,0,1,4,6,3,63,125,0,0,0,1,1,0,f4952d6fe07a3daf660e3310ab2d7fff,Why Nvidia’s earnings report isn’t the market force it once was
+0.0,0.0,0,3,4,6,3,81,180,0,0,0,1,1,0,f57a93e21b2750946a3f9e740abfb6e1,"Here’s what airlines, hotels and Airbnb actually owe travelers stranded in Mexico"
+0.25,0.25,0,3,4,6,3,59,157,0,0,0,1,1,0,e864c1370d9dc19a3a306f4d818d27a6,Alagamentos e interdições afetam rodovias no Rio de Janeiro
+0.25,0.25,5,3,4,6,3,70,255,1,0,0,1,2,0,cbdbfc4077d723a5cbcfba9bdcadebd1,Paramount eleva oferta e reacende disputa bilionária pela Warner Bros.
+0.25,0.25,2,2,4,6,3,58,204,0,0,0,1,1,0,6b2a768c6a97b7094d4084b8a39cb37c,"Gerdau (GGBR4) lucra R$ 670 mi no 4T25, alta anual de 0,5%"
+0.0,0.0,4,3,4,6,3,139,156,1,0,0,1,2,0,592ea23d94cb47786fe4d6acf0568cf7,"Following earlier actions to remove reputation risk from its supervision of banks, Federal Reserve B"
+0.25,0.25,8,0,4,6,3,36,171,0,1,0,2,3,1,78f7a83e386d3f9bd80908be49f28870,Here’s what happened in crypto today
+-0.6,0.6,5,1,4,6,3,74,113,0,1,0,1,2,0,8779bca53a0ce3de7924d5d156157bcd,"Com IA, presidente da Coreia do Sul posta vídeo abraçando Lula na infância"
+0.0,0.0,5,2,4,6,3,58,102,0,0,0,1,2,0,d3a151e1db6f6d0c68ad02a300125f45,Gerdau tem lucro líquido de R$ 670 milhões no 4ª trimestre
+0.0,0.0,0,3,4,6,3,74,108,0,0,0,1,1,0,034b0f4f3f532e86262eeea650541714,"Capital de Jalisco, no México, está “voltando à normalidade”, diz analista"
+0.0,0.0,2,3,4,6,3,73,87,0,0,0,1,1,0,8699b89cae2bc92a942b7d242147f888,Caos no México: Filho e aliados de “El Mencho” estão sob custódia nos EUA
+0.0,0.0,6,3,0,6,3,98,400,1,1,0,2,2,1,50c3ce753b114257e4ddf6bee55a8053,Tarifaço: Alckmin diz que Brasil foi o 'país mais beneficiado do mundo' com novas medidas de Trump
+0.25,0.25,0,3,2,6,3,83,295,0,1,0,1,1,0,85d473569f56d3a5eb26a14aee2ab397,Governo suspende plano de privatizar hidrovias na Amazônia após protestos indígenas
+0.22,0.22,0,5,4,6,3,116,400,0,0,1,1,1,0,c275483124babe12acd29d3418aec7df,"Can someone explain the thesis to me of how AI will replace cybersecurity, SaaS stocks, etc.? How re"
+0.0,0.0,0,3,4,6,3,75,120,0,1,0,1,1,0,8b4f644327dd84f664ad0a1d09e1dd15,Gaivota é atingida por bolada em final na Turquia e capitão a reanima; veja
+0.0,0.0,0,3,4,6,3,74,61,0,0,0,1,1,0,cf8f9cc703a7ce027d60b6c2487789ea,"Invicto com Carrick, Manchester United vence Everton e abre vantagem no G4"
+0.0,0.0,0,4,4,6,3,62,121,0,0,0,1,1,0,c412f6b9647aa1820ef37521bca35c8c,"Preço futuro do café arábica recua 2,68% na bolsa de Nova York"
+0.0,0.0,0,3,4,6,3,74,85,0,0,0,1,1,0,1b1104def5cd8e0c60fbbd403953d865,Mpox: como está situação atual do surto no Brasil e estados com mais casos
+0.6,0.6,4,3,4,6,3,74,130,0,0,0,1,2,0,022835abff8ee5e67318f4bce10eb496,Policiais acusados de matar estudante de medicina vão a júri popular em SP
+-0.1,0.1,5,0,4,6,3,81,129,0,0,0,1,2,0,ba1c1a06cf9a30b4b8bd2b98c0ee9c1e,Anthony Pompliano's Bitcoin Treasury ProCap Buys Back Stock Amid 85% Price Plunge
+0.08,0.08,0,2,4,6,3,64,111,0,0,0,1,1,0,2dc3a240c91b5f28cdf26d499f32b07d,"Snowstorm hits airline stocks as flight cancellations near 5,000"
+0.0,0.0,2,5,4,6,3,74,88,0,0,1,1,1,0,65d89b0a3a14708c3af4a24ed66c19f0,Data centres seek credit ratings to unlock billions in funding for AI push
+0.0,0.0,0,3,2,6,3,65,64,0,0,0,1,1,0,b79dc8ce94ed3baaf0c1a651c80d51f7,Presidente do México diz que paz e segurança estão sendo mantidas
+0.0,0.0,10,3,1,6,3,128,137,1,0,0,2,3,1,25c9beda656aed5a7c39636362fec40e,Taking the Pulse: Does France’s Political Crisis Weaken Europe’s Geopolitical Hand? - Carnegie Endow
+0.15,0.15,2,3,1,6,3,62,254,0,1,0,1,1,0,3a81c175f17dc72091609a57f4a9d694,Trump diz que decisão sobre atacar Irã é “exclusivamente” dele
+0.0,0.0,2,0,4,6,3,71,140,0,0,0,1,1,0,355057e9bc0f07e6263f677ef95271de,Crypto Exchange Backpack Plans to Offer Company Equity to Token Stakers
+-0.39,0.39,3,3,4,6,3,80,116,0,0,0,1,2,0,78d5cb14198c237918e097ed8fbbf9f2,IBM’s stock heads for worst month in 34 years — and Anthropic is partly to blame
+0.0,0.0,0,5,4,6,3,51,64,0,0,1,1,1,0,d166920632025135e5d52654bb4dddc8,$700 billion wiped out from the stock market today.
+0.25,0.25,0,2,4,6,3,67,209,0,0,0,1,1,0,67de266bfcf5cc74a9c9653e3299a050,Guararapes (RIAA3) avalia oferta de ações de inicialmente R$ 400 mi
+-0.12,0.12,11,3,1,6,3,44,53,1,0,0,2,3,1,49da8c7787e740cfcd3d27008c6641b6,Four Years of War in Europe - Foreign Policy
+0.0,0.0,7,3,4,6,3,52,61,1,0,0,2,3,1,81d73d9a4f0506737f361c51b8ee0098,The Geopolitics of the Asian Crisis - Monthly Review
+0.25,0.25,0,3,0,6,3,83,187,0,0,0,1,1,0,371da2d41d0dec4d9d1b7242732663e5,Parlamentares apertam o cerco para ouvir Vorcaro e buscam saída após decisão do STF
+0.0,0.0,0,3,4,6,3,60,0,0,0,0,1,1,0,5e3092130d72f27d4efc5f6f27cfa54e,Resultados e receitas da Vir Biotech acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,69,66,0,0,0,1,1,0,2af2e095f73f5ed0a7104501dfe4fbe7,Equipe de Wanessa se pronuncia sobre boatos de affair com Bruno Bevan
+0.0,0.0,0,2,4,6,3,73,240,0,1,0,1,1,0,7860bfaba07c3c41f192a2becd05966d,Ministério Público recorre de absolvição por estupro de menina de 12 anos
+0.0,0.0,0,3,4,6,3,63,132,0,1,0,1,1,0,0d30d621999534428545429ae3b193c1,Bob Coveiro: cão que inspirou lei de sepultamento de pets em SP
+0.0,0.0,4,2,4,6,3,71,101,1,0,0,1,2,0,0a14596a744fff1e8c14cd46ea14f813,Caixa deve comprar ativos do BRB; federalização fica para “último caso”
+0.23,0.23,9,3,0,6,3,84,278,1,0,0,2,3,1,d9f26655df1d6b138ce5fb9069bfa049,"Confiantes de que na próxima reunião do Copom começa a redução de juros, diz Alckmin"
+0.0,0.0,2,1,4,6,3,69,114,0,0,0,1,1,0,0988be4fd7f3f54bec049d0a8bab6baa,Critics Mock Anthropic's Claims Chinese AI Labs Are Stealing Its Data
+0.0,0.0,2,4,4,6,3,104,400,0,0,0,1,1,0,55b7e945455c77746294372c3fd90252,Nunes rebate CEO da Enel após fala sobre apagões e diz que 'nem Jesus Cristo' salva a empresa de ene
+0.0,0.0,2,3,4,6,3,50,206,0,0,0,1,1,0,40626772d4583c8b690dd3be9e8b1aeb,Esposa relata que Eduardo Bolsonaro “não está bem”
+0.4,0.4,2,3,4,6,3,44,88,0,1,0,1,1,0,723da3810b7b9c21cc2f67618ab6f194,Fluxo W7M é bicampeão da COPA Free Fire 2026
+0.0,0.0,0,3,4,6,3,68,55,0,0,0,1,1,0,ab9223a3c6b21cf9fbb0285e5d9bff0b,“Bridgerton”: veja que horas estreia a segunda parte da 4ª temporada
+0.0,0.0,2,3,4,6,3,58,89,0,1,0,1,1,0,f55335c2909a0603a00ae5501b995927,Ex-Santos brilha e marca doblete em jogo de estreia na MLS
+0.2,0.2,0,3,4,6,3,69,117,0,0,0,1,1,0,59501161fea4bb3c4e649a64415339a0,Real Madrid pode não ter dois titulares em “decisão” contra o Benfica
+0.01,0.01,5,0,4,6,3,85,177,0,0,0,1,2,0,ac42e3d8ae6f22bf6acf2ec6c2a325f5,Are Bitcoin ETFs quietly accumulating or just not selling? The flow data that matters
+0.07,0.07,2,3,0,6,3,94,183,1,1,0,1,1,0,ead30fcad83b70ddd16eb2f737975ff5,"Jobs and CPI reports are not being politically manipulated, government’s statistics chief says"
+0.13,0.13,0,3,1,6,3,122,150,1,1,0,1,1,0,80836019ff019bee847796b6f14ab83f,Supreme Court ruling throws Trump administration's tariff strategy into flux. What it means for glob
+0.42,0.42,2,3,4,6,3,63,155,0,0,0,1,1,0,94197ebcdc65b7041e20e47c75736dd0,Uber’s latest effort to become a super app is all about parking
+0.0,0.0,3,3,0,6,3,72,112,1,0,0,1,2,0,335c8f79b37698648b1a8bd19eee93c2,Setor imobiliário bate recordes e projeta cenário mais favorável em 2026
+0.3,0.3,7,1,4,6,3,49,194,1,0,0,2,3,1,26790ada588bd0c5b13be442d445a01e,Uber wants to be a Swiss Army Knife for robotaxis
+0.0,0.0,0,3,4,6,3,58,252,0,0,0,1,1,0,4eaa1e049f005910f693d43d7e257d41,Audiência de julgamento de Oruam é adiada para 30 de março
+0.0,0.0,2,2,4,6,3,73,113,0,0,0,1,1,0,9c9365bfcec2ead0284f774dfd772ade,Bolsa Família 2026: Veja datas de pagamento na última semana de fevereiro
+0.0,0.0,2,4,4,6,3,69,138,1,0,0,1,1,0,0eaf36587fb382d820f42185dca4ef47,Soja fecha em baixa na Bolsa de Chicago com tarifas e demanda chinesa
+0.0,0.0,0,3,4,6,3,73,84,0,0,0,1,1,0,83dcd918bdb89506637c9d1a38a8b67f,"Ator, modelo e médico: quem é Bruno Bevan, suposto novo affair de Wanessa"
+0.1,0.1,3,3,0,6,3,125,134,0,0,0,1,2,0,21e86a2b04ed9cea2c11f9f8207adbd5,"World Economic Outlook Update, January 2026: Global Economy: Steady amid Divergent Forces - Internat"
+0.5,0.5,2,1,4,6,3,77,110,0,0,0,1,1,0,4778317565b33e84e900b9c8773cfed4,Big Tech’s ‘Lag 7’ is putting the S&amp;P 500 — and your index fund — at risk
+0.0,0.0,0,3,2,6,3,52,61,0,1,0,1,1,1,920b202fca0e6d710042b464097f9cfc,The World Economy Is Hooked on Government Debt - WSJ
+0.0,0.0,0,3,2,6,3,52,61,0,1,0,1,1,1,9eb410941115391e1935e915504b0eb7,The World Economy Is Hooked on Government Debt - WSJ
+0.0,0.0,3,3,2,6,3,52,61,0,1,0,1,2,1,f961afe7f222faa68df262c2a909f95a,The World Economy Is Hooked on Government Debt - WSJ
+0.0,0.0,7,3,2,6,3,52,61,0,1,0,2,3,1,1b4e53551916841b0e773a648bbcc1be,The World Economy Is Hooked on Government Debt - WSJ
+0.1,0.1,0,3,4,6,3,74,92,0,1,0,1,1,0,c0f27666dcc6be89e7b2236287e18898,Música eletrônica vira Patrimônio Cultural Imaterial de São Paulo; entenda
+0.38,0.38,2,3,4,6,3,69,103,0,0,0,1,1,0,af187df26d79b11c394fa9faa2ca1746,Denilson exalta união do grupo do Penta e destaca “objetivo coletivo”
+0.0,0.0,2,3,4,6,3,70,108,0,0,0,1,1,0,84d1b76cff2cd23feca161c545b51bf1,Vídeo: PM é preso após agredir companheira e atacar agentes em Vitória
+0.5,0.5,4,3,4,6,3,69,139,0,1,0,1,2,0,193d6bd7d88822166b787e28b4f7088c,Peças de Carolyn Bessette-Kennedy são leiloadas em Nova York; confira
+0.5,0.5,2,2,4,6,3,80,73,0,0,0,1,1,0,aab46329a32fc9eb7a5220542a17e673,"Stocks making the biggest moves midday: Netflix, Coinbase, Diageo, Cava and more"
+0.45,0.45,2,3,4,6,3,92,144,0,0,0,1,1,0,8f074e13c6d00421ecf2eb1edd4e04e1,Are collectibles a viable asset class? The buyer of the $16.5 million Pokémon card thinks so
+0.38,0.38,2,2,4,6,3,95,68,0,0,0,1,1,0,14e86531e776c6d70c350a449b99fe1e,"Stocks making the biggest moves premarket: First Solar, GoDaddy, Lowe's, Workday, Cava and more"
+-0.19,0.19,0,3,1,6,3,76,152,0,1,0,1,1,0,32ff3625237ebfb164fe496a21dd5555,Trump makes little mention of China in the longest State of the Union speech
+-0.06,0.06,0,1,4,6,3,97,137,0,0,0,1,1,0,b668e06f0bf122fe9070bf4c606f3d45,The global M&amp;A boom is rolling into 2026 as AI sparks deal frenzy — but cash is getting tight
+0.0,0.0,0,2,4,6,3,81,188,0,0,0,1,1,0,30c54e7ead526f2e9eaffd2af21b2462,Urban Outfitters’ once-struggling namesake stores are now driving its sales gains
+-0.12,0.12,0,1,4,6,3,76,130,0,0,0,1,1,0,0ee9a89030a65d71b6bc964e1334e584,Salesforce’s stock falls as mixed earnings forecast fails to dispel AI gloom
+0.05,0.05,0,3,2,6,3,80,165,1,1,0,1,1,0,b8020b2a126585c130b4953625c83a38,Trump digs in his heels on tariffs — with major implications for the U.S. dollar
+0.12,0.12,0,3,4,6,3,103,93,0,0,0,1,1,0,5354b18d31b2868e584aef52416f3ed7,"For the first time in decades, new hair-loss treatments are in the works. Here’s how they’re differe"
+0.4,0.4,2,3,4,6,3,115,75,0,0,0,1,1,0,0f35298a3c01b579f6900cbc53098759,"After 46 years working, I’m not retiring — instead, I take a vacation every month. Is that a good li"
+0.08,0.08,2,0,4,6,3,59,147,1,0,0,1,1,0,463a24b56b2235e93cb3683697dfacf6,Kraken introduces fixed-rate crypto loans for its Pro users
+0.0,0.0,8,0,4,6,3,74,141,1,0,0,2,3,1,3c6f4caec2d65a0db5697e47f9c5898b,"Price predictions 2/25: BTC, ETH, XRP, BNB, SOL, DOGE, BCH, ADA, HYPE, XMR"
+0.1,0.1,5,0,4,6,3,63,113,0,0,0,1,2,0,f4a86503661f8ea0faa4986d2c62039f,Hut 8 swings to Q4 loss; compute revenue contribution increases
+0.13,0.13,5,0,4,6,3,88,140,0,0,0,1,2,0,c8a04562670f2337e1a1b243fe2f2949,"Bitcoin tops $69.5K after stock market rebound, strong earnings data boost risk appetite"
+0.0,0.0,0,3,0,6,3,59,132,0,0,0,1,1,0,0df9ee714547d3c030bc758f0c60a24a,Tokenized US Treasurys rise by over $1B since start of 2026
+0.37,0.37,7,1,4,6,3,89,151,1,0,0,2,3,1,5502efadcd44347954743d5cd0361b01,"OpenAI, Google and Anthropic AI Models Deployed Nuclear Weapons in 95% of War Simulations"
+-0.1,0.1,5,0,4,6,3,67,133,0,0,0,1,2,0,b5db09b3abda238c7a4dc35d3241f168,Bitcoin Treasury Company GD Culture May Sell BTC to Buy Back Shares
+0.18,0.18,3,0,4,6,3,76,137,0,0,0,1,2,0,b8616b78fe6b005e9a3fbdca962c61d4,"Bitcoin, Ethereum and Solana Shorts Get Rekt as BTC Price Rebounds Near $69K"
+0.2,0.2,5,0,4,6,3,73,139,0,0,0,1,2,0,969621a64bb1179a0bb4a28ea0be46f6,"Bitcoin Giant Strategy, Coinbase Among Most-Shorted Stocks: Goldman Sachs"
+0.13,0.13,0,3,4,6,3,69,145,0,0,0,1,1,0,83108b0a31d7e4a0e0f85e2676ada11c,"UK Selects Firms for Stablecoin Regulatory Sandbox, Including Revolut"
+0.24,0.24,0,1,4,6,3,90,91,1,0,0,1,1,0,d56dc9a6284176bf93fca15f1ec074ed,The White House wants AI companies to cover rate hikes. Most have already said they would.
+0.25,0.25,4,1,4,6,3,81,224,1,1,0,1,2,0,c77b02c4cd9b71f072dd450cb8fc8dd7,US cybersecurity agency CISA reportedly in dire shape amid Trump cuts and layoffs
+0.12,0.12,2,0,4,6,3,38,400,0,0,0,1,1,0,c9b9caa4fdae17642a427afbc7cae5fe,Welcome to the post-hype crypto market
+0.05,0.05,5,1,4,6,3,63,115,1,0,0,1,2,0,65836b90ba273c32441736a13a54694b,Alphabet-owned robotics software company Intrinsic joins Google
+0.27,0.27,5,3,4,6,3,68,105,1,0,0,1,2,0,b37a19f948f5e65028f3286dd3409ba3,"Snapchat announces ‘The Snappys,’ its first-ever creator awards show"
+0.35,0.35,2,1,4,6,3,73,348,0,0,0,1,1,0,5d37dddcf7fb04677f1e92f3d43fe536,The Peace Corps is recruiting volunteers to sell AI to developing nations
+0.18,0.18,0,3,2,6,3,87,342,0,1,0,1,1,0,82532feabc2fc5d949268e68d52b6a41,Trump claims tech companies will sign deals next week to pay for their own power supply
+0.07,0.07,0,3,4,6,3,67,324,0,0,0,1,1,0,5ec84debac63adff2fdaed034960c4e3,Here’s how the new Samsung Galaxy S26 compares with last year’s S25
+0.2,0.2,0,1,4,6,3,73,317,0,0,0,1,1,0,07be2fa2918d243bc88814ed9bc9277a,Google and Samsung just launched the AI features Apple couldn’t with Siri
+0.09,0.09,0,3,4,6,3,69,332,0,0,0,1,1,0,03a0d08e602275740bf46707a4dfa3c9,Preorders for Samsung’s S26 phones come with up to $200 in gift cards
+0.12,0.12,0,5,4,6,3,76,92,0,0,1,1,1,0,e52371a4eee001edbcc6a13edc97ae12,MAG-7 are trading at the lowest premium vs. S&amp;P 493 in the last 10 years
+0.0,0.0,0,5,4,6,3,16,59,0,0,1,1,1,0,a7cdb62a4f7794d011f410b8ed7ed074,Here we go again
+0.12,0.12,0,5,4,6,3,20,400,0,0,1,1,1,0,48ca3e154d85e380ca738c5e6ce50515,Big numbers incoming
+0.32,0.32,7,5,4,6,3,94,69,1,0,1,2,3,1,507e0dd37b7c4aa806d7ad82e3dc1638,'$7 billion break-up fee': Warner Bros. Discovery says Paramount’s new bid might top Netflix’s
+-0.06,0.06,0,5,4,6,3,30,167,0,0,1,1,1,0,8dd33d78fa34dd56f9967f3018dcd698,I'll sell when it hits 100m...
+-0.01,0.01,0,5,4,6,3,59,399,1,0,1,1,1,0,b3fb93f10ee9134a9517855dc77ce114,"Seen from outside the US, US markets are already in trouble"
+0.3,0.3,2,5,4,6,3,31,399,1,0,1,1,1,0,c7712dc1f221a4ce5662d4e0b3b526eb,achievement: i just got to 10k!
+0.11,0.11,0,5,4,6,3,61,378,1,0,1,1,1,0,1902561ffa9731691102d7abf4763e1b,the 150-day tariff clock is ticking... what happens in july??
+-0.06,0.06,0,5,4,6,3,62,400,0,0,1,1,1,0,69e22726e1e281459a5727dc10fb3753,Underperformance of the S&amp;P 500 and supervision of brokers
+0.26,0.26,0,5,4,6,3,134,370,1,0,1,1,1,0,6d76e7f3cf3923b11cb2efb6ce774c62,What does wall street view as stable or reliable but is actually quite risky? Do you have any trade 
+-0.04,0.04,0,5,4,6,3,52,400,0,0,1,1,1,0,21b4da899f7a8caa5955d39bae788d03,Paypal jump as report of Stripe takeover the company
+0.36,0.36,2,5,4,6,3,68,400,0,1,1,1,1,0,7433539b9a208e44420a4bec4d63afa3,Microsoft Japan Raided Over Suspected Violation of Anti-monopoly Law
+0.09,0.09,0,5,4,6,3,32,399,0,0,1,1,1,0,266edb4cc1054049e93abf24c0a689ad,TSMC hits $2 Trillion market cap
+-0.12,0.12,2,5,4,6,3,99,400,0,0,1,1,1,0,919ffb346d406e8ce26a1bec57a23d2b,"Merck faces double threat to lose up to half of its revenue, could a small study with DRTS save it?"
+0.51,0.51,2,5,4,6,3,53,297,0,0,1,1,1,0,ba2d29c04aefe29876fe044d23c815ce,Good buy the dip opportunities: Tempus AI &amp; LUNR?
+0.0,0.0,3,5,4,6,3,62,59,0,0,1,1,2,0,b0b43ff3e79a320f48ef2155e03c8dd6,Bitcoin Snaps Losing Streak With 5% Jump Before Nvidia Results
+0.0,0.0,0,5,4,6,3,80,61,0,0,1,1,1,0,bfdf89bd3290d48ef3483acd19de84d0,Lucid Motors Lays Off 12% of its Workforce: What’s Happening in the EV Industry?
+0.07,0.07,2,5,4,6,3,16,400,0,0,1,1,1,0,bf090319b455ec8307ed0c95cda8db82,Pre-Market Today
+-0.2,0.2,0,5,4,6,3,92,65,0,0,1,1,1,0,6a112352a65cc3597723f4b96e506743,PayPal +7% after report Stripe considering acquisition of all or parts of $40B payments firm
+0.0,0.0,0,5,4,6,3,74,71,0,0,1,1,1,0,17f6d03c1ad03abf4a031b0625275440,"Stocks rise, adding to Tuesday's comeback as Nvidia and Oracle shares gain"
+0.4,0.4,2,5,4,6,3,63,58,0,0,1,1,1,0,5e7104afd32c0cc0b3cd76ab0d168d3d,Uber’s SpotHero Acquisition Is an Autonomous Infrastructure Bet
+0.4,0.4,2,5,4,6,3,47,58,0,0,1,1,1,0,de57075a25dc5cbdb98b63470bc23813,Understanding Free Cash Flow of AI Hyperscalers
+0.0,0.0,5,5,4,6,3,40,58,1,0,1,1,2,0,03ff7cbc81a15f069a43a8317c08bbd7,A Level Headed Look at State of Software
+0.0,0.0,0,5,4,6,3,93,59,0,1,1,1,1,0,25b25c7eb14e59364cae379b9bdbf23e,"Trump announces 401(k) for all: ""We will match your contribution with up to $1,000 each year"""
+0.07,0.07,3,5,4,6,3,55,102,0,1,1,1,2,0,b056b50744cd98222e386cbe7a5a8818,Trump claims price of beef is down since he took office
+-0.17,0.17,0,5,4,6,3,103,65,0,1,1,1,1,0,8865ff89022820827d52713eff09d463,"In less than a year, Trump erased 12 years of solvency for the trust fund that pays for Medicare Par"
+-0.12,0.12,0,5,4,6,3,139,59,0,1,1,1,1,0,53bf37864a72d55398873970d92ae8da,"Days before the national debt is due to hit $39 trillion, President Trump didn't mention it once dur"
+0.0,0.0,3,5,4,6,3,140,72,0,0,1,1,2,0,442c6c28520b6d69406b85e50ff5559d,"China manufactures about 80% of the world’s solar panels, 60% of the world’s wind turbines, 70% of t"
+0.0,0.0,0,1,4,6,3,77,86,0,0,0,1,1,0,3868263780ff7bde2f2f38b6c2e8cab5,Watch Citrini Report Author Sees AI Disrupting Global Economy - Bloomberg.com
+0.0,0.0,4,1,4,6,3,53,62,0,0,0,1,2,0,37fbbc19c83edc8105b28f15622aeb38,Maybe the global economy isn't all about AI - Reuters
+-0.08,0.08,0,1,4,6,3,79,88,0,0,0,1,1,0,2d0459b06eda3244f8b2a76c7ce7371b,The ‘extreme and improbable’ economics of Citrini’s AI report - Financial Times
+0.0,0.0,0,3,1,6,3,121,130,0,0,0,1,1,0,7a096ae63d2a5229f8a011d232419ef0,Prospects for global imbalances in 2026 and beyond: Another China shock? - Peterson Institute for In
+0.25,0.25,0,1,4,6,3,83,273,0,0,0,1,1,0,02e81b0fc6ae2e208ff1ef6d129ec8db,"Nvidia tem receita recorde e projeta vendas de US$ 78 bi no 1T, acima das previsões"
+0.25,0.25,0,2,4,6,3,74,260,0,0,0,1,1,0,41f8b8cfbb5cc5505f102f5bdc873a4d,"Tecnisa aceita proposta do BTG para comprar 26% da Windsor por R$ 260,9 mi"
+0.25,0.25,0,3,2,6,3,64,267,0,1,0,1,1,0,5b819d14f69df2cf006e62fc428fba6a,Senado aprova criação de exame nacional obrigatório para médicos
+0.25,0.25,8,2,4,6,3,79,263,0,1,0,2,3,1,840ea41ff9d7d81877396f89738eeec2,Ibovespa tem queda modesta com realização de lucros após superar 192 mil pontos
+0.25,0.25,5,1,4,6,3,73,164,0,0,0,2,2,0,847752f0dc048e65a3ffa842fac03a0b,"Ibovespa fecha em queda, com bancos, mas chega ao 15º recorde só este ano"
+0.0,0.0,6,3,2,6,3,66,399,1,1,0,2,2,1,7c01f4766a8daed4c70d7e990575666f,Câmara dos Deputados aprova acordo entre Mercosul e União Europeia
+0.0,0.0,8,4,4,6,3,112,400,1,1,0,2,3,1,9f01053aebd91b1b7823e3264ec2bb4e,"Governo vai criar proteção ao agro e à indústria antes de aprovação do acordo Mercosul-UE no Senado,"
+0.0,0.0,8,4,4,6,3,81,400,1,0,0,2,3,1,37787fe34d5cf2072df4d9e22c47b3dd,EUA liberam revenda de petróleo venezuelano a Cuba em meio à crise de combustível
+0.0,0.0,6,2,4,6,3,69,400,1,1,0,2,2,1,ca410ba4dce0cd37570331a650713a30,5 dos 'penduricalhos' mais inacreditáveis do funcionalismo brasileiro
+0.0,0.0,6,2,4,6,3,103,400,1,1,0,2,2,1,498367480303c3dd01e6f7d914ebd30b,Leilão da Receita em SP tem iPhone 15 a partir de R$ 922 e caminhão por R$ 46 mil; veja como partici
+0.0,0.0,0,3,4,6,3,76,0,0,0,0,1,1,0,ed38e5dbd76180f392f2ecf0dc4ae034,Resultados e receitas da Marriot Vacations Worldwide acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,99,0,0,0,0,1,1,0,21f66819fc7ceeac8e4adfff4af20db6,Resultados da Pursuit Attractions Hospitality abaixo do esperado e receitas acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,63,0,0,0,0,1,1,0,fc25cc8721bed6dae14739afbafc8024,Resultados e receitas da Kennedy-Wilson acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,63,0,0,0,0,1,1,0,9b8eb50fb3e879e0a46374daf77d74b6,Resultados e receitas da Outfront Media acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,66,0,0,0,0,1,1,0,87e17609ee321b54993f4a898b27959f,Resultados e receitas da NPK International acima do esperado no Q4
+0.0,0.0,6,3,2,6,3,46,84,1,1,0,2,2,1,fa7d9bc958ebe2e0d82681e79f698eb1,Câmara dos Deputados aprova acordo Mercosul-UE
+0.0,0.0,0,3,4,6,3,71,119,0,0,0,1,1,0,05ec76307cebfa5583ec9e85feef042c,Lua e quatro planetas podem ser vistos alinhados a olho nu em fevereiro
+0.0,0.0,0,3,2,6,3,73,101,0,1,0,1,1,0,6e1991a8d9e83d6285f1413dff88306a,"Pesquisa CNN: 64% têm reação positiva ao discurso de Trump; 36%, negativa"
+0.0,0.0,0,3,4,6,3,58,86,0,0,0,1,1,0,9dd9ff2967d9f2f9b011900e120af015,Eduardo Paes evita se envolver em disputa interna na Alerj
+0.0,0.0,0,3,4,6,3,72,72,0,0,0,1,1,0,e5e37e42167534852816565f18fb5319,"Minutes of the Board's discount rate meetings on January 20 and 28, 2026"
+0.09,0.09,4,3,4,6,3,92,92,1,0,0,1,2,0,5da8c93f3fdef5466d5de3dca6884d46,Federal Reserve Board issues enforcement action with former employee of First Financial Bank
+-0.12,0.12,5,5,4,6,3,88,400,0,0,1,1,2,0,e65186de5aab09309c19b6864fbd2115,Why is the market punishing Workday ($WDAY) so hard? Beat on earnings but still down 8%.
+0.0,0.0,4,3,2,6,3,88,400,1,1,0,1,2,0,1a3fa8b72dc6a0f6ea0dca0b3c7cca3b,Acordo Mercosul-UE: governo projeta ganhos para exportações e aposta em trunfo eleitoral
+-0.6,0.6,12,1,4,6,3,84,400,0,0,0,2,3,1,58901405f78ba0dbfe7218f2747fc539,Nvidia projeta US$ 78 bilhões em vendas no 1º trimestre e reduz temor de bolha na IA
+0.29,0.29,3,5,4,6,3,140,72,0,1,1,1,2,0,c30e72b465fb95a6251da0dcc805c8ad,"Trump took an economy The Economist referred to as the ""envy of the world"" right before the 2024 ele"
+0.0,0.0,0,3,4,5,3,56,0,0,0,0,1,1,0,9158705eb69d0fa10ec0d2679e663adc,Resultados e receitas da Nutanix acima do esperado no Q2
+0.0,0.0,0,3,4,6,3,85,0,0,0,0,1,1,0,bd7f6be4871e9e6caa3f2cc26bd5a6eb,Resultados da Alkami Technology abaixo do esperado e receitas acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,79,0,0,0,0,1,1,0,05de1603ba3ba42776eb4a8d7f86d28f,Resultados da Goodrx em linha com o esperado e receitas acima do esperado no Q4
+0.0,0.0,0,3,4,5,3,53,0,0,0,0,1,1,0,b90cd5ccba4b9a138316633bc5cefbdd,Resultados e receitas da IONQ acima do esperado no Q4
+0.0,0.0,0,3,4,5,3,55,0,0,0,0,1,1,0,4c04a2f8dff3e205b3a3f31acf8fc3b8,Resultados e receitas da Taskus acima do esperado no Q4
+0.0,0.0,2,3,4,6,3,67,141,0,0,0,1,1,0,346adeb5a3d31e4ac848345d2f74276c,Síria relata “fuga em massa” de famílias ligadas ao Estado Islâmico
+0.0,0.0,0,3,4,6,3,75,124,0,0,0,1,1,0,c2c2e78e91ddf5112c460dbb618b9600,"Brasil precisa de um diálogo mais maduro sobre jornada de trabalho, diz CNI"
+0.5,0.5,2,2,4,6,3,94,67,0,0,0,1,1,0,56c5926dff881684aa47e9be4002ab0f,"Stocks making the biggest moves after hours: Nvidia, Salesforce, Snowflake, Nutanix &amp; more"
+0.37,0.37,7,3,4,6,3,92,160,1,0,0,2,3,1,6eb60e22bf6327e2c1c736911cdeb100,Paramount says Warner Bros. acquisition would be an ‘accelerant’ for its turnaround strategy
+-0.29,0.29,0,2,4,6,3,87,195,0,0,0,1,1,0,4a4b68a7f68337765662a34650349bd3,TJ Maxx parent’s earnings show discount clothes and home goods are still in high demand
+-0.12,0.12,0,3,1,6,3,85,171,1,0,0,1,1,0,db306614e58889d3dd1d5723524e6eb1,Steve Madden won’t give profit guidance as planned due to Supreme Court tariff ruling
+0.21,0.21,0,2,4,6,3,95,156,0,0,0,1,1,0,fc8e729cd201a1ba682a6160b2bd15ef,"Oracle’s selloff offers a chance to buy an ‘upper-echelon’ growth stock for cheap, analyst says"
+0.0,0.0,5,0,4,6,3,72,129,0,0,0,1,2,0,7235b1df372c6d0b6213e96d10a8d44f,Bitcoin’s upcoming $10.5B options expiry may end bear market: Here’s how
+0.0,0.0,3,0,4,6,3,56,145,0,0,0,1,2,0,1fca8b8ba07232b8f49857ff635f3b15,GD Culture Group board authorizes Bitcoin treasury sales
+0.06,0.06,0,1,4,6,3,72,138,0,0,0,1,1,0,25a04e4301219454dba7bc8d22f1c736,Nvidia Earnings Results Steady Markets as AI Spending Debate Intensifies
+0.25,0.25,0,1,4,6,3,78,126,0,0,0,1,1,0,ff612054b0c04a6a892bd8d3003f7361,Samsung's Galaxy S26 Billed as First 'Agentic AI Phone'—Here's What That Means
+0.1,0.1,0,1,4,6,3,58,128,0,0,0,1,1,0,285fab613bf2badf572ce5ac1c0d264f,Nvidia has another record quarter amid record capex spends
+0.0,0.0,0,5,4,6,3,23,63,0,0,1,1,1,0,6a145870847466e0221e8033b30dde51,Nvidia earnings be like
+-0.1,0.1,2,5,4,6,3,23,400,0,0,1,1,1,0,9782f364c2187691407eded5dfb7e687,Nvidia Crushes Earnings
+0.34,0.34,9,5,4,6,3,45,400,0,0,1,2,3,1,e10a0b0dfa81bcf8a21248bba3761e7d,NVDA blowout guidance with no help from China
+0.0,0.0,3,5,4,6,3,118,65,0,0,1,1,2,0,8345064a152ade9b2a001a15c553ba14,"Nvidia +3% after-hours as Q4 EPS $1.62 vs $1.53 est, revenue $68.1B vs $65.8B, Q1 guide $76.4B to $7"
+0.0,0.0,0,5,4,6,3,55,147,0,0,1,1,1,0,b5f6f48d593c368192b393e308965934,Reddit: One-of-a-Kind Powerhouse Supercharged by Google
+0.25,0.25,8,2,4,6,3,75,211,1,0,0,2,3,1,271999498caef36bd8c81c3f37323645,"Engie Brasil (EGIE3) tem lucro de R$ 727 mi no 4º tri, queda anual de 33,3%"
+0.25,0.25,0,3,1,6,3,84,225,0,0,0,1,1,0,3d18c9aca346becb5fe30cea3ab44714,Lulinha se coloca à disposição do STF para ‘esclarecimentos’ na investigação do INSS
+0.25,0.25,0,3,4,6,3,85,266,0,1,0,1,1,0,5cb0b0439b64cd075d0d99887d7287ed,Ministro da Justiça estuda projetos após retirada de tributo de bets do PL Antifacção
+0.25,0.25,0,3,2,6,3,74,227,0,1,0,1,1,0,fcfd9b9a551090ac0d4979517c407101,Governo adia por mais 90 dias vigência de regra sobre trabalho em feriados
+0.0,0.0,9,3,2,6,3,107,399,0,1,0,2,3,1,48b77c53560d4f7548d996e099d94f6c,Haddad defende aumento de imposto sobre importações de mais de mil produtos: 'proteger a produção na
+0.0,0.0,6,4,4,6,3,125,399,0,1,0,2,2,1,8f1177be257a7ac87d1fd1702568ebe7,Alcolumbre não pauta tributação especial para data centers; Haddad fala em 'soberania' e que há solu
+0.0,0.0,5,2,4,6,3,89,400,0,0,0,1,2,0,8d536e0890ae7857b51e4804c4fbf5a3,"Nubank tem lucro líquido de US$ 894,8 milhões no 4º trimestre, alta de 50% para o período"
+0.0,0.0,0,3,4,6,3,81,0,0,0,0,1,1,0,6d7362e8cc7861dab42f50f9183d1c6b,Resultados da OraSure em linha com o esperado e receitas abaixo do esperado no Q4
+0.6,0.6,2,3,4,6,3,82,0,0,0,0,1,1,0,3e6d49b518eb93c3e70d4a534101a379,Resultados da Honest Company abaixo do esperado e receitas acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,94,0,0,0,0,1,1,0,f82b544eb3260a3bc6712bfbe75fb6e9,Resultados da Fomento Economico Mexicano abaixo do esperado e receitas acima do esperado no Q4
+0.0,0.0,0,3,4,6,3,94,0,0,0,0,1,1,0,5e940f206f0474cadcec6ff7ff127cac,Resultados da Cherry Hill Mortgage em linha com o esperado e receitas abaixo do esperado no Q4
+0.0,0.0,0,3,4,6,3,75,0,0,0,0,1,1,0,1d5d90946caf6f9a7595cc2f05413ac2,Resultados da eHealth abaixo do esperado e receitas acima do esperado no Q4
+0.0,0.0,0,3,2,6,3,66,100,0,0,0,1,1,0,8ba0d9fa9370918d4b028dcaf4007472,FMI prevê crescimento estável nos EUA e apela à redução do déficit
+0.0,0.0,0,3,4,6,3,58,99,0,1,0,1,1,0,c28302ee8cab3071d5c6bcb26c5bb79f,Samsung lança celular com “película anti-espião” integrada
+0.0,0.0,0,3,4,6,3,71,92,0,0,0,1,1,0,08e0ee321317ab65e30c3f071b848217,"Às vésperas de lançamento, Netflix publica cena inédita de “Bridgerton”"
+0.0,0.0,2,3,4,6,3,73,70,0,0,0,1,1,0,d26fbb8a44ba9180bf8703878c88590c,"Galatasaray perde para a Juventus, mas marca no fim e avança na Champions"
+0.02,0.02,0,3,4,6,3,74,353,0,0,0,1,1,0,7d8d203fb899aa4c6f4ae6b60cda2a54,"New York sues Valve, alleging its loot boxes are ‘quintessential gambling’"
+0.15,0.15,0,3,4,6,3,66,346,0,0,0,1,1,0,e034214d0f3b7cee46daf7474b2b0725,How the new Galaxy S26 phones stack up against each other on paper
+0.32,0.32,7,3,4,6,3,46,336,1,0,0,2,3,1,fcec81c1ecc7d742a0c3f067bbf44010,Corsair is halting Drop sales after March 25th
+0.5,0.5,4,3,2,6,3,71,158,0,1,0,1,2,0,75e666d2ea1ad9a836d6e00fa84f9824,Governo investiga se documentos de Epstein citando Trump foram omitidos
+0.0,0.0,0,3,4,6,3,71,138,0,1,0,1,1,0,5faca2be51e8c5cc46e3257edf6dd65b,"Amigos inseparáveis, capivara e anta brasileira são sacrificados em zoo"
+0.0,0.0,0,3,4,6,3,66,97,0,0,0,1,1,0,613116810bbdbfa0a69da96bc2428d72,Kate Hudson afirma desistir facilmente de relacionamentos; entenda
+-0.05,0.05,0,3,4,6,3,68,74,0,0,0,1,1,0,aedda35f7ccb2efb6057c53678371e7e,Figurante de “Grey’s Anatomy” expõe bullying de Eric Dane: “Mereceu”
+0.11,0.11,5,1,4,6,3,68,132,1,0,0,1,2,0,6f080143e75da993435e4b53ddbfa21e,Snowflake’s stock dips as the software company gives a mixed outlook
+0.0,0.0,5,2,4,6,3,65,147,1,0,0,1,2,0,e7567f2482b280f386a035b9ecece19c,Kalshi boots a US politician off the platform for insider trading
+0.0,0.0,0,1,4,6,3,78,153,0,0,0,1,1,0,25839858c0f4516be91bf61b8b8e92db,Gushwork bets on AI search for customer leads — and early results are emerging
+-0.03,0.03,0,1,4,6,3,89,166,0,0,0,1,1,0,23b6a3acafbb80c527aac9ff9b4b2945,Anthropic acquires computer-use AI startup Vercept after Meta poached one of its founders
+0.44,0.44,2,5,4,6,3,33,400,0,0,1,1,1,0,6cedde8d57836724d2f8db7588337f39,is DCA timing a reasonable thing?
+0.0,0.0,3,3,1,6,3,80,89,1,0,0,1,2,0,7e41c3403bb8d8c5c8358cee80f39a22,IMF Says Tariff Uncertainty Risks Hampering ‘Buoyant’ US Economy - Bloomberg.com
+0.25,0.25,0,2,4,6,3,73,171,0,0,0,2,1,0,6bc418cf2134dd674cc9275a2174d99c,"Quina hoje, concurso 6961: Confira o resultado sorteado nesta quarta (25)"
+0.25,0.25,0,2,4,6,3,77,167,0,0,0,2,1,0,386017851b41beec65df34314640dcb2,"Lotofácil hoje, concurso 3621: Confira o resultado sorteado nesta quarta (25)"
+0.0,0.0,4,3,2,6,3,134,399,0,1,0,1,2,0,dd2f93b5b14f97a7761410074e5b26ed,Haddad diz que data de saída da Fazenda depende de reunião com Lula e viagem aos EUA; ministro se en
+0.0,0.0,0,3,2,6,3,65,107,0,1,0,1,1,0,4986d19ef67c1a556326a38fff90907c,São Paulo lidera exportações do agronegócio brasileiro em janeiro
+0.0,0.0,2,3,2,6,3,72,123,0,1,0,1,1,0,535ecf8f1f8ad6741e6253c6f5d0d72c,Valdemar diz ter ficado triste por retirar Espiridão Amin da chapa em SC
+0.0,0.0,0,3,4,6,3,69,62,0,1,0,1,1,0,1315cb173c0ddafa7410fdb1d1a7856f,Flávio reforça discurso contra reeleição presidencial e apresenta PEC
+0.0,0.0,0,3,2,6,3,59,58,0,1,0,1,1,0,ffea5ac20529e03d3604d37ee4a8b607,Governo do Rio de Janeiro confirma 11 casos de Mpox em 2026
+0.0,0.0,0,3,2,6,3,70,182,0,1,0,1,1,0,7c6e208a3ac0e44f3a1db42b04f30d28,Governo dá aval para avanço de política nacional dos minerais críticos
