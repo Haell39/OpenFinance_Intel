@@ -6,6 +6,9 @@ import {
   AlertTriangle,
   RefreshCw,
   Filter,
+  ChevronLeft,
+  ChevronRight,
+  ArrowUpDown,
 } from "lucide-react";
 
 const CONFIDENCE_CONFIG = {
@@ -44,11 +47,16 @@ const SECTOR_ICONS = {
   Social: "🌐",
 };
 
-const PredictionRadar = ({ isDark, language, refreshInterval }) => {
+const ITEMS_PER_PAGE = 15;
+
+const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
   const [predictions, setPredictions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState(null);
   const [filter, setFilter] = useState("all"); // all, high, medium, low
   const [sectorFilter, setSectorFilter] = useState("all");
+  const [sortOrder, setSortOrder] = useState("newest"); // newest, oldest
+  const [currentPage, setCurrentPage] = useState(1);
 
   const fetchPredictions = async () => {
     try {
@@ -57,6 +65,7 @@ const PredictionRadar = ({ isDark, language, refreshInterval }) => {
       if (res.ok) {
         const data = await res.json();
         setPredictions(data);
+        setLastUpdated(new Date());
       }
     } catch (err) {
       console.error("Failed to fetch predictions:", err);
@@ -78,11 +87,28 @@ const PredictionRadar = ({ isDark, language, refreshInterval }) => {
   }, [refreshInterval]);
 
   // --- Filters ---
-  const filtered = predictions.filter((p) => {
-    if (filter !== "all" && p.confidence !== filter) return false;
-    if (sectorFilter !== "all" && p.sector !== sectorFilter) return false;
-    return true;
-  });
+  const filtered = predictions
+    .filter((p) => {
+      if (filter !== "all" && p.confidence !== filter) return false;
+      if (sectorFilter !== "all" && p.sector !== sectorFilter) return false;
+      return true;
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.predicted_at || 0);
+      const dateB = new Date(b.predicted_at || 0);
+      return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
+    });
+
+  // --- Pagination ---
+  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+  const safePage = Math.min(currentPage, totalPages);
+  const startIdx = (safePage - 1) * ITEMS_PER_PAGE;
+  const paginatedItems = filtered.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filter, sectorFilter, sortOrder]);
 
   // --- Stats ---
   const stats = {
@@ -126,14 +152,26 @@ const PredictionRadar = ({ isDark, language, refreshInterval }) => {
                 : "ML-calculated impact probability for each market event."}
             </p>
           </div>
-          <button
-            onClick={fetchPredictions}
-            disabled={loading}
-            className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-colors disabled:opacity-50"
-          >
-            <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
-            {language === "pt" ? "Atualizar" : "Refresh"}
-          </button>
+          <div className="flex items-center gap-3">
+            {lastUpdated && (
+              <span className="text-[10px] text-slate-400 font-mono">
+                {language === "pt" ? "Atualizado" : "Updated"}{" "}
+                {lastUpdated.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })}
+              </span>
+            )}
+            <button
+              onClick={fetchPredictions}
+              disabled={loading}
+              className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-colors disabled:opacity-50"
+            >
+              <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
+              {language === "pt" ? "Atualizar" : "Refresh"}
+            </button>
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -217,6 +255,25 @@ const PredictionRadar = ({ isDark, language, refreshInterval }) => {
               </option>
             ))}
           </select>
+
+          <span className="text-slate-300 dark:text-slate-700">|</span>
+
+          {/* Sort Order */}
+          <button
+            onClick={() =>
+              setSortOrder((prev) => (prev === "newest" ? "oldest" : "newest"))
+            }
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full border bg-white dark:bg-gray-900 text-slate-600 dark:text-slate-400 border-zinc-300 dark:border-gray-700 hover:border-blue-400 transition-colors"
+          >
+            <ArrowUpDown size={12} />
+            {sortOrder === "newest"
+              ? language === "pt"
+                ? "Mais Recentes"
+                : "Newest"
+              : language === "pt"
+                ? "Mais Antigos"
+                : "Oldest"}
+          </button>
         </div>
 
         {/* Predictions List */}
@@ -240,14 +297,14 @@ const PredictionRadar = ({ isDark, language, refreshInterval }) => {
           </div>
         ) : (
           <div className="space-y-2">
-            {filtered.map((pred, idx) => {
+            {paginatedItems.map((pred, idx) => {
               const conf =
                 CONFIDENCE_CONFIG[pred.confidence] || CONFIDENCE_CONFIG.low;
               const pct = Math.round(pred.probability * 100);
 
               return (
                 <div
-                  key={pred.event_id || idx}
+                  key={pred.event_id || startIdx + idx}
                   className={`bg-white dark:bg-gray-900 rounded-xl border ${conf.border} p-4 shadow-sm hover:shadow-md transition-all duration-200 group`}
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -329,6 +386,52 @@ const PredictionRadar = ({ isDark, language, refreshInterval }) => {
                 </div>
               );
             })}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {filtered.length > ITEMS_PER_PAGE && (
+          <div className="flex items-center justify-between pt-2">
+            <span className="text-xs text-slate-400 font-mono">
+              {language === "pt"
+                ? `${startIdx + 1}–${Math.min(startIdx + ITEMS_PER_PAGE, filtered.length)} de ${filtered.length}`
+                : `${startIdx + 1}–${Math.min(startIdx + ITEMS_PER_PAGE, filtered.length)} of ${filtered.length}`}
+            </span>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setCurrentPage(1)}
+                disabled={safePage <= 1}
+                className="px-2 py-1 text-xs rounded border border-zinc-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-slate-600 dark:text-slate-400 hover:border-blue-400 disabled:opacity-30 transition-colors"
+              >
+                1
+              </button>
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={safePage <= 1}
+                className="p-1.5 rounded border border-zinc-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-slate-600 dark:text-slate-400 hover:border-blue-400 disabled:opacity-30 transition-colors"
+              >
+                <ChevronLeft size={14} />
+              </button>
+              <span className="px-3 py-1 text-xs font-bold text-slate-700 dark:text-slate-300 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-200 dark:border-blue-800 tabular-nums">
+                {safePage} / {totalPages}
+              </span>
+              <button
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
+                disabled={safePage >= totalPages}
+                className="p-1.5 rounded border border-zinc-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-slate-600 dark:text-slate-400 hover:border-blue-400 disabled:opacity-30 transition-colors"
+              >
+                <ChevronRight size={14} />
+              </button>
+              <button
+                onClick={() => setCurrentPage(totalPages)}
+                disabled={safePage >= totalPages}
+                className="px-2 py-1 text-xs rounded border border-zinc-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-slate-600 dark:text-slate-400 hover:border-blue-400 disabled:opacity-30 transition-colors"
+              >
+                {totalPages}
+              </button>
+            </div>
           </div>
         )}
 
