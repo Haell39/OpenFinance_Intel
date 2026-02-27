@@ -485,8 +485,8 @@ const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
         <div className="text-center py-4 space-y-1">
           <p className="text-[10px] text-slate-400">
             {language === "pt"
-              ? `📊 Exibindo os ${predictions.length} eventos mais recentes de ${stats.total} no total · Estatísticas referentes ao banco de dados completo`
-              : `📊 Showing ${predictions.length} most recent events of ${stats.total} total · Statistics reflect the full database`}
+              ? `📊 Exibindo os ${predictions.length} eventos mais recentes de ${dbStats.total} no total · Estatísticas referentes aos eventos exibidos`
+              : `📊 Showing ${predictions.length} most recent events of ${dbStats.total} total · Statistics reflect displayed events`}
           </p>
           <p className="text-[10px] text-slate-400 italic">
             {language === "pt"

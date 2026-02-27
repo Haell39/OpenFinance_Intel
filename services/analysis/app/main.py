@@ -634,6 +634,36 @@ def enrich_event(raw_event: dict) -> dict | None:
     return enriched_event
 
 
+def cleanup_old_events(mongo_db, max_events: int = 1000) -> None:
+    """Mantém apenas os max_events mais recentes no banco."""
+    total = mongo_db.events.count_documents({})
+    if total <= max_events:
+        return
+
+    cutoff = list(
+        mongo_db.events.find({}, {"timestamp": 1, "id": 1})
+        .sort("timestamp", -1)
+        .skip(max_events)
+        .limit(1)
+    )
+    if not cutoff:
+        return
+
+    cutoff_ts = cutoff[0].get("timestamp")
+
+    # IDs dos eventos antigos
+    old = list(mongo_db.events.find({"timestamp": {"$lte": cutoff_ts}}, {"id": 1, "_id": 0}))
+    old_ids = [e.get("id") for e in old if e.get("id")]
+
+    # Remove predições e eventos antigos
+    if old_ids:
+        mongo_db.predictions.delete_many({"event_id": {"$in": old_ids}})
+    deleted = mongo_db.events.delete_many({"timestamp": {"$lte": cutoff_ts}})
+
+    remaining = mongo_db.events.count_documents({})
+    print(f"[analysis] 🧹 Cleanup: {deleted.deleted_count} eventos antigos removidos. {remaining}/{max_events} restantes.")
+
+
 def run() -> None:
     """Loop principal do Analysis Service"""
     settings = get_settings()
@@ -646,6 +676,8 @@ def run() -> None:
     mongo_db = mongo_client[settings["mongo_db"]]
 
     print("[analysis] iniciado. Aguardando eventos na fila...")
+
+    event_counter = 0
 
     while True:
         item = redis_client.brpop(settings["events_queue"], timeout=5)
@@ -688,6 +720,12 @@ def run() -> None:
                 f"({enriched_event['type']}, {enriched_event['impact']}) "
                 f"processado e salvo"
             )
+
+            # Auto-cleanup a cada 100 eventos processados
+            event_counter += 1
+            if event_counter % 100 == 0:
+                cleanup_old_events(mongo_db, max_events=1000)
+
         except Exception as e:
             print(f"[analysis] erro ao processar evento: {e}")
             continue
@@ -695,3 +733,4 @@ def run() -> None:
 
 if __name__ == "__main__":
     run()
+
