@@ -4,6 +4,7 @@ import MarketOverview from "./components/MarketOverview.jsx";
 import IntelligenceFeed from "./components/IntelligenceFeed.jsx";
 import Watchlist from "./components/Watchlist.jsx";
 import PredictionRadar from "./components/PredictionRadar.jsx";
+import AIInsights from "./components/AIInsights.jsx";
 import Sparkline from "./components/Sparkline.jsx";
 import Sidebar from "./components/Sidebar.jsx";
 
@@ -484,6 +485,13 @@ export default function App() {
                 language={language}
                 refreshInterval={refreshInterval}
               />
+            </div>
+          )}
+
+          {/* TAB: AI INSIGHTS */}
+          {activeTab === "ai" && (
+            <div className="w-full h-full">
+              <AIInsights isDark={isDark} language={language} />
             </div>
           )}
 

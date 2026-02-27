@@ -3,7 +3,7 @@ import os
 from datetime import datetime, timedelta
 from typing import Literal
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Header
 from pydantic import BaseModel, AnyHttpUrl
 from pymongo import MongoClient
 from redis import Redis
@@ -454,6 +454,234 @@ def cleanup_old_data(keep_events: int = Query(default=1000, ge=100, le=5000)):
         "predictions_after": preds_after,
         "deleted_predictions": pred_result.deleted_count,
     }
+
+
+# ─────────────────────────────────────────────
+# AI Insights — Análise com IA Generativa
+# ─────────────────────────────────────────────
+
+class AIAnalyzeRequest(BaseModel):
+    module: Literal["summary", "crash", "market"]
+    provider: Literal["openai", "gemini"]
+
+
+def _build_summary_prompt(events: list, predictions: list) -> str:
+    """Prompt para resumo dos eventos de alto impacto."""
+    lines = []
+    for e in events[:10]:
+        pred = next((p for p in predictions if p.get("event_id") == e.get("id")), {})
+        prob = pred.get("probability", 0)
+        conf = pred.get("confidence", "low")
+        sent = e.get("analytics", {}).get("sentiment", {}).get("label", "Neutral")
+        lines.append(
+            f"- [{e.get('sector', 'N/A')}] {e.get('title', 'Sem título')} "
+            f"| Sentimento: {sent} | Prob. Impacto ML: {prob:.0%} ({conf}) "
+            f"| Urgência: {e.get('urgency', 'normal')}"
+        )
+    events_text = "\n".join(lines)
+    return f"""Você é um analista financeiro sênior do sistema OpenFinance Intel.
+
+Analise os seguintes {len(lines)} eventos de maior impacto detectados pelo nosso pipeline NLP+ML:
+
+{events_text}
+
+Gere um relatório estruturado em PORTUGUÊS com:
+1. **Resumo Executivo** (3-4 frases conectando os principais temas)
+2. **Top 3 Insights Chave** (com emojis) — impacto potencial no mercado
+3. **Ações Recomendadas** — o que um investidor deveria fazer agora
+4. **Nível de Atenção Geral** — Baixo/Médio/Alto/Crítico com justificativa
+
+Seja objetivo, use dados concretos dos eventos, e forneça análise de qualidade profissional."""
+
+
+def _build_crash_prompt(metrics: dict) -> str:
+    """Prompt para detector de crashes e bolhas."""
+    return f"""Você é um especialista em risco sistêmico e detecção de crises financeiras do sistema OpenFinance Intel.
+
+Analise as seguintes métricas agregadas dos eventos coletados:
+
+📊 Métricas do Sistema:
+- Total de eventos analisados: {metrics['total_events']}
+- Eventos de alto impacto: {metrics['high_impact']} ({metrics['high_pct']:.1f}%)
+- Sentimento geral: {metrics['bullish']} Bullish / {metrics['bearish']} Bearish / {metrics['neutral']} Neutral
+- Bearish ratio: {metrics['bear_ratio']:.1f}%
+- Setores com mais alertas: {metrics['top_alert_sectors']}
+- Urgência média: {metrics['avg_urgency']}
+- Keywords de crise detectadas: {metrics['crisis_count']} eventos
+- ML probabilidade média de impacto: {metrics['avg_ml_prob']:.1%}
+- Eventos com prob. ML >= 75%: {metrics['ml_high_count']}
+
+Gere um relatório de RISCO em PORTUGUÊS com:
+1. **🔴 Índice de Risco de Crash** (0-100) — com base nos dados, não invente
+2. **Indicadores de Alerta** — quais métricas estão em zona de perigo
+3. **Cenário de Risco** — o que poderia acontecer se a tendência continuar
+4. **Cenário Base** — probabilidade mais provável
+5. **Sinais de Bolha** — se há indícios de euforia irracional em algum setor
+6. **Recomendação de Proteção** — estratégias de hedge/proteção
+
+Seja realista, baseie-se nos dados, evite alarmes falsos."""
+
+
+def _build_market_prompt(sector_data: list) -> str:
+    """Prompt para análise de mercado financeiro."""
+    lines = []
+    for s in sector_data:
+        lines.append(
+            f"- {s['sector']}: {s['count']} eventos | "
+            f"Bullish: {s['bullish']} Bearish: {s['bearish']} | "
+            f"Impacto alto: {s['high']} | ML prob. média: {s['avg_prob']:.1%}"
+        )
+    sector_text = "\n".join(lines)
+    return f"""Você é um estrategista de mercado sênior do sistema OpenFinance Intel.
+
+Dados agregados por setor do mercado financeiro:
+
+{sector_text}
+
+Gere uma análise de MERCADO FINANCEIRO em PORTUGUÊS com:
+1. **Panorama Geral** — conjuntura atual baseada nos dados
+2. **Setores em Destaque** — quais setores merecem atenção e por quê
+3. **Setores de Risco** — onde há mais pressão vendedora ou incerteza
+4. **Correlações** — como os setores se influenciam mutuamente
+5. **Perspectivas** — projeção de curto prazo (próximos dias/semanas)
+6. **Alocação Sugerida** — percentual sugerido por setor (sumando 100%)
+
+Seja profissional e analítico. Use os dados reais fornecidos."""
+
+
+async def _call_llm(prompt: str, provider: str, api_key: str) -> str:
+    """Chama o LLM escolhido e retorna o texto."""
+    if provider == "openai":
+        from openai import OpenAI
+        client = OpenAI(api_key=api_key)
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=2000,
+            temperature=0.7,
+        )
+        return response.choices[0].message.content
+
+    elif provider == "gemini":
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel("gemini-2.0-flash")
+        response = model.generate_content(prompt)
+        return response.text
+
+    return "Provider não suportado."
+
+
+@app.post("/ai/analyze")
+async def ai_analyze(
+    request: AIAnalyzeRequest,
+    x_ai_key: str = Header(..., alias="X-AI-Key"),
+):
+    """
+    Endpoint de análise IA on-demand.
+    Requer API key via header X-AI-Key.
+    """
+    try:
+        module = request.module
+        provider = request.provider
+
+        if module == "summary":
+            # Top 10 eventos por probabilidade ML
+            predictions = list(
+                mongo_db.predictions.find({}, {"_id": 0})
+                .sort("probability", -1)
+                .limit(10)
+            )
+            event_ids = [p["event_id"] for p in predictions]
+            events = list(
+                mongo_db.events.find({"id": {"$in": event_ids}}, {"_id": 0})
+            )
+            prompt = _build_summary_prompt(events, predictions)
+
+        elif module == "crash":
+            # Métricas agregadas
+            all_events = list(mongo_db.events.find({}, {"_id": 0}))
+            all_preds = list(mongo_db.predictions.find({}, {"_id": 0}))
+
+            total = len(all_events)
+            high = sum(1 for e in all_events if e.get("impact") == "high")
+            bullish = sum(1 for e in all_events if e.get("analytics", {}).get("sentiment", {}).get("label") == "Bullish")
+            bearish = sum(1 for e in all_events if e.get("analytics", {}).get("sentiment", {}).get("label") == "Bearish")
+            neutral = total - bullish - bearish
+
+            # Crisis keywords
+            crisis_kw = ["crash", "colapso", "recessão", "recession", "default", "crise", "crisis", "guerra", "war"]
+            crisis_count = sum(
+                1 for e in all_events
+                if any(k in (e.get("title", "") + " " + e.get("description", "")).lower() for k in crisis_kw)
+            )
+
+            # Urgency
+            urg_map = {"critical": 3, "urgent": 2, "normal": 1, "low": 0}
+            avg_urg = sum(urg_map.get(e.get("urgency", "normal"), 1) for e in all_events) / max(total, 1)
+
+            # Top alert sectors
+            sector_alerts = {}
+            for e in all_events:
+                if e.get("impact") == "high":
+                    s = e.get("sector", "Other")
+                    sector_alerts[s] = sector_alerts.get(s, 0) + 1
+            top_sectors = sorted(sector_alerts.items(), key=lambda x: -x[1])[:3]
+            top_sectors_str = ", ".join(f"{s}({c})" for s, c in top_sectors) or "nenhum"
+
+            # ML metrics
+            avg_ml = sum(p.get("probability", 0) for p in all_preds) / max(len(all_preds), 1)
+            ml_high = sum(1 for p in all_preds if p.get("probability", 0) >= 0.75)
+
+            metrics = {
+                "total_events": total,
+                "high_impact": high,
+                "high_pct": (high / max(total, 1)) * 100,
+                "bullish": bullish,
+                "bearish": bearish,
+                "neutral": neutral,
+                "bear_ratio": (bearish / max(total, 1)) * 100,
+                "top_alert_sectors": top_sectors_str,
+                "avg_urgency": f"{avg_urg:.1f}/3.0",
+                "crisis_count": crisis_count,
+                "avg_ml_prob": avg_ml,
+                "ml_high_count": ml_high,
+            }
+            prompt = _build_crash_prompt(metrics)
+
+        elif module == "market":
+            # Dados por setor
+            sectors = ["Market", "Macro", "Commodities", "Tech", "Crypto", "Social"]
+            sector_data = []
+            for sector in sectors:
+                events = list(mongo_db.events.find({"sector": sector}, {"_id": 0}))
+                preds = list(mongo_db.predictions.find({"sector": sector}, {"_id": 0}))
+                if not events:
+                    continue
+                sector_data.append({
+                    "sector": sector,
+                    "count": len(events),
+                    "bullish": sum(1 for e in events if e.get("analytics", {}).get("sentiment", {}).get("label") == "Bullish"),
+                    "bearish": sum(1 for e in events if e.get("analytics", {}).get("sentiment", {}).get("label") == "Bearish"),
+                    "high": sum(1 for e in events if e.get("impact") == "high"),
+                    "avg_prob": sum(p.get("probability", 0) for p in preds) / max(len(preds), 1),
+                })
+            prompt = _build_market_prompt(sector_data)
+
+        else:
+            return {"error": "Módulo inválido."}
+
+        # Call LLM
+        result = await _call_llm(prompt, provider, x_ai_key)
+
+        return {
+            "module": module,
+            "provider": provider,
+            "analysis": result,
+            "generated_at": datetime.utcnow().isoformat() + "Z",
+        }
+
+    except Exception as e:
+        return {"error": str(e)}
 
 
 def generate_mock_narratives() -> list[dict]:

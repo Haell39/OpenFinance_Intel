@@ -1,0 +1,403 @@
+(base) PS D:\GitHub Desktop\TheOdds> docker compose up --build
+time="2026-02-26T22:39:40-03:00" level=warning msg="D:\\GitHub Desktop\\TheOdds\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+[+] Building 24.1s (58/59)
+ => [internal] load local bake definitions                                                                                                                                0.0s 
+ => => reading from stdin 2.87kB                                                                                                                                          0.0s
+ => [collector internal] load build definition from Dockerfile                                                                                                            0.0s
+ => => transferring dockerfile: 262B                                                                                                                                      0.0s 
+ => [analysis internal] load build definition from Dockerfile                                                                                                             0.0s 
+ => => transferring dockerfile: 622B                                                                                                                                      0.0s 
+ => [dashboard internal] load build definition from Dockerfile                                                                                                            0.0s 
+ => => transferring dockerfile: 466B                                                                                                                                      0.0s 
+ => [inference internal] load build definition from Dockerfile                                                                                                            0.0s 
+ => => transferring dockerfile: 237B                                                                                                                                      0.0s 
+ => [notifier internal] load build definition from Dockerfile                                                                                                             0.0s 
+ => => transferring dockerfile: 262B                                                                                                                                      0.0s 
+ => [api internal] load build definition from Dockerfile                                                                                                                  0.0s 
+ => => transferring dockerfile: 303B                                                                                                                                      0.0s 
+ => [notifier internal] load metadata for docker.io/library/python:3.11-slim                                                                                              1.0s 
+ => [dashboard internal] load metadata for docker.io/library/nginx:alpine                                                                                                 1.0s
+ => [dashboard internal] load metadata for docker.io/library/node:20-alpine                                                                                               1.0s 
+ => [dashboard internal] load .dockerignore                                                                                                                               0.0s 
+ => => transferring context: 79B                                                                                                                                          0.0s 
+ => [api internal] load .dockerignore                                                                                                                                     0.1s 
+ => => transferring context: 2B                                                                                                                                           0.0s 
+ => [collector internal] load .dockerignore                                                                                                                               0.0s 
+ => => transferring context: 2B                                                                                                                                           0.0s 
+ => [analysis internal] load .dockerignore                                                                                                                                0.0s 
+ => => transferring context: 2B                                                                                                                                           0.0s 
+ => [notifier internal] load .dockerignore                                                                                                                                0.0s 
+ => => transferring context: 2B                                                                                                                                           0.0s 
+ => [inference internal] load .dockerignore                                                                                                                               0.0s 
+ => => transferring context: 2B                                                                                                                                           0.0s 
+ => [api 1/5] FROM docker.io/library/python:3.11-slim@sha256:fba6f3b73795df99960f4269b297420bdbe01a8631fc31ea3f121f2486d332d0                                             0.1s 
+ => => resolve docker.io/library/python:3.11-slim@sha256:fba6f3b73795df99960f4269b297420bdbe01a8631fc31ea3f121f2486d332d0                                                 0.0s 
+ => [collector internal] load build context                                                                                                                               0.0s 
+ => => transferring context: 91B                                                                                                                                          0.0s 
+ => [dashboard build 1/6] FROM docker.io/library/node:20-alpine@sha256:09e2b3d9726018aecf269bd35325f46bf75046a643a66d28360ec71132750ec8                                   0.0s 
+ => => resolve docker.io/library/node:20-alpine@sha256:09e2b3d9726018aecf269bd35325f46bf75046a643a66d28360ec71132750ec8                                                   0.0s 
+ => [dashboard internal] load build context                                                                                                                               0.0s 
+ => => transferring context: 61.62kB                                                                                                                                      0.0s 
+ => CACHED [dashboard stage-1 1/3] FROM docker.io/library/nginx:alpine@sha256:1d13701a5f9f3fb01aaa88cef2344d65b6b5bf6b7d9fa4cf0dca557a8d7702ba                            0.0s 
+ => => resolve docker.io/library/nginx:alpine@sha256:1d13701a5f9f3fb01aaa88cef2344d65b6b5bf6b7d9fa4cf0dca557a8d7702ba                                                     0.0s 
+ => [notifier internal] load build context                                                                                                                                0.0s 
+ => => transferring context: 91B                                                                                                                                          0.0s 
+ => [analysis internal] load build context                                                                                                                                0.0s 
+ => => transferring context: 92B                                                                                                                                          0.0s 
+ => [inference internal] load build context                                                                                                                               0.0s 
+ => => transferring context: 334B                                                                                                                                         0.0s 
+ => [api internal] load build context                                                                                                                                     0.0s 
+ => => transferring context: 30.43kB                                                                                                                                      0.0s 
+ => CACHED [inference 2/5] WORKDIR /app                                                                                                                                   0.0s 
+ => CACHED [notifier 3/5] COPY requirements.txt /app/requirements.txt                                                                                                     0.0s 
+ => CACHED [notifier 4/5] RUN pip install --no-cache-dir -r /app/requirements.txt                                                                                         0.0s 
+ => CACHED [notifier 5/5] COPY app /app/app                                                                                                                               0.0s 
+ => CACHED [analysis 3/5] COPY requirements.txt /app/requirements.txt                                                                                                     0.0s 
+ => CACHED [analysis 4/5] RUN pip install --no-cache-dir -r /app/requirements.txt &&     pip install --no-cache-dir https://github.com/explosion/spacy-models/releases/d  0.0s 
+ => CACHED [analysis 5/5] COPY app /app/app                                                                                                                               0.0s 
+ => CACHED [collector 3/5] COPY requirements.txt /app/requirements.txt                                                                                                    0.0s 
+ => CACHED [collector 4/5] RUN pip install --no-cache-dir -r /app/requirements.txt                                                                                        0.0s 
+ => CACHED [collector 5/5] COPY app /app/app                                                                                                                              0.0s 
+ => CACHED [inference 3/6] COPY requirements.txt .                                                                                                                        0.0s 
+ => CACHED [inference 4/6] RUN pip install --no-cache-dir -r requirements.txt                                                                                             0.0s 
+ => CACHED [inference 5/6] COPY app/ ./app/                                                                                                                               0.0s 
+ => CACHED [inference 6/6] COPY models/ ./models/                                                                                                                         0.0s 
+ => [api 3/5] COPY requirements.txt /app/requirements.txt                                                                                                                 0.0s 
+ => [inference] exporting to image                                                                                                                                        0.3s 
+ => => exporting layers                                                                                                                                                   0.0s 
+ => => exporting manifest sha256:7375b2b4b1b7a87bd81b1594d16ee224ea8ae15bfcf7b0989ccfba0da4abd622                                                                         0.0s 
+ => => exporting config sha256:f45aed66d55b1cd2bfbad35cec1789392057466df05dc5552d7ffd5a8c78fb54                                                                           0.0s 
+ => => exporting attestation manifest sha256:d4b0cfedb05f3b6563f2a8a6bda75e1a094c953cb93dc12e7f1970c1ca47e146                                                             0.1s 
+ => => exporting manifest list sha256:c3b3d4ec26ea4a82809721a532ad0aa3ed16bfbf39e097439e142346b6b4760c                                                                    0.0s 
+ => => naming to docker.io/library/theodds-inference:latest                                                                                                               0.0s 
+ => => unpacking to docker.io/library/theodds-inference:latest                                                                                                            0.0s 
+ => [notifier] exporting to image                                                                                                                                         0.3s 
+ => => exporting layers                                                                                                                                                   0.0s 
+ => => exporting manifest sha256:acb046fbc8f89954404d70414598a5105925f016ff4d380052525105c8a2df83                                                                         0.0s 
+ => => exporting config sha256:d7c23f16d8efb9aa6be48d29cf2424fb375a42cf81b3891a80423a963664c83e                                                                           0.0s 
+ => => exporting attestation manifest sha256:5046334d1c9686a67381e115627c7dc40c294ffd572b70e830da0ad1e2b3fe0f                                                             0.1s 
+ => => exporting manifest list sha256:1620b1f31d444d9869ce702476caf74f21c1a8fa61529f34e5df8c887c236d2c                                                                    0.0s 
+ => => naming to docker.io/library/theodds-notifier:latest                                                                                                                0.0s 
+ => => unpacking to docker.io/library/theodds-notifier:latest                                                                                                             0.0s 
+ => [collector] exporting to image                                                                                                                                        0.3s 
+ => => exporting layers                                                                                                                                                   0.0s 
+ => => exporting manifest sha256:c38b8ed3ddb0a7eec2972fd3219108a1aa957768481dde468f85128248f9d036                                                                         0.0s 
+ => => exporting config sha256:a7aec3363b9d523b915d02ef21a655c235ab2d7694d30406c4061f71a1e50d4b                                                                           0.0s 
+ => => exporting attestation manifest sha256:8cc7d393768c133015b398653162794ffea892ea444215dbdb0809afc8f6d032                                                             0.1s 
+ => => exporting manifest list sha256:e6dd363b0edaac6cc5570b1c61c55bdd3cc8d26c9993d70134d640c2693976dd                                                                    0.0s 
+ => => naming to docker.io/library/theodds-collector:latest                                                                                                               0.0s 
+ => => unpacking to docker.io/library/theodds-collector:latest                                                                                                            0.0s 
+ => [analysis] exporting to image                                                                                                                                         0.3s 
+ => => exporting layers                                                                                                                                                   0.0s 
+ => => exporting manifest sha256:7d7f1938279b136eda83a2b7c8bd92a9d89734b404e2906ddbb89d8bd996c64d                                                                         0.0s 
+ => => exporting config sha256:b2fb19abefc6c1e42335e4a91ac9738be132a7f8c831a0f1804d9c461b0b617a                                                                           0.0s 
+ => => exporting attestation manifest sha256:abf219be960fbf9290b40b0ac723f1203915ed30bfe67d18afad3b230dc91439                                                             0.1s 
+ => => exporting manifest list sha256:6d70e6b983287f5c0df386b09dd77923fa2aca5bee5b4fb5d611c797481d7433                                                                    0.0s 
+ => => naming to docker.io/library/theodds-analysis:latest                                                                                                                0.0s 
+ => => unpacking to docker.io/library/theodds-analysis:latest                                                                                                             0.0s 
+ => CACHED [dashboard build 2/6] WORKDIR /app                                                                                                                             0.0s 
+ => CACHED [dashboard build 3/6] COPY package.json package-lock.json* ./                                                                                                  0.0s 
+ => CACHED [dashboard build 4/6] RUN npm ci --silent                                                                                                                      0.0s 
+ => [dashboard stage-1 2/3] COPY nginx.conf /etc/nginx/conf.d/default.conf                                                                                                0.1s 
+ => [dashboard build 5/6] COPY . .                                                                                                                                        0.1s 
+ => ERROR [api 4/5] RUN pip install --no-cache-dir -r /app/requirements.txt                                                                                              21.6s 
+ => [dashboard build 6/6] RUN npm run build                                                                                                                               6.3s 
+ => [inference] resolving provenance for metadata file                                                                                                                    0.1s 
+ => [notifier] resolving provenance for metadata file                                                                                                                     0.1s 
+ => [collector] resolving provenance for metadata file                                                                                                                    0.0s 
+ => [analysis] resolving provenance for metadata file                                                                                                                     0.0s 
+ => [dashboard stage-1 3/3] COPY --from=build /app/dist /usr/share/nginx/html                                                                                             0.0s 
+ => [dashboard] exporting to image                                                                                                                                        0.3s 
+ => => exporting layers                                                                                                                                                   0.1s 
+ => => exporting manifest sha256:0924f4a2c1400ffcb2fc2fd350002126d2b39d9d553ba562932bab412b207fc7                                                                         0.0s 
+ => => exporting config sha256:b8249c6ea5108e28ef7529facb9c8a0790c6715bcaeaafd9f9619e32816a0e23                                                                           0.0s 
+ => => exporting attestation manifest sha256:b94af10bdda394ab87f708caef1bac99946011564ff05a6de676cda7683eb3cb                                                             0.0s 
+ => => exporting manifest list sha256:9088ce45abdaca59794076b745f875556c890321dd5937483fb1db06ae8b9af2                                                                    0.0s 
+ => => naming to docker.io/library/theodds-dashboard:latest                                                                                                               0.0s 
+ => => unpacking to docker.io/library/theodds-dashboard:latest                                                                                                            0.0s 
+ => [dashboard] resolving provenance for metadata file                                                                                                                    0.0s 
+------
+ > [api 4/5] RUN pip install --no-cache-dir -r /app/requirements.txt:
+2.755 Collecting fastapi==0.110.0 (from -r /app/requirements.txt (line 1))
+3.020   Downloading fastapi-0.110.0-py3-none-any.whl.metadata (25 kB)
+3.296 Collecting pydantic==2.6.4 (from -r /app/requirements.txt (line 2))
+3.342   Downloading pydantic-2.6.4-py3-none-any.whl.metadata (85 kB)
+3.397      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 85.1/85.1 kB 1.5 MB/s eta 0:00:00
+4.114 Collecting pymongo==4.6.2 (from -r /app/requirements.txt (line 3))
+4.161   Downloading pymongo-4.6.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (22 kB)
+4.264 Collecting redis==5.0.3 (from -r /app/requirements.txt (line 4))
+4.314   Downloading redis-5.0.3-py3-none-any.whl.metadata (9.3 kB)
+4.399 Collecting uvicorn==0.29.0 (from uvicorn[standard]==0.29.0->-r /app/requirements.txt (line 5))
+4.447   Downloading uvicorn-0.29.0-py3-none-any.whl.metadata (6.3 kB)
+4.507 Collecting google-generativeai==0.8.3 (from -r /app/requirements.txt (line 6))
+4.551   Downloading google_generativeai-0.8.3-py3-none-any.whl.metadata (3.9 kB)
+4.709 Collecting openai==1.12.0 (from -r /app/requirements.txt (line 7))
+4.754   Downloading openai-1.12.0-py3-none-any.whl.metadata (18 kB)
+4.873 Collecting starlette<0.37.0,>=0.36.3 (from fastapi==0.110.0->-r /app/requirements.txt (line 1))
+4.919   Downloading starlette-0.36.3-py3-none-any.whl.metadata (5.9 kB)
+4.988 Collecting typing-extensions>=4.8.0 (from fastapi==0.110.0->-r /app/requirements.txt (line 1))
+5.036   Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+5.097 Collecting annotated-types>=0.4.0 (from pydantic==2.6.4->-r /app/requirements.txt (line 2))
+5.141   Downloading annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+6.304 Collecting pydantic-core==2.16.3 (from pydantic==2.6.4->-r /app/requirements.txt (line 2))
+6.354   Downloading pydantic_core-2.16.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+6.431 Collecting dnspython<3.0.0,>=1.16.0 (from pymongo==4.6.2->-r /app/requirements.txt (line 3))
+6.476   Downloading dnspython-2.8.0-py3-none-any.whl.metadata (5.7 kB)
+6.555 Collecting click>=7.0 (from uvicorn==0.29.0->uvicorn[standard]==0.29.0->-r /app/requirements.txt (line 5))
+6.598   Downloading click-8.3.1-py3-none-any.whl.metadata (2.6 kB)
+6.652 Collecting h11>=0.8 (from uvicorn==0.29.0->uvicorn[standard]==0.29.0->-r /app/requirements.txt (line 5))
+6.695   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+6.767 Collecting google-ai-generativelanguage==0.6.10 (from google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+6.813   Downloading google_ai_generativelanguage-0.6.10-py3-none-any.whl.metadata (5.6 kB)
+6.929 Collecting google-api-core (from google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+6.979   Downloading google_api_core-2.30.0-py3-none-any.whl.metadata (3.1 kB)
+7.111 Collecting google-api-python-client (from google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+7.164   Downloading google_api_python_client-2.190.0-py3-none-any.whl.metadata (7.0 kB)
+7.292 Collecting google-auth>=2.15.0 (from google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+7.343   Downloading google_auth-2.48.0-py3-none-any.whl.metadata (6.2 kB)
+7.752 Collecting protobuf (from google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+7.801   Downloading protobuf-7.34.0-cp310-abi3-manylinux2014_x86_64.whl.metadata (595 bytes)
+7.905 Collecting tqdm (from google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+7.950   Downloading tqdm-4.67.3-py3-none-any.whl.metadata (57 kB)
+7.960      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 57.7/57.7 kB 6.8 MB/s eta 0:00:00
+8.044 Collecting anyio<5,>=3.5.0 (from openai==1.12.0->-r /app/requirements.txt (line 7))
+8.091   Downloading anyio-4.12.1-py3-none-any.whl.metadata (4.3 kB)
+8.147 Collecting distro<2,>=1.7.0 (from openai==1.12.0->-r /app/requirements.txt (line 7))
+8.191   Downloading distro-1.9.0-py3-none-any.whl.metadata (6.8 kB)
+8.265 Collecting httpx<1,>=0.23.0 (from openai==1.12.0->-r /app/requirements.txt (line 7))
+8.312   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+8.378 Collecting sniffio (from openai==1.12.0->-r /app/requirements.txt (line 7))
+8.424   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+8.539 Collecting httptools>=0.5.0 (from uvicorn[standard]==0.29.0->-r /app/requirements.txt (line 5))
+8.583   Downloading httptools-0.7.1-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (3.5 kB)
+8.646 Collecting python-dotenv>=0.13 (from uvicorn[standard]==0.29.0->-r /app/requirements.txt (line 5))
+8.690   Downloading python_dotenv-1.2.1-py3-none-any.whl.metadata (25 kB)
+8.788 Collecting pyyaml>=5.1 (from uvicorn[standard]==0.29.0->-r /app/requirements.txt (line 5))
+8.832   Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+8.933 Collecting uvloop!=0.15.0,!=0.15.1,>=0.14.0 (from uvicorn[standard]==0.29.0->-r /app/requirements.txt (line 5))
+8.977   Downloading uvloop-0.22.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (4.9 kB)
+9.135 Collecting watchfiles>=0.13 (from uvicorn[standard]==0.29.0->-r /app/requirements.txt (line 5))
+9.183   Downloading watchfiles-1.1.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+9.364 Collecting websockets>=10.4 (from uvicorn[standard]==0.29.0->-r /app/requirements.txt (line 5))
+9.413   Downloading websockets-16.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+9.558 Collecting proto-plus<2.0.0dev,>=1.22.3 (from google-ai-generativelanguage==0.6.10->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+9.603   Downloading proto_plus-1.27.1-py3-none-any.whl.metadata (2.2 kB)
+9.663 Collecting protobuf (from google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+9.711   Downloading protobuf-5.29.6-cp38-abi3-manylinux2014_x86_64.whl.metadata (592 bytes)
+9.788 Collecting idna>=2.8 (from anyio<5,>=3.5.0->openai==1.12.0->-r /app/requirements.txt (line 7))
+9.831   Downloading idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+9.942 Collecting googleapis-common-protos<2.0.0,>=1.56.3 (from google-api-core->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+9.987   Downloading googleapis_common_protos-1.72.0-py3-none-any.whl.metadata (9.4 kB)
+10.21 Collecting requests<3.0.0,>=2.20.0 (from google-api-core->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+10.25   Downloading requests-2.32.5-py3-none-any.whl.metadata (4.9 kB)
+10.34 Collecting pyasn1-modules>=0.2.1 (from google-auth>=2.15.0->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+10.39   Downloading pyasn1_modules-0.4.2-py3-none-any.whl.metadata (3.5 kB)
+10.83 Collecting cryptography>=38.0.3 (from google-auth>=2.15.0->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+10.88   Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+10.94 Collecting rsa<5,>=3.1.4 (from google-auth>=2.15.0->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+10.99   Downloading rsa-4.9.1-py3-none-any.whl.metadata (5.6 kB)
+11.06 Collecting certifi (from httpx<1,>=0.23.0->openai==1.12.0->-r /app/requirements.txt (line 7))
+11.11   Downloading certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+11.18 Collecting httpcore==1.* (from httpx<1,>=0.23.0->openai==1.12.0->-r /app/requirements.txt (line 7))
+11.23   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+11.43 Collecting httplib2<1.0.0,>=0.19.0 (from google-api-python-client->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+11.47   Downloading httplib2-0.31.2-py3-none-any.whl.metadata (2.2 kB)
+11.55 Collecting google-auth-httplib2<1.0.0,>=0.2.0 (from google-api-python-client->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+11.59   Downloading google_auth_httplib2-0.3.0-py3-none-any.whl.metadata (3.1 kB)
+11.71 Collecting uritemplate<5,>=3.0.1 (from google-api-python-client->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+11.75   Downloading uritemplate-4.2.0-py3-none-any.whl.metadata (2.6 kB)
+11.99 Collecting cffi>=2.0.0 (from cryptography>=38.0.3->google-auth>=2.15.0->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+12.03   Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+12.97 Collecting grpcio<2.0.0,>=1.33.2 (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-ai-generativelanguage==0.6.10->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+13.01   Downloading grpcio-1.78.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.8 kB)
+13.13 Collecting grpcio-status<2.0.0,>=1.33.2 (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-ai-generativelanguage==0.6.10->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+13.17   Downloading grpcio_status-1.78.0-py3-none-any.whl.metadata (1.3 kB)
+13.30 Collecting pyparsing<4,>=3.1 (from httplib2<1.0.0,>=0.19.0->google-api-python-client->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+13.34   Downloading pyparsing-3.3.2-py3-none-any.whl.metadata (5.8 kB)
+13.50 Collecting pyasn1<0.7.0,>=0.6.1 (from pyasn1-modules>=0.2.1->google-auth>=2.15.0->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+13.55   Downloading pyasn1-0.6.2-py3-none-any.whl.metadata (8.4 kB)
+13.73 Collecting charset_normalizer<4,>=2 (from requests<3.0.0,>=2.20.0->google-api-core->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+13.78   Downloading charset_normalizer-3.4.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (37 kB)
+13.88 Collecting urllib3<3,>=1.21.1 (from requests<3.0.0,>=2.20.0->google-api-core->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+13.92   Downloading urllib3-2.6.3-py3-none-any.whl.metadata (6.9 kB)
+14.02 Collecting pycparser (from cffi>=2.0.0->cryptography>=38.0.3->google-auth>=2.15.0->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+14.07   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+14.16 INFO: pip is looking at multiple versions of grpcio-status to determine which version is compatible with other requirements. This could take a while.
+14.16 Collecting grpcio-status<2.0.0,>=1.33.2 (from google-api-core[grpc]!=2.0.*,!=2.1.*,!=2.10.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,<3.0.0dev,>=1.34.1->google-ai-generativelanguage==0.6.10->google-generativeai==0.8.3->-r /app/requirements.txt (line 6))
+14.21   Downloading grpcio_status-1.76.0-py3-none-any.whl.metadata (1.1 kB)
+14.26   Downloading grpcio_status-1.75.1-py3-none-any.whl.metadata (1.1 kB)
+14.32   Downloading grpcio_status-1.75.0-py3-none-any.whl.metadata (1.1 kB)
+14.37   Downloading grpcio_status-1.74.0-py3-none-any.whl.metadata (1.1 kB)
+14.42   Downloading grpcio_status-1.73.1-py3-none-any.whl.metadata (1.1 kB)
+14.54   Downloading grpcio_status-1.73.0-py3-none-any.whl.metadata (1.1 kB)
+14.59   Downloading grpcio_status-1.72.2-py3-none-any.whl.metadata (1.1 kB)
+14.59 INFO: pip is still looking at multiple versions of grpcio-status to determine which version is compatible with other requirements. This could take a while.
+14.64   Downloading grpcio_status-1.72.1-py3-none-any.whl.metadata (1.1 kB)
+14.69   Downloading grpcio_status-1.71.2-py3-none-any.whl.metadata (1.1 kB)
+14.87 Downloading fastapi-0.110.0-py3-none-any.whl (92 kB)
+14.88    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 92.1/92.1 kB 8.7 MB/s eta 0:00:00
+14.93 Downloading pydantic-2.6.4-py3-none-any.whl (394 kB)
+15.03    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 394.9/394.9 kB 3.9 MB/s eta 0:00:00
+15.08 Downloading pymongo-4.6.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (680 kB)
+15.29    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 680.9/680.9 kB 3.2 MB/s eta 0:00:00
+15.33 Downloading redis-5.0.3-py3-none-any.whl (251 kB)
+15.38    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 251.8/251.8 kB 5.2 MB/s eta 0:00:00
+15.43 Downloading uvicorn-0.29.0-py3-none-any.whl (60 kB)
+15.44    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 60.8/60.8 kB 9.6 MB/s eta 0:00:00
+15.48 Downloading google_generativeai-0.8.3-py3-none-any.whl (160 kB)
+15.51    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 160.8/160.8 kB 6.9 MB/s eta 0:00:00
+15.55 Downloading openai-1.12.0-py3-none-any.whl (226 kB)
+15.60    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 226.7/226.7 kB 5.0 MB/s eta 0:00:00
+15.64 Downloading google_ai_generativelanguage-0.6.10-py3-none-any.whl (760 kB)
+15.77    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 760.0/760.0 kB 6.0 MB/s eta 0:00:00
+15.82 Downloading pydantic_core-2.16.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+16.10    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 7.6 MB/s eta 0:00:00
+16.15 Downloading annotated_types-0.7.0-py3-none-any.whl (13 kB)
+16.19 Downloading anyio-4.12.1-py3-none-any.whl (113 kB)
+16.20    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 113.6/113.6 kB 11.6 MB/s eta 0:00:00
+16.25 Downloading click-8.3.1-py3-none-any.whl (108 kB)
+16.26    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 12.4 MB/s eta 0:00:00
+16.30 Downloading distro-1.9.0-py3-none-any.whl (20 kB)
+16.35 Downloading dnspython-2.8.0-py3-none-any.whl (331 kB)
+16.38    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 331.1/331.1 kB 11.6 MB/s eta 0:00:00
+16.42 Downloading google_api_core-2.30.0-py3-none-any.whl (173 kB)
+16.44    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 173.3/173.3 kB 11.7 MB/s eta 0:00:00
+16.48 Downloading google_auth-2.48.0-py3-none-any.whl (236 kB)
+16.51    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 236.5/236.5 kB 9.4 MB/s eta 0:00:00
+16.55 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+16.60 Downloading httptools-0.7.1-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (456 kB)
+16.65    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 456.6/456.6 kB 9.8 MB/s eta 0:00:00
+16.69 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+16.70    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.5/73.5 kB 19.2 MB/s eta 0:00:00
+16.74 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+16.75    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.8/78.8 kB 15.6 MB/s eta 0:00:00
+16.79 Downloading protobuf-5.29.6-cp38-abi3-manylinux2014_x86_64.whl (320 kB)
+16.82    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 320.5/320.5 kB 13.0 MB/s eta 0:00:00
+16.86 Downloading python_dotenv-1.2.1-py3-none-any.whl (21 kB)
+16.91 Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)
+16.99    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 10.1 MB/s eta 0:00:00
+17.04 Downloading starlette-0.36.3-py3-none-any.whl (71 kB)
+17.04    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.5/71.5 kB 18.4 MB/s eta 0:00:00
+17.09 Downloading tqdm-4.67.3-py3-none-any.whl (78 kB)
+17.09    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.4/78.4 kB 21.1 MB/s eta 0:00:00
+17.14 Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+17.14    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 19.2 MB/s eta 0:00:00
+17.19 Downloading uvloop-0.22.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (3.8 MB)
+17.50    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.8/3.8 MB 12.2 MB/s eta 0:00:00
+17.55 Downloading watchfiles-1.1.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (456 kB)
+17.59    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 456.1/456.1 kB 11.7 MB/s eta 0:00:00
+17.63 Downloading websockets-16.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (184 kB)
+17.65    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 184.6/184.6 kB 13.1 MB/s eta 0:00:00
+17.69 Downloading google_api_python_client-2.190.0-py3-none-any.whl (14.7 MB)
+18.85    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 14.7/14.7 MB 12.7 MB/s eta 0:00:00
+18.89 Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+18.94 Downloading cryptography-46.0.5-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+19.28    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 13.0 MB/s eta 0:00:00
+19.33 Downloading google_auth_httplib2-0.3.0-py3-none-any.whl (9.5 kB)
+19.37 Downloading googleapis_common_protos-1.72.0-py3-none-any.whl (297 kB)
+19.39    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 297.5/297.5 kB 17.3 MB/s eta 0:00:00
+19.43 Downloading httplib2-0.31.2-py3-none-any.whl (91 kB)
+19.44    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.1/91.1 kB 14.0 MB/s eta 0:00:00
+19.48 Downloading idna-3.11-py3-none-any.whl (71 kB)
+19.49    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 19.4 MB/s eta 0:00:00
+19.54 Downloading proto_plus-1.27.1-py3-none-any.whl (50 kB)
+19.54    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 50.5/50.5 kB 25.0 MB/s eta 0:00:00
+19.59 Downloading pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+19.60    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 181.3/181.3 kB 19.1 MB/s eta 0:00:00
+19.65 Downloading requests-2.32.5-py3-none-any.whl (64 kB)
+19.65    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.7/64.7 kB 18.1 MB/s eta 0:00:00
+19.70 Downloading certifi-2026.2.25-py3-none-any.whl (153 kB)
+19.71    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 153.7/153.7 kB 15.8 MB/s eta 0:00:00
+19.75 Downloading rsa-4.9.1-py3-none-any.whl (34 kB)
+19.80 Downloading uritemplate-4.2.0-py3-none-any.whl (11 kB)
+19.86 Downloading cffi-2.0.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (215 kB)
+19.88    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 215.6/215.6 kB 15.3 MB/s eta 0:00:00
+19.92 Downloading charset_normalizer-3.4.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (151 kB)
+19.94    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 151.6/151.6 kB 11.6 MB/s eta 0:00:00
+19.98 Downloading grpcio-1.78.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (6.7 MB)
+20.49    ━━━━━━━━━━━━━━━━╸                        2.8/6.7 MB 5.6 MB/s eta 0:00:01
+20.50 ERROR: Exception:
+20.50 Traceback (most recent call last):
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 438, in _error_catcher
+20.50     yield
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 561, in read
+20.50     data = self._fp_read(amt) if not fp_closed else b""
+20.50            ^^^^^^^^^^^^^^^^^^
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 527, in _fp_read
+20.50     return self._fp.read(amt) if amt is not None else self._fp.read()
+20.50            ^^^^^^^^^^^^^^^^^^
+20.50   File "/usr/local/lib/python3.11/http/client.py", line 473, in read
+20.50     s = self.fp.read(amt)
+20.50         ^^^^^^^^^^^^^^^^^
+20.50   File "/usr/local/lib/python3.11/socket.py", line 718, in readinto
+20.50     return self._sock.recv_into(b)
+20.50            ^^^^^^^^^^^^^^^^^^^^^^^
+20.50   File "/usr/local/lib/python3.11/ssl.py", line 1314, in recv_into
+20.50     return self.read(nbytes, buffer)
+20.50            ^^^^^^^^^^^^^^^^^^^^^^^^^
+20.50   File "/usr/local/lib/python3.11/ssl.py", line 1166, in read
+20.50     return self._sslobj.read(len, buffer)
+20.50            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+20.50 ssl.SSLError: [SSL] record layer failure (_ssl.c:2590)
+20.50
+20.50 During handling of the above exception, another exception occurred:
+20.50
+20.50 Traceback (most recent call last):
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_internal/cli/base_command.py", line 180, in exc_logging_wrapper
+20.50     status = run_func(*args)
+20.50              ^^^^^^^^^^^^^^^
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_internal/cli/req_command.py", line 245, in wrapper
+20.50     return func(self, options, args)
+20.50            ^^^^^^^^^^^^^^^^^^^^^^^^^
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_internal/commands/install.py", line 377, in run
+20.50     requirement_set = resolver.resolve(
+20.50                       ^^^^^^^^^^^^^^^^^
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_internal/resolution/resolvelib/resolver.py", line 179, in resolve
+20.50     self.factory.preparer.prepare_linked_requirements_more(reqs)
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_internal/operations/prepare.py", line 552, in prepare_linked_requirements_more
+20.50     self._complete_partial_requirements(
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_internal/operations/prepare.py", line 467, in _complete_partial_requirements
+20.50     for link, (filepath, _) in batch_download:
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_internal/network/download.py", line 183, in __call__
+20.50     for chunk in chunks:
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_internal/cli/progress_bars.py", line 53, in _rich_progress_bar
+20.50     for chunk in iterable:
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_internal/network/utils.py", line 63, in response_chunks
+20.50     for chunk in response.raw.stream(
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 622, in stream
+20.50     data = self.read(amt=amt, decode_content=decode_content)
+20.50            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 560, in read
+20.50     with self._error_catcher():
+20.50   File "/usr/local/lib/python3.11/contextlib.py", line 158, in __exit__
+20.50     self.gen.throw(typ, value, traceback)
+20.50   File "/usr/local/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 449, in _error_catcher
+20.50     raise SSLError(e)
+20.50 pip._vendor.urllib3.exceptions.SSLError: [SSL] record layer failure (_ssl.c:2590)
+20.71
+20.71 [notice] A new release of pip is available: 24.0 -> 26.0.1
+20.71 [notice] To update, run: pip install --upgrade pip
+------
+Dockerfile:6
+
+--------------------
+
+   4 |
+
+   5 |     COPY requirements.txt /app/requirements.txt
+
+   6 | >>> RUN pip install --no-cache-dir -r /app/requirements.txt
+
+   7 |
+
+   8 |     COPY app /app/app
+
+--------------------
+
+target api: failed to solve: process "/bin/sh -c pip install --no-cache-dir -r /app/requirements.txt" did not complete successfully: exit code: 2
+
+
+
+View build details: docker-desktop://dashboard/build/default/default/i0xo70em0wvxc9awhv8cb0zwy
+
+(base) PS D:\GitHub Desktop\TheOdds> 

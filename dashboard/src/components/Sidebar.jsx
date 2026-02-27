@@ -3,6 +3,7 @@ import {
   Newspaper,
   Briefcase,
   Activity,
+  Brain,
   Settings,
   LogOut,
   Sun,
@@ -36,6 +37,11 @@ const Sidebar = ({
       id: "predictions",
       label: language === "pt" ? "Probabilidade" : "Probability",
       icon: Activity,
+    },
+    {
+      id: "ai",
+      label: "AI Insights",
+      icon: Brain,
     },
   ];
 
