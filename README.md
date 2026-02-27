@@ -1,8 +1,8 @@
 # OpenFinance Intel 🌍⚡
 
-**Terminal de Inteligência de Investimentos** — IA, NLP e Análise de Sentimento para transformar o caos do mercado em **Sinais Acionáveis**.
+**Terminal de Inteligência de Investimentos** — IA, NLP, Machine Learning e LLMs para transformar o caos do mercado em **Sinais Acionáveis**.
 
-O OpenFinance Intel monitora o ecossistema financeiro global em tempo real, coletando notícias, feeds de redes sociais e dados macroeconômicos. Usando **NLP** e **Análise de Sentimento**, classifica cada evento como Bullish, Bearish ou Neutral e os organiza em 6 setores de investimento.
+O OpenFinance Intel monitora o ecossistema financeiro global em tempo real, coletando notícias, feeds de redes sociais e dados macroeconômicos. Usando **NLP**, **Machine Learning (predict_proba)** e **IA Generativa (OpenAI/Gemini)**, classifica cada evento como Bullish, Bearish ou Neutral, calcula probabilidade de impacto, e gera análises inteligentes — tudo organizado em 6 setores de investimento.
 
 ---
 
@@ -14,7 +14,7 @@ O painel de controle do investidor. Aqui você tem o pulso do mercado em uma ún
 
 - **🧠 Bento Grid**: Layout moderno e responsivo.
 - **📊 Fear & Greed Index**: Medidor de sentimento em tempo real (0-100).
-- **🎯 Radar de Oportunidades**: Identifica anomalias e tendências de alta convicção.
+- **🎯 Radar de Oportunidades**: Detecta anomalias e tendências com base em ML (`predict_proba`) + NLP.
 - **⚡ Ticker**: Cotações de USD, EUR e BTC ao vivo.
 
 ![Market Overview](imgs/visaomercado.png)
@@ -45,7 +45,29 @@ Nunca perca uma narrativa. Salve eventos e acompanhe o desdobramento da históri
 
 ---
 
-### 4. Configurações & Personalização
+### 4. Probabilidade de Impacto (ML)
+
+Análise quantitativa de risco. Cada evento recebe uma **probabilidade de impacto** via Machine Learning.
+
+- **🤖 RandomForest**: Modelo treinado com `predict_proba` para classificação de risco.
+- **📊 Cards filtráveis**: Alto Risco (🔴 ≥75%), Médio (🟡 50-74%), Baixo (🟢 <50%).
+- **📄 Paginação estável**: 250 eventos mais recentes, 10 por página, sem embaralhamento.
+- **📈 Estatísticas em tempo real**: Total, Alto, Médio, Baixo — referentes aos eventos exibidos.
+
+---
+
+### 5. AI Insights (IA Generativa)
+
+Análise profunda sob demanda com **OpenAI GPT-4o** ou **Google Gemini 2.0**.
+
+- **📋 Resumo de Alto Impacto**: Top 10 eventos ML → relatório executivo com ações recomendadas.
+- **🔴 Detector de Crashes & Bolhas**: Métricas agregadas → índice de risco 0-100 com cenários.
+- **📊 Análise de Mercado**: Dados por setor → conjuntura, perspectivas e alocação sugerida.
+- **🔑 BYOK (Bring Your Own Key)**: User fornece a API key na interface. Nunca armazenada no servidor.
+
+---
+
+### 6. Configurações & Personalização
 
 O terminal é seu. Ajuste para o seu fluxo de trabalho.
 
@@ -69,19 +91,24 @@ graph TD
     API -->|Task| Redis[Redis Queue]
     Redis --> Collector[Collector Service]
     Redis --> Analysis["Analysis Service - NLP"]
+    Redis --> Inference["Inference Service - ML"]
     Redis --> Notifier[Notifier Service]
 
     Collector -->|Raw Data| Mongo[(MongoDB)]
-    Analysis -->|Enriched Data| Mongo
-    API -->|Query| Mongo
+    Analysis -->|Enriched + Cleanup| Mongo
+    Inference -->|Predictions| Mongo
+    API -->|Query + AI Analyze| Mongo
+
+    API -.->|BYOK| OpenAI["OpenAI / Gemini"]
 ```
 
 | Serviço       | Tecnologia              | Responsabilidade                               |
 | ------------- | ----------------------- | ---------------------------------------------- |
 | **Collector** | Python                  | Scraping RSS/Atom/Reddit, deduplicação via MD5 |
-| **Analysis**  | Python, spaCy, TextBlob | NLP, Sentimento, Classificação Setorial        |
-| **API**       | Python, FastAPI         | Interface REST, Scheduler, Gestão de Fontes    |
-| **Dashboard** | React 18, Vite, Nginx   | UI SPA, Nginx Reverse Proxy (Porta 80)         |
+| **Analysis**  | Python, spaCy, TextBlob | NLP, Sentimento, Classificação + Auto-Cleanup  |
+| **Inference** | Python, scikit-learn    | ML predict_proba, probabilidade de impacto     |
+| **API**       | Python, FastAPI         | REST, Scheduler, AI Insights (OpenAI/Gemini)   |
+| **Dashboard** | React 18, Vite, Nginx   | UI SPA, 6 abas, Nginx Reverse Proxy (Porta 80) |
 | **Dados**     | MongoDB, Redis          | Persistência (NoSQL) e Mensageria (Pub/Sub)    |
 
 ---
@@ -107,12 +134,15 @@ Acesse: **http://localhost** (porta 80)
 > O sistema leva ~2 min para iniciar a coleta e preencher o banco de dados na primeira vez.
 
 ---
+
 ## 🛠️ Tech Stack
 
-- **Backend**: Python 3.11, FastAPI
-- **AI/NLP**: spaCy, TextBlob, Google Gemini (Opcional)
+- **Backend**: Python 3.11, FastAPI, Pydantic
+- **AI/NLP**: spaCy, TextBlob
+- **Machine Learning**: scikit-learn (RandomForest, predict_proba)
+- **IA Generativa**: OpenAI GPT-4o Mini, Google Gemini 2.0 Flash (BYOK)
 - **Frontend**: React 18, Tailwind CSS, Lucide Icons, Recharts
-- **Infra**: Docker, Nginx, GitHub Actions
+- **Infra**: Docker, Nginx, MongoDB, Redis
 
 ---
 

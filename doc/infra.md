@@ -1,4 +1,4 @@
-# OpenFinance Intel — Infraestrutura Global 🏗️ (v1.1.0)
+# OpenFinance Intel — Infraestrutura Global 🏗️ (v1.2.0)
 
 ## 🎯 Conceito
 
@@ -26,16 +26,19 @@ Internet (RSS/Reddit/Twitter)
        │                              │  (NLP Core)  │
        │                              └──────┬───────┘
        │                                     │
-       │                              alerts_queue
+       │                       alerts_queue + inference_queue
        │                                     │
-       │                              ┌──────▼───────┐
-       │                              │   Notifier   │
+       │                    ┌────────────────┼───────────────┐
+       │                    │                 │               │
+       │             ┌──────▼───────┐  ┌─────▼────────┐
+       │             │   Notifier   │  │  Inference  │
+       │             └──────────────┘  │  (ML Core)  │
        │                              └──────────────┘
        │
-┌──────▼───────┐
-│  Dashboard   │
-│  (React)     │
-│  :5173       │
+┌──────▼───────┐      BYOK       ┌──────────────┐
+│  Dashboard   │──────/ai/analyze──►│ OpenAI/Gemini│
+│  (React)     │                 └──────────────┘
+│  :80         │
 └──────────────┘
 ```
 
@@ -65,6 +68,7 @@ _O "Cérebro" do sistema._
   7. **Scoring**: Impacto (0-10) baseado em keywords de crise e intensidade de sentimento
   8. **Insight**: Frase de ação por combinação setor × sentimento (21 combinações pré-definidas)
   9. **Extração de Keywords & Entidades**: spaCy NER + extração customizada
+- **Auto-Cleanup (v1.2.0)**: A cada 100 eventos processados, remove automaticamente eventos antigos mantendo apenas os **1000 mais recentes** no DB
 
 ### 3. 🌐 API Gateway (FastAPI)
 
@@ -80,7 +84,11 @@ _A "Porta de Entrada"._
 - **Smart Seeder**: Upsert de fontes padrão sem destruir o banco existente
 - **Filtro Social Estrito**: Setor "Social" contém apenas eventos de Reddit/Twitter/Nitter
 - **Setor Garantido**: Todos os 6 setores aparecem na resposta, mesmo sem eventos
-- **v1.1.0**: Novo endpoint `GET /predictions` retorna predições de probabilidade de impacto
+- **v1.1.0**: Endpoint `GET /predictions` retorna predições de probabilidade de impacto
+- **v1.2.0**: Endpoints adicionais:
+  - `GET /predictions/stats` — Estatísticas agregadas do DB (total, high, medium, low)
+  - `POST /ai/analyze` — Análise IA on-demand (summary/crash/market) com BYOK (header `X-AI-Key`)
+  - `POST /admin/cleanup` — Limpeza manual do banco (mantendo N eventos mais recentes)
 
 ### 4. 🤖 Inference Service (v1.1.0)
 
@@ -105,10 +113,11 @@ _A "Face" do sistema._
 - **4 Abas**:
   | Aba | Conteúdo |
   |-----|---------|
-  | **Market Overview** | Bento Grid: Pulso IA, Gauge de Sentimento, Raio-X Setorial, Top Sinais, Radar de Oportunidades, Indicadores Chave (Fear & Greed) |
+  | **Market Overview** | Bento Grid: Pulso IA, Gauge de Sentimento, Raio-X Setorial, Top Sinais (clicáveis), Radar de Oportunidades (NLP+ML), Indicadores Chave (Fear & Greed) |
   | **Intelligence Feed** | Narrativas por setor → Timeline detalhada com subcategorias Macro, insights, keywords |
   | **Watchlist** | Eventos/narrativas favoritados com persistência LocalStorage |
-  | **Probabilidade** | Análise de Probabilidade de Impacto: cards de predição com barras de probabilidade, filtros por confiança/setor |
+  | **Probabilidade** | 250 eventos mais recentes com paginação estável (10/página), stats locais, refresh inteligente |
+  | **AI Insights** | 3 módulos IA on-demand: Resumo Executivo, Detector de Crashes, Análise de Mercado (BYOK OpenAI/Gemini) |
   | **Configurações** | Auto-refresh (Off/10/20/30 min), tema, idioma, sobre |
 - **Dual Theme**: Light/Dark com classe CSS e persistência
 - **i18n**: PT-BR / EN-US com tradução completa
@@ -124,16 +133,19 @@ _O "Alarme" do sistema._
 
 ---
 
-## 🔄 Fluxo de Dados (Pipeline v7)
+## 🔄 Fluxo de Dados (Pipeline v1.2.0)
 
 ```
 1. API agenda tarefa ──────────►  Redis: tasks_queue
 2. Collector busca conteúdo ───►  Extrai título/corpo/link
 3. Collector publica evento ───►  Redis: events_queue
 4. Analysis processa NLP ─────►  Setor + Sub-setor + Sentimento + Insight + Score
-5. Analysis salva ─────────────►  MongoDB (evento enriquecido)
-6. Frontend solicita /narratives ► API agrupa por setor ► JSON com narrativas
-7. Usuário vê sinais organizados ► Filtra, favorita, explora timeline
+5. Analysis salva ─────────────►  MongoDB (evento enriquecido) + auto-cleanup (max 1000)
+6. Analysis publica ───────────►  Redis: inference_queue
+7. Inference calcula ML ───────►  predict_proba → MongoDB (predições)
+8. Frontend solicita dados ────►  API serve /events, /narratives, /predictions
+9. AI Insights (on-demand) ────►  API chama OpenAI/Gemini via BYOK → relatório
+10. Usuário vê sinais ──────────►  Filtra, favorita, analisa, explora
 ```
 
 ---
@@ -183,5 +195,6 @@ _O "Alarme" do sistema._
 
 - Utiliza apenas **dados públicos** (RSS feeds e páginas públicas)
 - Respeita `robots.txt` e headers de User-Agent
+- **API keys de IA (BYOK)**: Fornecidas pelo usuário via interface, enviadas por header HTTP, **nunca armazenadas** no servidor
 - **Ferramenta de apoio à decisão**, não recomendação de investimento automatizada
 - Nenhum dado pessoal é coletado ou armazenado
