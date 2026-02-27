@@ -252,6 +252,11 @@ const OpportunityRadar = ({ events, isDark, language }) => {
 
       if (combinedHigh >= 3) {
         const usesML = mlHighCount >= 2;
+        // Dynamic confidence: ratio of high-impact events in this sector
+        const ratio = data.total > 0 ? combinedHigh / data.total : 0;
+        const baseConfidence = Math.round(50 + ratio * 40); // 50-90 range
+        const mlBonus = usesML ? 8 : 0;
+        const dynamicConf = Math.min(baseConfidence + mlBonus, 95);
         detected.push({
           type: "highImpact",
           icon: Zap,
@@ -264,13 +269,13 @@ const OpportunityRadar = ({ events, isDark, language }) => {
               : `${s.highImpact}: ${sector}`,
           description:
             language === "pt"
-              ? `${combinedHigh} eventos de alto impacto detectados.${usesML ? ` ${mlHighCount} confirmados pelo modelo ML.` : ""} Possível catalisador de mercado.`
-              : `${combinedHigh} high-impact events detected.${usesML ? ` ${mlHighCount} confirmed by ML model.` : ""} Possible market catalyst.`,
+              ? `${combinedHigh} de ${data.total} eventos são alto impacto (${Math.round(ratio * 100)}%).${usesML ? ` ${mlHighCount} confirmados pelo modelo ML.` : ""} Possível catalisador de mercado.`
+              : `${combinedHigh} of ${data.total} events are high-impact (${Math.round(ratio * 100)}%).${usesML ? ` ${mlHighCount} confirmed by ML model.` : ""} Possible market catalyst.`,
           action:
             language === "pt"
               ? `Atenção redobrada. Avaliar posições e stops em ${sector}.`
               : `Stay alert. Evaluate positions and stops in ${sector}.`,
-          confidence: usesML ? 88 : 80,
+          confidence: dynamicConf,
           eventCount: combinedHigh,
         });
       }

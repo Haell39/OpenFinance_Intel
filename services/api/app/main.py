@@ -359,6 +359,103 @@ def get_predictions(
     return predictions
 
 
+@app.get("/predictions/stats")
+def get_predictions_stats():
+    """
+    Retorna estatísticas totais de predições no MongoDB (sem limit).
+    Usado pelo dashboard para mostrar contadores reais.
+    """
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$confidence",
+                "count": {"$sum": 1},
+                "avg_probability": {"$avg": "$probability"},
+            }
+        }
+    ]
+    groups = list(mongo_db.predictions.aggregate(pipeline))
+
+    stats = {"total": 0, "high": 0, "medium": 0, "low": 0, "avg_probability": 0.0}
+    total_prob = 0.0
+    for g in groups:
+        count = g["count"]
+        stats[g["_id"]] = count
+        stats["total"] += count
+        total_prob += g.get("avg_probability", 0) * count
+
+    if stats["total"] > 0:
+        stats["avg_probability"] = round(total_prob / stats["total"], 3)
+
+    return stats
+
+
+@app.post("/admin/cleanup")
+def cleanup_old_data(keep_events: int = Query(default=1000, ge=100, le=5000)):
+    """
+    Mantém apenas os N eventos mais recentes e suas predições.
+    Remove eventos e predições mais antigos.
+    """
+    total_events = mongo_db.events.count_documents({})
+    total_predictions = mongo_db.predictions.count_documents({})
+
+    if total_events <= keep_events:
+        return {
+            "message": f"Nenhuma limpeza necessária. {total_events} eventos <= {keep_events} limite.",
+            "events_before": total_events,
+            "events_after": total_events,
+            "predictions_before": total_predictions,
+            "predictions_after": total_predictions,
+            "deleted_events": 0,
+            "deleted_predictions": 0,
+        }
+
+    # Find the timestamp cutoff (keep_events most recent)
+    cutoff_event = list(
+        mongo_db.events.find({}, {"timestamp": 1})
+        .sort("timestamp", -1)
+        .skip(keep_events)
+        .limit(1)
+    )
+
+    if not cutoff_event:
+        return {"message": "Sem dados para limpar."}
+
+    cutoff_ts = cutoff_event[0].get("timestamp")
+
+    # Get IDs of events to delete
+    old_events = list(
+        mongo_db.events.find(
+            {"timestamp": {"$lte": cutoff_ts}},
+            {"id": 1, "_id": 1}
+        )
+    )
+    old_event_ids = [e.get("id", str(e["_id"])) for e in old_events]
+
+    # Delete old predictions
+    pred_result = mongo_db.predictions.delete_many(
+        {"event_id": {"$in": old_event_ids}}
+    )
+
+    # Delete old events
+    event_result = mongo_db.events.delete_many(
+        {"timestamp": {"$lte": cutoff_ts}}
+    )
+
+    events_after = mongo_db.events.count_documents({})
+    preds_after = mongo_db.predictions.count_documents({})
+
+    return {
+        "message": f"Limpeza concluída. Mantidos os {keep_events} eventos mais recentes.",
+        "events_before": total_events,
+        "events_after": events_after,
+        "deleted_events": event_result.deleted_count,
+        "predictions_before": total_predictions,
+        "predictions_after": preds_after,
+        "deleted_predictions": pred_result.deleted_count,
+    }
+
+
 def generate_mock_narratives() -> list[dict]:
     """Retorna dados fictícios para não bloquear o frontend se o banco estiver vazio"""
     return [

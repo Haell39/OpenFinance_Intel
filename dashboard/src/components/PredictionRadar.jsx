@@ -58,15 +58,27 @@ const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
   const [sectorFilter, setSectorFilter] = useState("all");
   const [sortOrder, setSortOrder] = useState("newest"); // newest, oldest
   const [currentPage, setCurrentPage] = useState(1);
+  const [dbStats, setDbStats] = useState({
+    total: 0,
+    high: 0,
+    medium: 0,
+    low: 0,
+    avg_probability: 0,
+  });
 
   const fetchPredictions = async () => {
     const isInitial = predictions.length === 0;
     try {
       if (isInitial) setLoading(true);
       else setRefreshing(true);
-      const res = await fetch("/predictions?limit=250");
-      if (res.ok) {
-        const data = await res.json();
+
+      const [predRes, statsRes] = await Promise.all([
+        fetch("/predictions?limit=250"),
+        fetch("/predictions/stats"),
+      ]);
+
+      if (predRes.ok) {
+        const data = await predRes.json();
         // Only update if events actually changed (new/removed events or probability changed)
         const oldMap = new Map(
           predictions.map((p) => [p.event_id, p.probability]),
@@ -83,6 +95,11 @@ const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
           setPredictions(data);
         }
         setLastUpdated(new Date());
+      }
+
+      if (statsRes.ok) {
+        const s = await statsRes.json();
+        setDbStats(s);
       }
     } catch (err) {
       console.error("Failed to fetch predictions:", err);
@@ -131,7 +148,7 @@ const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
     setCurrentPage(1);
   }, [filter, sectorFilter, sortOrder]);
 
-  // --- Stats ---
+  // Stats from the 250 displayed predictions (matches what user sees)
   const stats = {
     total: predictions.length,
     high: predictions.filter((p) => p.confidence === "high").length,
@@ -468,8 +485,8 @@ const PredictionRadar = ({ isDark, language, refreshInterval = 30000 }) => {
         <div className="text-center py-4 space-y-1">
           <p className="text-[10px] text-slate-400">
             {language === "pt"
-              ? `📊 Exibindo os ${Math.min(predictions.length, 250)} eventos mais recentes processados pelo modelo de Machine Learning.`
-              : `📊 Showing the ${Math.min(predictions.length, 250)} most recent events processed by the Machine Learning model.`}
+              ? `📊 Exibindo os ${predictions.length} eventos mais recentes de ${stats.total} no total · Estatísticas referentes ao banco de dados completo`
+              : `📊 Showing ${predictions.length} most recent events of ${stats.total} total · Statistics reflect the full database`}
           </p>
           <p className="text-[10px] text-slate-400 italic">
             {language === "pt"
